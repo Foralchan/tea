@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>办公室泡茶速查 · 180ml / 120ml</title>
+<style>
+  :root{
+    --bg:#f6f4ef; --card:#fff; --ink:#2b2b2b; --sub:#6b6b6b; --line:#e5e0d6;
+    --green:#2e7d54; --greenbg:#e3f2e8;
+    --blue:#1f6f8b; --bluebg:#e2eff3;
+    --amber:#b26a00; --amberbg:#fbecd6;
+    --red:#b23a3a; --redbg:#f7e2e2;
+    --accent:#7a5c3e; --accentbg:#efe7dc;
+  }
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+    line-height:1.6;font-size:16px}
+  .wrap{max-width:960px;margin:0 auto;padding:20px 16px 60px}
+  header h1{font-size:22px;margin:0 0 4px}
+  header p{margin:0;color:var(--sub);font-size:14px}
+  h2{font-size:18px;margin:34px 0 12px;padding-left:10px;border-left:4px solid var(--accent)}
+  h3{font-size:15px;margin:20px 0 8px;color:var(--accent)}
+  .note{font-size:13.5px;color:var(--sub);margin:8px 0}
+  .callout{background:var(--accentbg);border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin:14px 0;font-size:14px}
+  .rule{background:var(--redbg);border:1px solid #eccaca;border-radius:12px;padding:12px 14px;margin:14px 0;font-size:14px;color:#7a2a2a}
+
+  /* decision card */
+  .deck{background:var(--card);border:1px solid var(--line);border-radius:14px;overflow:hidden;margin:14px 0}
+  .deck .row{display:flex;gap:10px;padding:11px 14px;border-top:1px solid var(--line);font-size:14.5px}
+  .deck .row:first-child{border-top:none}
+  .deck .row .s{flex:1;color:var(--ink)}
+  .deck .row .d{flex:0 0 auto;font-weight:600}
+  .pill{display:inline-block;padding:2px 9px;border-radius:999px;font-size:13px;font-weight:600}
+  .p180{background:var(--bluebg);color:var(--blue)}
+  .p120{background:var(--accentbg);color:var(--accent)}
+
+  .two{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:12px 0}
+  .two .box{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px}
+  .two .box b{display:block;margin-bottom:6px}
+
+  /* modes */
+  .modes{display:grid;grid-template-columns:1fr;gap:10px;margin:12px 0}
+  .mode{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 14px;font-size:14px}
+  .mode .t{font-weight:700}
+
+  /* tea cards */
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(255px,1fr));gap:12px;margin:12px 0}
+  .tea{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 13px;position:relative}
+  .tea .nm{font-weight:700;font-size:15px;padding-right:44px}
+  .tea .badge{position:absolute;top:11px;right:11px;width:34px;height:34px;border-radius:9px;
+    display:flex;align-items:center;justify-content:center;font-weight:800;font-size:15px}
+  .b10,.b9{background:var(--greenbg);color:var(--green)}
+  .b8,.b7{background:var(--bluebg);color:var(--blue)}
+  .b6{background:var(--amberbg);color:var(--amber)}
+  .b5{background:var(--redbg);color:var(--red)}
+  .tea .kv{font-size:13px;color:var(--sub);margin-top:7px;display:grid;grid-template-columns:auto 1fr;gap:2px 8px}
+  .tea .kv b{color:var(--ink);font-weight:600}
+  .tea .mode-tag{display:inline-block;margin-top:8px;font-size:12px;padding:2px 8px;border-radius:6px;background:#f0ece4;color:var(--accent)}
+  .cat{grid-column:1/-1;font-size:13px;font-weight:700;color:var(--accent);margin-top:6px}
+
+  /* ladder */
+  .ladder{margin:12px 0}
+  .ladder .lv{display:flex;gap:10px;align-items:flex-start;padding:9px 0;border-top:1px dashed var(--line);font-size:14px}
+  .ladder .lv:first-child{border-top:none}
+  .ladder .sc{flex:0 0 40px;font-weight:800;text-align:center;border-radius:8px;padding:3px 0}
+
+  table.mini{width:100%;border-collapse:collapse;font-size:13.5px;margin:10px 0;background:var(--card);border-radius:10px;overflow:hidden}
+  table.mini th,table.mini td{border:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top}
+  table.mini th{background:var(--accentbg);color:var(--accent);font-weight:700}
+
+  footer{margin-top:34px;color:var(--sub);font-size:12.5px;text-align:center}
+  @media(max-width:560px){
+    body{font-size:15px}
+    .two{grid-template-columns:1fr}
+    .deck .row{flex-direction:column;gap:4px}
+    .grid{grid-template-columns:1fr}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <h1>办公室泡茶速查</h1>
+  <p>180ml 管口粮 · 120ml 管香茶 · 统一容器，分动作守下限</p>
+</header>
+
+<h2>① 决策卡（先看这张）</h2>
+<div class="two">
+  <div class="box"><b><span class="pill p180">180ml 大盖碗</span> 管口粮</b>熟普、红茶、绿茶、老白茶、黑茶、口粮高山乌龙。省事优先。</div>
+  <div class="box"><b><span class="pill p120">120ml 盖碗</span> 管香茶</b>单丛、轻火岩茶、清香铁观音、白芽奇兰、好高山。一泡一装整包投，守香守韵。</div>
+</div>
+<div class="deck">
+  <div class="row"><span class="s">只想有口热茶</span><span class="d"><span class="pill p180">180ml</span></span></div>
+  <div class="row"><span class="s">想认真喝香、喝层次</span><span class="d"><span class="pill p120">120ml</span></span></div>
+  <div class="row"><span class="s">熟普 / 老白 / 黑茶 / 常规红茶</span><span class="d"><span class="pill p180">180ml 随便喝</span></span></div>
+  <div class="row"><span class="s">绿茶 / 黄茶 / 新白茶</span><span class="d"><span class="pill p180">180ml · 低温开盖别闷死</span></span></div>
+  <div class="row"><span class="s">中足火岩茶 / 炭焙铁观音 / 漳平水仙</span><span class="d"><span class="pill p180">180ml · 必须分离</span></span></div>
+  <div class="row"><span class="s">单丛 / 轻火岩茶 / 清香铁观音 / 白芽奇兰</span><span class="d"><span class="pill p120">默认 120ml</span></span></div>
+  <div class="row"><span class="s">已经不好喝的粗枝大叶茶</span><span class="d"><span class="pill p180">180ml 快喝 1-3 道就扔</span></span></div>
+  <div class="row"><span class="s">5g 香气型小样</span><span class="d"><span class="pill p120">优先 120ml，别硬救</span></span></div>
+</div>
+
+<h2>② 三种动作 + 一条铁律</h2>
+<div class="modes">
+  <div class="mode"><span class="t">① 分离法（快出）</span> —— 泡好全部倒出、不留根。乌龙、生普、细嫩红茶等易苦的高香茶。</div>
+  <div class="mode"><span class="t">② 闷泡法（耐泡茶）</span> —— 沸水盖闷 15-30s，可留根续水。熟普、老白茶、黑茶、常规红茶。</div>
+  <div class="mode"><span class="t">③ 杯泡法（清雅茶）</span> —— 低温、盖子留缝或不盖、剩 1/2 续水。绿茶、黄茶、新白茶。</div>
+</div>
+<div class="rule">⚠️ <b>铁律</b>：单丛、轻火岩茶、清香铁观音、白芽奇兰这类娇气高香茶，<b>只能分离，严禁留根、严禁盖闷</b>——一闷必苦、必毁。</div>
+<div class="callout"><b>别被"180ml"骗了：</b>盖碗标称 180ml，实际注七八分＋茶叶占位，真正出汤约 130-150ml，8g 茶约 1:18——比功夫泡稍稀，但没到"淡如水"。代价是<b>香更散、层次被压缩</b>，不是没味。</div>
+
+<h2>③ 主速查表（180ml 盖碗）</h2>
+<p class="note">适配度＝180ml 省事度，不是茶的绝对好坏。<b>≤6 分强烈建议改用 120ml。</b></p>
+<div class="grid" id="teagrid"></div>
+
+<h2>④ 香茶专用档（120ml 盖碗，实际水 90-100ml）</h2>
+<p class="note">该进这档：单丛、轻火/高香岩茶、清香正味铁观音、白芽奇兰、高山乌龙，以及任何"专门想喝它香"的好茶。<b>整包投 → 烫盖碗 → 快出为主 → 倒干别留根 → 趁热喝。</b></p>
+<table class="mini">
+<tr><th>茶</th><th>投茶</th><th>水温</th><th>每泡时间</th><th>轮数</th></tr>
+<tr><td>凤凰单丛</td><td>6-7g 整包</td><td>95-100°C（台地/清香取 95）</td><td>即出→即出→5-10-15-20s</td><td>6-8</td></tr>
+<tr><td>轻火/高香岩茶</td><td>7-8g</td><td>沸水</td><td>即出→5-10-15-25s</td><td>7-9</td></tr>
+<tr><td>中足火岩茶（水仙/肉桂）</td><td>8g</td><td>沸水</td><td>5-8-12-20-30s</td><td>8-10</td></tr>
+<tr><td>清香正味铁观音</td><td>7-8g</td><td>95-100°C</td><td>即出→5-10-15s</td><td>6-8</td></tr>
+<tr><td>白芽奇兰</td><td>7-8g</td><td>95°C</td><td>即出→5-10-15s</td><td>5-7</td></tr>
+<tr><td>高山乌龙（球形）</td><td>8g</td><td>95-100°C</td><td>10-15-20-30s</td><td>8-10</td></tr>
+</table>
+<div class="callout">偶遇 8g 大包单丛：120ml 太挤，别掰散——直接上 180ml，即冲即出＋留缝处理，不浪费也不烫手。</div>
+
+<h2>⑤ 单丛按价值分流</h2>
+<div class="modes">
+  <div class="mode"><span class="t">好单丛（高山/老丛）</span> —— 别凑合，上 120ml，6-7g / 95-100°C / 前两三泡即出。</div>
+  <div class="mode"><span class="t">普通口粮（蜜兰香/鸭屎香）</span> —— 180ml 可以，5-6g / 95°C / 即出→5→10→15s。</div>
+  <div class="mode"><span class="t">不好喝的粗枝大叶货</span> —— 别认真救，180ml / 5g / 95°C / 即冲即出，喝 1-3 道就扔。<b>你的时间比这泡茶贵。</b></div>
+</div>
+<p class="note">拆层看"料+焙火"，不看香型：香型只决定香什么；高山老丛更容错，低山台地最娇气（须降温快出）；轻焙易苦、足焙耐泡。拿不准就降温＋快出。</p>
+
+<h2>⑥ 一泡一装 · 缺量补救</h2>
+<table class="mini">
+<tr><th>情况</th><th>怎么调</th></tr>
+<tr><td>香气型茶缺 2g 以上<br>（岩茶/铁观音/单丛/白芽奇兰）</td><td>别硬救：优先 120ml，或当口粮 180ml 快喝、认淡</td></tr>
+<tr><td>耐泡茶缺 2g 以上<br>（熟普/老白/黑茶/常规红/中足火以上岩茶）</td><td>滚沸水 ＋ 坐杯翻倍(15-25-40s) ＋ 改闷泡 ＋ 轮数-2</td></tr>
+<tr><td>少 1g 左右</td><td>略延长坐杯，其余照主表</td></tr>
+<tr><td>多 1-2g</td><td>即冲即出、缩短坐杯、不留根</td></tr>
+</table>
+
+<h2>⑦ 180ml 适配度总表</h2>
+<div class="ladder">
+  <div class="lv"><span class="sc b10">10</span><span>绿茶 —— 本就低温杯泡续水，天生适配</span></div>
+  <div class="lv"><span class="sc b9">9</span><span>熟普、常规红茶（滇红等）—— 耐闷不苦</span></div>
+  <div class="lv"><span class="sc b8">8</span><span>老白茶、口粮高山、黄茶、黑茶、新白茶、细嫩红茶</span></div>
+  <div class="lv"><span class="sc b7">7</span><span>中足火/高火岩茶、炭焙铁观音、漳平水仙、冻顶、中老生普、东方美人、文山包种</span></div>
+  <div class="lv"><span class="sc b6">6</span><span>轻火岩茶、正味铁观音、白芽奇兰 —— 高香易散易涩</span></div>
+  <div class="lv"><span class="sc b5">5</span><span>凤凰单丛、新生普 —— 功夫泡才是主场</span></div>
+</div>
+<div class="callout">分数＝180ml 省事适配度，不是绝对好坏。<b>≤6 分 → 强烈建议改 120ml。</b></div>
+
+<footer>统一容器可以，但别统一到牺牲你最爱的香。<br>180ml 管口粮，120ml 管香茶，单丛值得你为它多倒两次。</footer>
+</div>
+
+<script>
+const teas=[
+ {c:"绿 / 黄 / 白（清雅茶 · 杯泡）"},
+ {n:"绿茶（龙井/毛峰）",d:"3-4g",t:"80-85°C",tm:"开盖杯泡，剩1/2续水",r:"2-4",m:"杯泡",s:10},
+ {n:"绿茶（碧螺春等细嫩）",d:"3g",t:"80°C",tm:"中投/上投，开盖",r:"2-3",m:"杯泡",s:9},
+ {n:"黄茶（君山银针等）",d:"3-4g",t:"85°C",tm:"同绿茶，开盖",r:"2-3",m:"杯泡",s:8},
+ {n:"白茶·新（银针/牡丹）",d:"4-5g",t:"85-90°C",tm:"敞盖或快出，即泡即饮别闷",r:"3-4",m:"杯泡/分离",s:8},
+ {n:"白茶·老（寿眉/饼）",d:"5-6g",t:"95-100°C",tm:"闷泡15-30s，或煮",r:"4-5",m:"闷泡/煮",s:8},
+ {c:"红茶"},
+ {n:"红茶·细嫩芽头（金骏眉等）",d:"5g",t:"85-90°C",tm:"快出5-10-15s，别闷",r:"3-4",m:"分离",s:8},
+ {n:"红茶·常规条形（滇红/正山小种/祁红）",d:"5-6g",t:"90-95°C",tm:"分离，或当耐泡茶闷泡",r:"3-5",m:"分离/闷泡",s:9},
+ {c:"乌龙 · 岩茶（分离，沸水）"},
+ {n:"岩茶·中足火（水仙/肉桂/大红袍）",d:"7-8g",t:"100°C 沸水",tm:"润茶后10-15-20-30s",r:"5-7",m:"分离",s:7},
+ {n:"岩茶·轻火（清香型）",d:"7g",t:"100°C 沸水",tm:"快出8-12-18s，别闷",r:"5-6",m:"分离",s:6},
+ {n:"岩茶·高火足火（老丛/足火肉桂）",d:"8g",t:"100°C 滚沸",tm:"可稍长15-20-30s",r:"6-8",m:"分离",s:7},
+ {c:"乌龙 · 闽南 / 单丛（分离）"},
+ {n:"铁观音·正味清香",d:"7-8g",t:"95-100°C",tm:"快出5-10-15s",r:"4-6",m:"分离",s:6},
+ {n:"铁观音·炭焙浓香",d:"8g",t:"100°C",tm:"10-15-25s",r:"5-7",m:"分离",s:7},
+ {n:"漳平水仙（方块饼）",d:"8g/块",t:"100°C",tm:"让它舒展15-20-30s",r:"5-6",m:"分离",s:7},
+ {n:"白芽奇兰",d:"7-8g",t:"95°C",tm:"快出，同清香铁观音",r:"4-6",m:"分离",s:6},
+ {n:"凤凰单丛（含素心兰等）",d:"5-6g",t:"95-100°C",tm:"即冲即出→5-10s",r:"4-6",m:"分离",s:5},
+ {c:"乌龙 · 台湾（分离）"},
+ {n:"台湾高山乌龙（阿里山/梨山）",d:"8g",t:"95-100°C",tm:"球形慢展15-20-30s",r:"6-8",m:"分离",s:8},
+ {n:"冻顶乌龙",d:"8g",t:"100°C",tm:"15-25s",r:"6-7",m:"分离",s:7},
+ {n:"东方美人（白毫乌龙）",d:"5-6g",t:"85-90°C",tm:"快出或敞盖杯泡",r:"3-4",m:"分离/杯泡",s:7},
+ {n:"文山包种",d:"5-6g",t:"90°C",tm:"快出分离",r:"4-5",m:"分离",s:7},
+ {c:"普洱 / 黑茶"},
+ {n:"生普·新",d:"6-7g",t:"95-100°C",tm:"快出防苦，别坐杯",r:"5-7",m:"分离",s:5},
+ {n:"生普·中老期",d:"7-8g",t:"100°C",tm:"分离或闷泡",r:"6-8",m:"分离/闷泡",s:7},
+ {n:"熟普",d:"8-9g",t:"100°C",tm:"洗1-2遍，分离或闷泡",r:"6-8+",m:"分离/闷泡",s:9},
+ {n:"黑茶/六堡",d:"8g",t:"100°C",tm:"闷泡或煮",r:"5-8",m:"闷泡/煮",s:8},
+];
+const g=document.getElementById('teagrid');
+teas.forEach(x=>{
+  if(x.c){const h=document.createElement('div');h.className='cat';h.textContent=x.c;g.appendChild(h);return;}
+  const el=document.createElement('div');el.className='tea';
+  el.innerHTML=`<div class="badge b${x.s}">${x.s}</div>
+   <div class="nm">${x.n}</div>
+   <div class="kv"><b>投茶</b><span>${x.d}</span><b>水温</b><span>${x.t}</span><b>时间</b><span>${x.tm}</span><b>轮数</b><span>${x.r}</span></div>
+   <span class="mode-tag">${x.m}</span>`;
+  g.appendChild(el);
+});
+</script>
+</body>
+</html>
