@@ -4,288 +4,80 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="icon" type="image/svg+xml" href="price-icon.svg">
-<title>茶叶价格总库 · 互动版</title>
+<meta name="color-scheme" content="light dark">
+<title>茶叶推荐购买价格总库 · V4.1</title>
 <style>
+:root{
+  --bg:#faf8f4;--card:#fff;--ink:#2b2b28;--muted:#8a857c;--line:#e7e2d8;
+  --daily:#8fb98a;--main:#e0a94b;--fine:#c76b4a;--rare:#76518f;--star:#e0a94b;
+  --chip:#f0ece3;--input-bg:#fff;--track-bg:#f1ede4;
+  --rare-bg:#f6f1f8;--rare-line:#dfd0e6;
+  --avoid-bg:#fbf0ee;--avoid-line:#f0d5cf;--avoid-text:#8a3b30;--avoid-strong:#b23b3b;
+  --group-bg:#f3efe7;--shadow:rgba(0,0,0,.05)
+}
+@media (prefers-color-scheme:dark){
   :root{
-    --bg:#faf8f4; --card:#fff; --ink:#2b2b28; --muted:#8a857c; --line:#e7e2d8;
-    --kou:#8fb98a; --jin:#e0a94b; --jing:#c76b4a; --over:#b23b3b; --star:#e0a94b;
-    --chip:#f0ece3;
+    --bg:#181714;--card:#24221e;--ink:#f1eee7;--muted:#aaa49b;--line:#403c35;
+    --chip:#302d28;--input-bg:#24221e;--track-bg:#35312b;
+    --rare-bg:#2b2430;--rare-line:#52405c;
+    --avoid-bg:#30211f;--avoid-line:#68413b;--avoid-text:#e8aaa2;--avoid-strong:#ff9487;
+    --group-bg:#211f1b;--shadow:rgba(0,0,0,.25)
   }
-  *{box-sizing:border-box}
-  body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;line-height:1.6}
-  .wrap{max-width:1040px;margin:0 auto;padding:22px 16px 60px}
-  h1{font-size:22px;margin:0 0 4px}
-  .sub{color:var(--muted);font-size:13px;margin-bottom:18px}
-  .sub b{color:var(--jing)}
-  .controls{position:sticky;top:0;background:var(--bg);padding:12px 0;z-index:5;border-bottom:1px solid var(--line);margin-bottom:14px}
-  .row{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:8px}
-  input[type=search],input[type=number]{padding:8px 10px;border:1px solid var(--line);border-radius:9px;font-size:14px;background:#fff;color:var(--ink)}
-  input[type=search]{flex:1;min-width:160px}
-  input[type=number]{width:92px}
-  .chip{padding:5px 11px;border-radius:20px;background:var(--chip);border:1px solid transparent;font-size:13px;cursor:pointer;user-select:none;color:#5c574d}
-  .chip.on{background:var(--ink);color:#fff}
-  .chip.you{background:#fff;border-color:var(--star);color:#b5872f}
-  .chip.you.on{background:var(--star);color:#fff;border-color:var(--star)}
-  .hint{font-size:12px;color:var(--muted)}
-  .count{font-size:12px;color:var(--muted);margin:2px 0 12px}
-  .card{background:var(--card);border:1px solid var(--line);border-radius:13px;margin-bottom:10px;overflow:hidden;transition:box-shadow .15s}
-  .card:hover{box-shadow:0 3px 14px rgba(0,0,0,.05)}
-  .head{display:flex;align-items:center;gap:10px;padding:13px 15px;cursor:pointer}
-  .cat{font-size:11px;color:#fff;padding:2px 8px;border-radius:6px;white-space:nowrap;background:#b7a98c}
-  .nm{font-weight:600;font-size:15px}
-  .star{color:var(--star);font-size:14px}
-  .desc{color:var(--muted);font-size:12px;font-weight:400}
-  .badge{margin-left:auto;font-size:12px;color:var(--muted);white-space:nowrap}
-  .badge b{color:var(--ink);font-size:14px}
-  .arrow{color:var(--muted);transition:transform .2s;font-size:12px}
-  .card.open .arrow{transform:rotate(90deg)}
-  .body{display:none;padding:2px 15px 15px;border-top:1px dashed var(--line)}
-  .card.open .body{display:block}
-  .prow{display:grid;grid-template-columns:130px 1fr 92px;gap:10px;align-items:center;margin:9px 0}
-  .plabel{font-size:12.5px;color:#5c574d}
-  .tier{font-size:10px;padding:1px 6px;border-radius:5px;color:#fff;margin-left:5px;vertical-align:middle}
-  .t-kou{background:var(--kou)} .t-jin{background:var(--jin)} .t-jing{background:var(--jing)} .t-over{background:var(--over)}
-  .track{background:#f1ede4;border-radius:6px;height:15px;position:relative;overflow:hidden}
-  .fill{position:absolute;top:0;bottom:0;border-radius:6px;opacity:.9}
-  .f-kou{background:var(--kou)} .f-jin{background:var(--jin)} .f-jing{background:var(--jing)}
-  .overtag{font-size:11px;color:var(--over);font-weight:600;padding:0 6px}
-  .pval{font-size:12.5px;text-align:right;color:#3a3a35;font-variant-numeric:tabular-nums}
-  .avoid{margin-top:10px;background:#fbf0ee;border:1px solid #f0d5cf;border-radius:9px;padding:9px 11px;font-size:12.5px;color:#8a3b30}
-  .avoid b{color:var(--over)}
-  .note{margin-top:8px;font-size:12px;color:var(--muted)}
-  .legend{font-size:11.5px;color:var(--muted);display:flex;gap:14px;flex-wrap:wrap;margin-top:6px}
-  .dot{display:inline-block;width:9px;height:9px;border-radius:3px;margin-right:4px;vertical-align:middle}
-  footer{margin-top:26px;font-size:11.5px;color:var(--muted);border-top:1px solid var(--line);padding-top:12px}
-  .empty{text-align:center;color:var(--muted);padding:40px 0}
-  @media (max-width:480px){
-    .wrap{padding:16px 11px 50px}
-    h1{font-size:19px}
-    .controls{padding:10px 0}
-    input[type=search]{min-width:120px}
-    .head{padding:11px 12px;gap:7px}
-    .nm{font-size:14px}
-    .desc{display:block;margin-top:1px;font-size:11.5px}
-    .badge{font-size:11px}
-    .prow{grid-template-columns:82px 1fr 54px;gap:6px;margin:8px 0}
-    .plabel{font-size:11px}
-    .pval{font-size:11px}
-    .cat{font-size:10px;padding:2px 6px}
-    .tier{font-size:9px;padding:1px 4px}
-  }
+}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;line-height:1.6}
+.wrap{max-width:1120px;margin:0 auto;padding:22px 16px 60px}h1{font-size:22px;margin:0 0 4px}.sub{color:var(--muted);font-size:13px;margin-bottom:18px}.sub b{color:var(--fine)}
+.controls{position:sticky;top:0;background:color-mix(in srgb,var(--bg) 97%,transparent);backdrop-filter:blur(8px);padding:12px 0;z-index:5;border-bottom:1px solid var(--line);margin-bottom:14px}
+.row{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:8px}input[type=search],input[type=number]{padding:8px 10px;border:1px solid var(--line);border-radius:9px;font-size:14px;background:var(--input-bg);color:var(--ink)}input[type=search]{flex:1;min-width:190px}input[type=number]{width:92px}
+.chip{padding:5px 11px;border-radius:20px;background:var(--chip);border:1px solid transparent;font-size:13px;cursor:pointer;user-select:none;color:var(--muted);transition:.15s}.chip:hover{border-color:var(--line);color:var(--ink)}.chip.on{background:var(--ink);color:var(--bg)}.chip.you{background:var(--input-bg);border-color:var(--star);color:#b5872f}.chip.you.on{background:var(--star);color:#fff;border-color:var(--star)}
+.hint,.filter-help{font-size:12px;color:var(--muted)}.filter-help{margin-top:-2px}.count{font-size:12px;color:var(--muted);margin:2px 0 12px}
+.group-title{display:flex;align-items:center;margin:16px 2px 8px;padding:5px 9px;border-left:3px solid var(--line);color:var(--muted)}.group-title:first-child{margin-top:0}.group-title b{font-size:12.5px;font-weight:600}
+.card{background:var(--card);border:1px solid var(--line);border-radius:13px;margin-bottom:10px;overflow:hidden;transition:box-shadow .15s}.card:hover{box-shadow:0 3px 14px var(--shadow)}.head{display:flex;align-items:center;gap:10px;padding:13px 15px;cursor:pointer}.cat{font-size:11px;color:#fff;padding:2px 8px;border-radius:6px;white-space:nowrap}.nm{font-weight:600;font-size:15px;min-width:0}.star{color:var(--star);font-size:14px}.desc{color:var(--muted);font-size:12px;font-weight:400}.badge{margin-left:auto;font-size:12px;color:var(--muted);white-space:nowrap}.badge b{color:var(--ink);font-size:14px}.badge.rare b{color:var(--rare)}.arrow{color:var(--muted);transition:transform .2s;font-size:12px}.card.open .arrow{transform:rotate(90deg)}
+.body{display:none;padding:4px 15px 15px;border-top:1px dashed var(--line)}.card.open .body{display:block}.section-title{font-size:11.5px;color:var(--muted);margin:9px 0 3px;font-weight:600}.prow{display:grid;grid-template-columns:150px 1fr 98px;gap:10px;align-items:center;margin:9px 0}.plabel{font-size:12.5px;color:var(--muted)}.tier{font-size:10px;padding:1px 6px;border-radius:5px;color:#fff;margin-left:5px;vertical-align:middle;white-space:nowrap}.t-daily{background:var(--daily)}.t-main{background:var(--main)}.t-fine{background:var(--fine)}.t-rare{background:var(--rare)}.track{background:var(--track-bg);border-radius:6px;height:15px;position:relative;overflow:hidden}.fill{position:absolute;top:0;bottom:0;border-radius:6px;opacity:.92}.f-daily{background:var(--daily)}.f-main{background:var(--main)}.f-fine{background:var(--fine)}.pval{font-size:12.5px;text-align:right;color:var(--ink);font-variant-numeric:tabular-nums;white-space:nowrap}
+.rarebox{margin-top:12px;padding:10px 11px 7px;background:var(--rare-bg);border:1px solid var(--rare-line);border-radius:10px}.rarehead{font-size:12px;color:var(--rare);font-weight:700;margin-bottom:4px}.rare-note{font-size:11px;color:var(--muted);font-weight:400;margin-left:5px}.rare-row{display:grid;grid-template-columns:1fr auto;gap:10px;padding:6px 0;border-top:1px dashed var(--rare-line);font-size:12.5px}.rare-row:first-of-type{border-top:0}.rare-price{color:var(--rare);font-weight:600;font-variant-numeric:tabular-nums;white-space:nowrap}
+.avoid{margin-top:11px;background:var(--avoid-bg);border:1px solid var(--avoid-line);border-radius:9px;padding:9px 11px;font-size:12px;color:var(--avoid-text)}.avoid b{color:var(--avoid-strong)}.note{margin-top:9px;font-size:11.5px;color:var(--muted)}
+.legend{font-size:11.5px;color:var(--muted);display:flex;gap:14px;flex-wrap:wrap;margin-top:6px}.dot{display:inline-block;width:9px;height:9px;border-radius:3px;margin-right:4px;vertical-align:middle}footer{margin-top:26px;font-size:11.5px;color:var(--muted);border-top:1px solid var(--line);padding-top:12px}.empty{text-align:center;color:var(--muted);padding:40px 0}
+@media(max-width:620px){.wrap{padding:16px 11px 50px}h1{font-size:19px}.controls{padding:10px 0}.head{padding:11px 12px;gap:7px;align-items:flex-start}.nm{font-size:14px}.desc{display:block;margin-top:1px;font-size:11.5px}.badge{font-size:10.5px;margin-top:2px}.badge b{font-size:12px}.prow{grid-template-columns:104px 1fr 58px;gap:6px;margin:8px 0}.plabel{font-size:11px}.pval{font-size:11px}.cat{font-size:10px;padding:2px 6px}.tier{display:block;width:max-content;margin:2px 0 0;font-size:9px;padding:1px 4px}.rare-row{font-size:11.5px}.group-title{margin-top:15px}.filter-help{display:none}}
 </style>
 </head>
-<body>
-<div class="wrap">
-  <h1>茶叶价格总库 · 互动版</h1>
-  <div class="sub">全部 <b>元/50g</b> · 2026 行情 · 聚焦进阶口粮～精品下沿 · 天价名号只标降级真相/避坑 · ★=适合你（清甜柔顺）</div>
-
-  <div class="controls">
-    <div class="row">
-      <input type="search" id="q" placeholder="搜品种名（如 水仙、鸭屎香、白牡丹、滇红）…">
-      <span class="hint">价格上限</span>
-      <input type="number" id="pmax" placeholder="元/50g" min="0">
-      <span class="chip you" id="youBtn">★ 只看适合我</span>
-    </div>
-    <div class="row" id="cats"></div>
-    <div class="legend">
-      <span><span class="dot t-kou"></span>口粮</span>
-      <span><span class="dot t-jin"></span>进阶口粮</span>
-      <span><span class="dot t-jing"></span>精品下沿</span>
-      <span><span class="dot t-over"></span>超本带（天价名号）</span>
-    </div>
-  </div>
-
-  <div class="count" id="count"></div>
-  <div id="list"></div>
-
-  <footer>
-    数据来源：八张模块表合并（岩茶 v3 自研核算 + 台湾乌龙 + 凤凰单丛 + 铁观音闽南 + 普洱 + 红茶 + 白茶 + 绿茶），GLM 检索＋多源独立旁证。价格随季节/品牌/年份波动，仅作量级与避坑参考，非成交价手册。普洱另有元/饼(357g)；台茶已折人民币（原台斤600g/新台币）。
-  </footer>
+<body><div class="wrap">
+<h1>茶叶推荐购买价格总库 · 互动版</h1>
+<div class="sub">全部 <b>元/50g</b> · 2026 校准版 V4.1 · 只收录值得考虑的购买区间 · 名山/老丛/单株按独立身份轴列价 · ★=你经常喝或已明确偏好的方向</div>
+<div class="controls">
+  <div class="row"><input type="search" id="q" placeholder="搜品种、山头、风格或防坑词（如 牛肉、麻黑、梅占、做旧）…"><span class="hint">建议起价≤</span><input type="number" id="pmax" placeholder="元/50g" min="0"><span class="chip you" id="youBtn">★ 只看适合我</span></div>
+  <div class="row" id="cats"></div>
+  <div class="filter-help">点一个茶类会自动单选；再次点已选茶类或点“全部”，恢复显示全部。</div>
+  <div class="legend"><span><span class="dot t-daily"></span>日常可买</span><span><span class="dot t-main"></span>主力购买</span><span><span class="dot t-fine"></span>精品体验</span><span><span class="dot t-rare"></span>稀缺身份/特殊批次（独立维度）</span></div>
 </div>
-
+<div class="count" id="count"></div><div id="list"></div>
+<footer>本表按你的历次购买、冲泡与品饮反馈校准。低于“日常可买”不代表不能买，只是更依赖品牌、渠道、具体批次和试饮判断；日常档主要要求前三四泡香气干净、汤感正常、适口性稳定，不以极限耐泡度作为门槛。稀缺身份价主要反映来源、产区、树龄、比赛或特殊批次，不表示喝感按价格同比提升。条形长度仅表示本卡内部价格位置，跨品类请以数字为准。</footer>
+</div>
 <script>
-const K='口粮',J='进阶',P='精品',O='超本带';
-const DATA=[
-// 岩茶
-{cat:'岩茶',name:'水仙',you:1,desc:'醇不过水仙·醇滑甜润、刺激低',rows:[
-  {l:'半岩',t:K,lo:26,hi:38},{l:'正岩',t:P,lo:80,hi:100},{l:'高丛(30–70年)',t:P,lo:70,hi:120},{l:'正岩老丛(70年+)',t:P,lo:120,hi:300}],
-  avoid:'百年老丛水仙(慧苑坑/吴三地)可达万元/斤；"10–20年当老丛卖"常见。'},
-{cat:'岩茶',name:'肉桂',desc:'香不过肉桂·辛锐桂皮香',rows:[
-  {l:'外山',t:K,lo:20,hi:50},{l:'洲茶/半岩下沿',t:J,lo:26,hi:50},{l:'半岩',t:J,lo:50,hi:80},{l:'正岩非核心(燕子窠)',t:P,lo:100,hi:200},
-  {l:'牛栏坑"牛肉"核心',t:O,lo:3500,hi:3500},{l:'马头岩"马肉"',t:O,lo:800,hi:800}],
-  avoid:'牛肉/马肉/慧肉/龙肉是天价名号：牛栏坑核心零售≈3500元/50g，市场货600–1500。<b>700元/斤以下的"牛肉"必假</b>，进阶预算的"牛肉"＝边缘料/拼配/外山冒名。'},
-{cat:'岩茶',name:'大红袍(商品拼配)',desc:'市面皆拼配，看山场级别',rows:[
-  {l:'半岩·三号',t:K,lo:38,hi:50},{l:'正岩·二号(一级)',t:J,lo:58,hi:80},{l:'正岩·一号(特级拼配)',t:P,lo:150,hi:300}],
-  avoid:'纯种母树大红袍已停采；标"纯料大红袍"多为营销。'},
-{cat:'岩茶',name:'名丛(铁罗汉/水金龟/白鸡冠/奇丹)',desc:'五大名丛',rows:[
-  {l:'半岩',t:J,lo:60,hi:80},{l:'正岩',t:P,lo:100,hi:120}]},
-{cat:'岩茶',name:'小品种(金观音/黄观音/奇兰)',desc:'花香小品种、便宜',rows:[
-  {l:'半岩/高山',t:K,lo:38,hi:50}]},
-// 台湾乌龙
-{cat:'台湾乌龙',name:'杉林溪',you:1,desc:'高山甜点位、性价比',rows:[
-  {l:'台湾产地',t:J,lo:15,hi:110},{l:'大陆零售',t:J,lo:40,hi:130}]},
-{cat:'台湾乌龙',name:'冻顶乌龙',you:1,desc:'传统炭焙、花果甜',rows:[
-  {l:'台湾产地',t:J,lo:25,hi:80},{l:'大陆零售',t:J,lo:30,hi:150}]},
-{cat:'台湾乌龙',name:'阿里山',you:1,desc:'清雅奶香',rows:[
-  {l:'台湾产地',t:J,lo:37,hi:92},{l:'大陆零售',t:P,lo:50,hi:150}]},
-{cat:'台湾乌龙',name:'梨山',you:1,desc:'高海拔、蜜绿甜',rows:[
-  {l:'台湾产地',t:P,lo:55,hi:150},{l:'大陆零售',t:P,lo:100,hi:400}]},
-{cat:'台湾乌龙',name:'大禹岭',desc:'台湾最高海拔、冒充最凶',rows:[
-  {l:'台湾产地',t:P,lo:110,hi:220},{l:'大陆精品',t:O,lo:150,hi:700}],
-  avoid:'大陆电商 99元/150g（≈33/50g）标"大禹岭"的，基本是低海拔/越南茶冒充。'},
-{cat:'台湾乌龙',name:'金萱',desc:'台茶12号·奶香、低阶',rows:[
-  {l:'台湾产地',t:K,lo:10,hi:40},{l:'大陆零售',t:K,lo:15,hi:60}]},
-{cat:'台湾乌龙',name:'云南台式(腾冲极边)',you:1,desc:'海拔高、口碑好、青心软枝',rows:[
-  {l:'口粮',t:K,lo:15,hi:40},{l:'精品',t:P,lo:40,hi:100}]},
-{cat:'台湾乌龙',name:'福建台式(漳平永福)',you:1,desc:'大陆最大软枝乌龙基地、稳',rows:[
-  {l:'口粮',t:K,lo:15,hi:40},{l:'精品',t:J,lo:40,hi:80}]},
-// 凤凰单丛
-{cat:'凤凰单丛',name:'蜜兰香',you:1,desc:'最普及口粮、性价比高',rows:[
-  {l:'低山/口粮',t:K,lo:10,hi:30},{l:'高山/精品',t:P,lo:30,hi:100}]},
-{cat:'凤凰单丛',name:'鸭屎香(银花香)',you:1,desc:'网红、有溢价',rows:[
-  {l:'低山/口粮',t:K,lo:10,hi:50},{l:'高山老丛/精品',t:P,lo:50,hi:200}]},
-{cat:'凤凰单丛',name:'芝兰香/八仙/凹富后',desc:'中端热门',rows:[
-  {l:'进阶',t:J,lo:40,hi:80},{l:'精品',t:P,lo:80,hi:160}]},
-{cat:'凤凰单丛',name:'桂花/黄枝/夜来香',desc:'中高、中熟种',rows:[
-  {l:'进阶',t:J,lo:40,hi:80},{l:'精品',t:P,lo:80,hi:200}]},
-{cat:'凤凰单丛',name:'山场阶梯(通用)',desc:'田园→乌岽，海拔决定丛韵',rows:[
-  {l:'田园(非正宗)',t:K,lo:3,hi:15},{l:'低山',t:K,lo:10,hi:30},{l:'中山',t:J,lo:30,hi:40},{l:'高山(600m+)',t:J,lo:50,hi:80},{l:'乌岽',t:P,lo:40,hi:200}]},
-{cat:'凤凰单丛',name:'宋种/单株(天价)',desc:'降级真相',rows:[
-  {l:'平民宋种(低海拔老丛)',t:J,lo:72,hi:200},{l:'宋种2号',t:O,lo:3000,hi:3000},{l:'姜母香/鸡笼刊',t:O,lo:6000,hi:7000}],
-  avoid:'宋种1号母树买不到；进阶预算的"乌岽宋种/单株"八成是外山/低海拔冒名。想尝可买平民老丛宋种72–200/50g。'},
-// 铁观音+闽南
-{cat:'铁观音·闽南',name:'清香铁观音',desc:'清汤绿水；认正味、躲拖酸',rows:[
-  {l:'三级',t:K,lo:5,hi:13},{l:'二级',t:K,lo:8,hi:20},{l:'一级',t:J,lo:20,hi:60},{l:'特级',t:P,lo:60,hi:120}],
-  avoid:'低价高香、"开盖夺香"多是拖酸——没了观音韵、还伤胃，最该避的工艺。'},
-{cat:'铁观音·闽南',name:'浓香铁观音',desc:'茶为君火为臣、传统焙火',rows:[
-  {l:'三级',t:K,lo:8,hi:20},{l:'二级',t:J,lo:20,hi:40},{l:'一级',t:J,lo:40,hi:80},{l:'特级',t:P,lo:80,hi:120}]},
-{cat:'铁观音·闽南',name:'永春佛手',you:1,desc:'你在喝的·雪梨/香橼香、工艺守正',rows:[
-  {l:'口粮',t:K,lo:4,hi:15},{l:'进阶',t:J,lo:15,hi:40},{l:'精品',t:P,lo:40,hi:200}]},
-{cat:'铁观音·闽南',name:'漳平水仙',you:1,desc:'方饼、兰花香、便宜安全',rows:[
-  {l:'口粮',t:K,lo:4,hi:15},{l:'进阶',t:J,lo:15,hi:40},{l:'精品',t:P,lo:40,hi:100}]},
-{cat:'铁观音·闽南',name:'黄金桂/色种/奇兰',desc:'最便宜口粮',rows:[
-  {l:'口粮',t:K,lo:3,hi:15}]},
-// 普洱
-{cat:'普洱',name:'生茶·大益7542',desc:'生茶标杆·台地拼配及格线',rows:[
-  {l:'当年新茶',t:K,lo:14,hi:28}]},
-{cat:'普洱',name:'生茶·二线山头大树',you:1,desc:'景迈/南糯/帕沙/攸乐/贺开',rows:[
-  {l:'大树',t:J,lo:28,hi:84}]},
-{cat:'普洱',name:'生茶·易武麻黑/易武高山大树',you:1,desc:'香扬水柔、最合你',rows:[
-  {l:'大树',t:J,lo:28,hi:70},{l:'可及古树',t:P,lo:84,hi:210}]},
-{cat:'普洱',name:'熟茶·大益7572/口粮',desc:'熟茶标杆',rows:[
-  {l:'口粮',t:K,lo:7,hi:25}]},
-{cat:'普洱',name:'名山古树(天价)',desc:'降级真相·用同区平替',rows:[
-  {l:'老班章古树',t:O,lo:400,hi:750},{l:'冰岛老寨古树',t:O,lo:2800,hi:3500},{l:'薄荷塘/曼松古树',t:O,lo:2500,hi:4000}],
-  avoid:'进阶预算的"老班章/冰岛/薄荷塘"必是台地/拼配/周边寨冒名（"9.9老班章"梗）。<b>平替</b>：班章味买新班章/班盆/贺开；冰岛味买坝歪/糯伍/大户赛；易武买麻黑大树。'},
-// 红茶
-{cat:'红茶',name:'滇红(含古树)',you:1,desc:'最亲民、蜜香薯香甜',rows:[
-  {l:'口粮',t:K,lo:10,hi:30},{l:'进阶',t:J,lo:30,hi:60},{l:'精品(古树/大金针)',t:P,lo:60,hi:100}]},
-{cat:'红茶',name:'祁门红茶',you:1,desc:'祁门香',rows:[
-  {l:'口粮',t:K,lo:8,hi:30},{l:'进阶',t:J,lo:30,hi:80},{l:'精品',t:P,lo:80,hi:150}]},
-{cat:'红茶',name:'英德红茶(英红九号)',you:1,desc:'甜润顺口',rows:[
-  {l:'口粮',t:K,lo:9,hi:30},{l:'进阶',t:J,lo:30,hi:60},{l:'精品',t:P,lo:60,hi:80}]},
-{cat:'红茶',name:'坦洋工夫',you:1,desc:'被低估、价理性',rows:[
-  {l:'口粮',t:K,lo:5,hi:30},{l:'进阶',t:J,lo:30,hi:80}]},
-{cat:'红茶',name:'正山小种',desc:'桐木周边到外山',rows:[
-  {l:'外山/口粮',t:K,lo:4,hi:30},{l:'品牌口粮',t:J,lo:15,hi:50},{l:'桐木高山/特级',t:P,lo:80,hi:250}]},
-{cat:'红茶',name:'银骏眉/大小赤甘',you:1,desc:'金骏眉的正解平替',rows:[
-  {l:'银骏眉',t:J,lo:40,hi:130},{l:'大/小赤甘',t:P,lo:60,hi:140}]},
-{cat:'红茶',name:'金骏眉(桐木·天价)',desc:'降级真相',rows:[
-  {l:'桐木特级纯芽',t:O,lo:550,hi:1000},{l:'桐木野生手工',t:O,lo:800,hi:3000}],
-  avoid:'真桐木金骏眉3000–10000+/斤。<b>&lt;100元/50g 的"桐木金骏眉"必假</b>，市场普遍用坦洋/政和/滇红芽尖冒充。想喝这口买银骏眉/赤甘。'},
-// 白茶
-{cat:'白茶',name:'福鼎白牡丹',you:1,desc:'香柔甜、最合你的切入点',rows:[
-  {l:'一二级',t:J,lo:20,hi:70},{l:'特级/牡丹王',t:P,lo:100,hi:200}]},
-{cat:'白茶',name:'云南月光白',you:1,desc:'大叶种、兰花蜜香、更甜柔更便宜',rows:[
-  {l:'台地/大树',t:K,lo:10,hi:30},{l:'特级/饼',t:J,lo:30,hi:80},{l:'古树大树白茶',t:P,lo:60,hi:100}]},
-{cat:'白茶',name:'福鼎白毫银针',you:1,desc:'全芽、鲜爽柔和',rows:[
-  {l:'一级/特级',t:P,lo:60,hi:180}]},
-{cat:'白茶',name:'福鼎寿眉/贡眉',you:1,desc:'甜醇、可煮、能自存',rows:[
-  {l:'寿眉',t:K,lo:5,hi:25},{l:'贡眉',t:J,lo:20,hi:42}]},
-{cat:'白茶',name:'政和白茶',desc:'比福鼎更醇厚浓甜',rows:[
-  {l:'寿眉',t:K,lo:15,hi:25},{l:'特级白牡丹',t:P,lo:80,hi:100},{l:'白毫银针',t:P,lo:120,hi:160}]},
-{cat:'白茶',name:'做旧假老白茶(避坑)',desc:'白茶最大的坑',rows:[
-  {l:'便宜"老白茶"',t:O,lo:0,hi:0}],
-  avoid:'<b>真老白茶不可能比当年新茶便宜</b>。市面三五十块一饼的"7年老寿眉"几乎必是渥堆暴晒高温烘干的做旧货。不做收藏就只喝1–2年新茶。'},
-// 绿茶
-{cat:'绿茶',name:'安吉白茶',you:1,desc:'其实是绿茶·氨基酸高、鲜甜无苦涩、最合你',rows:[
-  {l:'口粮',t:K,lo:20,hi:50},{l:'进阶',t:J,lo:50,hi:80},{l:'精品',t:P,lo:80,hi:120}]},
-{cat:'绿茶',name:'西湖龙井43',you:1,desc:'豆香清甜柔',rows:[
-  {l:'品牌明前一级',t:J,lo:17,hi:55},{l:'核心产区明前',t:P,lo:60,hi:185}],
-  avoid:'"龙井"≠"西湖龙井"。核心产区明前一级官方380–410/50g；远低于此价的"核心西湖龙井"要警惕。'},
-{cat:'绿茶',name:'黄山毛峰',you:1,desc:'鲜爽回甘、性价比高',rows:[
-  {l:'口粮',t:K,lo:5,hi:30},{l:'进阶',t:J,lo:30,hi:70},{l:'精品',t:P,lo:70,hi:100}]},
-{cat:'绿茶',name:'大佛/钱塘龙井',desc:'龙井平替、便宜',rows:[
-  {l:'口粮',t:K,lo:20,hi:58},{l:'进阶',t:J,lo:58,hi:138}]},
-{cat:'绿茶',name:'洞庭碧螺春',desc:'认东山茶厂"碧螺"牌',rows:[
-  {l:'口粮',t:K,lo:15,hi:40},{l:'进阶',t:J,lo:40,hi:80},{l:'精品',t:P,lo:80,hi:200}],
-  avoid:'便宜"洞庭碧螺春"多为日照/四川碧螺春冒充；核心明前官方350–750/50g。'},
-{cat:'绿茶',name:'信阳毛尖',desc:'绿茶之王',rows:[
-  {l:'口粮(雨前)',t:K,lo:8,hi:35},{l:'进阶',t:J,lo:35,hi:80},{l:'精品(明前)',t:P,lo:80,hi:150}]},
-{cat:'绿茶',name:'太平猴魁',desc:'无明前茶（标"明前猴魁"即忽悠）',rows:[
-  {l:'口粮',t:K,lo:20,hi:50},{l:'进阶',t:J,lo:50,hi:100},{l:'精品',t:P,lo:100,hi:300}]},
-{cat:'绿茶',name:'六安瓜片',desc:'无芽无梗单叶',rows:[
-  {l:'口粮',t:K,lo:10,hi:40},{l:'进阶',t:J,lo:40,hi:100},{l:'精品',t:P,lo:100,hi:200}]},
-];
-
-const CAT_COLORS={'岩茶':'#8a6d3b','台湾乌龙':'#4f8a6d','凤凰单丛':'#7a5c9e','铁观音·闽南':'#c0894a','普洱':'#9e5a3a','红茶':'#b1503f','白茶':'#7f9bb0','绿茶':'#6f9b4e'};
-const TIER_CLASS={[K]:'kou',[J]:'jin',[P]:'jing',[O]:'over'};
+const D='日常可买',M='主力购买',P='精品体验';
+const DATA=[{"cat":"岩茶","subcat":"","order":10,"name":"水仙","desc":"醇滑甜润；优先退火干净、汤感完整","rows":[{"l":"基础山场·工艺合格","t":"日常可买","lo":60,"hi":110},{"l":"较好山场/高丛","t":"主力购买","lo":110,"hi":230},{"l":"优质高丛/正岩风格","t":"精品体验","lo":230,"hi":450}],"rare":[{"l":"可信正岩老丛","lo":350,"hi":800},{"l":"慧苑坑/吴三地等核心老丛","lo":600,"hi":2000,"plus":true}],"you":1},{"cat":"岩茶","subcat":"","order":20,"name":"肉桂","desc":"辛锐桂皮香；低价段更容易香浮汤薄","rows":[{"l":"基础山场·工艺合格","t":"日常可买","lo":70,"hi":130},{"l":"半岩/较好山场","t":"主力购买","lo":130,"hi":280},{"l":"优质正岩风格","t":"精品体验","lo":280,"hi":600}],"rare":[{"l":"马头岩核心“马肉”","lo":800,"hi":2500},{"l":"牛栏坑核心“牛肉”","lo":3000,"hi":10000,"plus":true}],"avoid":"低于700元/50g仍标“核心牛栏坑肉桂”的，默认不能按真牛肉估值；低于3000元/50g的所谓牛肉，多数需按边缘山场、拼配或名号产品重新判断。"},{"cat":"岩茶","subcat":"","order":30,"name":"大红袍（商品拼配）","desc":"看拼配完整度与山场，不以等级称号定价","rows":[{"l":"稳定日饮拼配","t":"日常可买","lo":60,"hi":110},{"l":"较好正岩风格拼配","t":"主力购买","lo":110,"hi":220},{"l":"高完成度精品拼配","t":"精品体验","lo":220,"hi":450}],"rare":[{"l":"核心正岩小批次/头部品牌","lo":350,"hi":1000,"plus":true}],"avoid":"母树大红袍已停采；市售商品大红袍以拼配为主，标“母树纯料”基本属于营销。纯品种奇丹等应按具体品种判断。"},{"cat":"岩茶","subcat":"","order":40,"name":"名丛（铁罗汉/水金龟/白鸡冠/奇丹）","desc":"品种辨识度比单纯香气强度更重要","rows":[{"l":"基础品种体验","t":"日常可买","lo":80,"hi":150},{"l":"较好山场与工艺","t":"主力购买","lo":150,"hi":300},{"l":"精品小批次","t":"精品体验","lo":300,"hi":600}],"rare":[{"l":"核心正岩名丛","lo":500,"hi":1500,"plus":true}]},{"cat":"岩茶","subcat":"","order":50,"name":"高香小品种（金观音/黄观音/奇兰等）","desc":"花香路线；素心兰等完成度高时更贴合你的偏好","rows":[{"l":"稳定日饮","t":"日常可买","lo":50,"hi":100},{"l":"香汤协调","t":"主力购买","lo":100,"hi":190},{"l":"高完成度精品","t":"精品体验","lo":190,"hi":360}],"rare":[{"l":"核心正岩小批次","lo":300,"hi":800}],"you":1},{"cat":"铁观音·闽南","subcat":"","order":10,"name":"清香铁观音","desc":"建议从正味、熟度较高、汤不薄的产品开始","rows":[{"l":"稳定日饮","t":"日常可买","lo":40,"hi":75},{"l":"主力购买","t":"主力购买","lo":75,"hi":150},{"l":"精品体验","t":"精品体验","lo":150,"hi":300}],"rare":[{"l":"核心产区手工小批次","lo":250,"hi":600}],"avoid":"低价高香、“开盖夺香”需警惕拖酸工艺，常见问题是酸香尖锐、汤薄和刺激感强；胃部敏感者尤其慎选。","you":1},{"cat":"铁观音·闽南","subcat":"","order":20,"name":"浓香铁观音","desc":"焙火应服务茶汤，不应只剩火味","rows":[{"l":"稳定日饮","t":"日常可买","lo":40,"hi":75},{"l":"主力购买","t":"主力购买","lo":75,"hi":150},{"l":"精品体验","t":"精品体验","lo":150,"hi":300}],"rare":[{"l":"传统手工/名家焙火","lo":250,"hi":600}]},{"cat":"铁观音·闽南","subcat":"","order":30,"name":"漳平水仙","desc":"方饼兰花香；便宜好货存在，前三四泡表现合格即可","rows":[{"l":"稳定日饮","t":"日常可买","lo":20,"hi":45},{"l":"主力购买","t":"主力购买","lo":45,"hi":95},{"l":"精品体验","t":"精品体验","lo":95,"hi":180}],"rare":[{"l":"传统手工/名家小批次","lo":150,"hi":350}],"you":1},{"cat":"铁观音·闽南","subcat":"","order":40,"name":"永春佛手","desc":"雪梨、香橼与厚汤路线；适合偏甜润汤感","rows":[{"l":"稳定日饮","t":"日常可买","lo":30,"hi":60},{"l":"主力购买","t":"主力购买","lo":60,"hi":120},{"l":"精品体验","t":"精品体验","lo":120,"hi":220}],"rare":[{"l":"老丛/传统手工精品","lo":180,"hi":400}],"you":1},{"cat":"铁观音·闽南","subcat":"","order":50,"name":"黄金桂/色种/奇兰","desc":"可以便宜，但推荐价仍以干净、香汤协调为起点","rows":[{"l":"稳定日饮","t":"日常可买","lo":20,"hi":45},{"l":"主力购买","t":"主力购买","lo":45,"hi":90},{"l":"精品体验","t":"精品体验","lo":90,"hi":170}]},{"cat":"台湾乌龙","subcat":"台湾乌龙","order":10,"name":"金萱","desc":"奶甜柔和；低价可喝，但要避开香精感与薄水","rows":[{"l":"稳定日饮","t":"日常可买","lo":30,"hi":60},{"l":"香汤协调","t":"主力购买","lo":60,"hi":120},{"l":"优质台湾金萱","t":"精品体验","lo":120,"hi":220}]},{"cat":"台湾乌龙","subcat":"台湾乌龙","order":20,"name":"冻顶乌龙","desc":"传统发酵焙火、花果甜；比极清香型更适合你","rows":[{"l":"正常传统风格","t":"日常可买","lo":55,"hi":100},{"l":"较好焙火与汤感","t":"主力购买","lo":100,"hi":180},{"l":"精品传统冻顶","t":"精品体验","lo":180,"hi":320}],"rare":[{"l":"比赛茶/名家炭焙","lo":300,"hi":800,"plus":true}],"you":1},{"cat":"台湾乌龙","subcat":"台湾乌龙","order":30,"name":"台湾东方美人/白毫乌龙","desc":"熟果蜜香、较高氧化；本类最具代表性的身份基准","rows":[{"l":"可信原产日饮","t":"日常可买","lo":70,"hi":120},{"l":"主力购买","t":"主力购买","lo":120,"hi":240},{"l":"精品体验","t":"精品体验","lo":240,"hi":500}],"rare":[{"l":"北埔/峨眉比赛茶","lo":500,"hi":2000,"plus":true}]},{"cat":"台湾乌龙","subcat":"台湾乌龙","order":40,"name":"阿里山","desc":"清雅甜润；优先真实台湾原料而非同名大陆茶","rows":[{"l":"可信台湾原产日饮","t":"日常可买","lo":65,"hi":115},{"l":"主力春冬茶","t":"主力购买","lo":115,"hi":200},{"l":"精品高山批次","t":"精品体验","lo":200,"hi":350}],"rare":[{"l":"高海拔小产区/比赛批次","lo":300,"hi":700}]},{"cat":"台湾乌龙","subcat":"台湾乌龙","order":50,"name":"杉林溪","desc":"高山甜水；低价同名产品与台湾原产差距很大","rows":[{"l":"可信台湾原产日饮","t":"日常可买","lo":75,"hi":125},{"l":"主力高山茶","t":"主力购买","lo":125,"hi":220},{"l":"优质春冬茶","t":"精品体验","lo":220,"hi":400}],"rare":[{"l":"龙凤峡等知名小产区","lo":300,"hi":700}]},{"cat":"台湾乌龙","subcat":"台湾乌龙","order":60,"name":"梨山","desc":"蜜绿甜、汤质细；品质起点明显高于普通台式乌龙","rows":[{"l":"可信梨山日饮","t":"日常可买","lo":110,"hi":180},{"l":"主力春冬茶","t":"主力购买","lo":180,"hi":320},{"l":"精品梨山","t":"精品体验","lo":320,"hi":550}],"rare":[{"l":"福寿山/翠峰等名区","lo":450,"hi":1000,"plus":true}],"you":1},{"cat":"台湾乌龙","subcat":"台湾乌龙","order":70,"name":"大禹岭","desc":"高海拔稀缺茶区；不按普通高山茶价格判断","rows":[{"l":"可信来源体验","t":"日常可买","lo":180,"hi":280},{"l":"主力购买","t":"主力购买","lo":280,"hi":500},{"l":"精品批次","t":"精品体验","lo":500,"hi":800}],"rare":[{"l":"特定高海拔园区/名家批次","lo":800,"hi":1500,"plus":true}],"avoid":"电商约30–40元/50g标“大禹岭”的，基本不能按真大禹岭估值，常见低海拔台湾茶、越南茶或大陆茶冒名。"},{"cat":"台湾乌龙","subcat":"大陆台式乌龙","order":10,"name":"福建台式乌龙（漳平永福）","desc":"大陆软枝乌龙；低成本也可能出现前三四泡很好喝的个例","rows":[{"l":"稳定日饮","t":"日常可买","lo":25,"hi":50},{"l":"主力购买","t":"主力购买","lo":50,"hi":105},{"l":"精品批次","t":"精品体验","lo":105,"hi":180}],"you":1},{"cat":"台湾乌龙","subcat":"大陆台式乌龙","order":20,"name":"云南台式乌龙（腾冲等）","desc":"高海拔大陆台式路线；不能直接对标大禹岭身份价","rows":[{"l":"稳定日饮","t":"日常可买","lo":30,"hi":60},{"l":"主力购买","t":"主力购买","lo":60,"hi":120},{"l":"精品批次","t":"精品体验","lo":120,"hi":220}]},{"cat":"台湾乌龙","subcat":"大陆台式乌龙","order":30,"name":"福建东方美人风格乌龙","desc":"虫咬、较高氧化与蜜香路线；不是台湾原产身份","rows":[{"l":"稳定日饮","t":"日常可买","lo":30,"hi":60},{"l":"主力购买","t":"主力购买","lo":60,"hi":120},{"l":"精品体验","t":"精品体验","lo":120,"hi":220}],"rare":[{"l":"小批次高完成度","lo":180,"hi":400}]},{"cat":"台湾乌龙","subcat":"大陆台式乌龙","order":40,"name":"云南虫咬蜜香乌龙","desc":"甜蜜熟果与虫咬香；适合从风格而非身份认识","rows":[{"l":"稳定日饮","t":"日常可买","lo":35,"hi":65},{"l":"主力购买","t":"主力购买","lo":65,"hi":130},{"l":"精品体验","t":"精品体验","lo":130,"hi":250}],"rare":[{"l":"明确单园/小绿叶蝉批次","lo":200,"hi":450}]},{"cat":"凤凰单丛","subcat":"","order":10,"name":"蜜甜熟果、厚水系","desc":"蜜兰香、白叶蜜兰、香番薯；最适合长期日饮的单丛入口之一","rows":[{"l":"稳定日饮","t":"日常可买","lo":35,"hi":70},{"l":"主力购买","t":"主力购买","lo":70,"hi":140},{"l":"精品体验","t":"精品体验","lo":140,"hi":300}],"rare":[{"l":"乌岽/凤凰山老丛","lo":300,"hi":800}],"you":1},{"cat":"凤凰单丛","subcat":"","order":20,"name":"银花白花、奶甜清凉系","desc":"鸭屎香、玉兰香；优先春茶或熟做，避免只有盖香","rows":[{"l":"稳定日饮","t":"日常可买","lo":45,"hi":90},{"l":"主力购买","t":"主力购买","lo":90,"hi":180},{"l":"精品体验","t":"精品体验","lo":180,"hi":380}],"rare":[{"l":"乌岽老丛/清晰单园","lo":350,"hi":900}],"you":1},{"cat":"凤凰单丛","subcat":"","order":30,"name":"黄栀明亮、甜花果系","desc":"黄枝香、凹富后、老仙翁；甜花果与适口性强","rows":[{"l":"稳定日饮","t":"日常可买","lo":45,"hi":90},{"l":"主力购买","t":"主力购买","lo":90,"hi":190},{"l":"精品体验","t":"精品体验","lo":190,"hi":420}],"rare":[{"l":"宋种黄枝/核心老丛","lo":350,"hi":1000}]},{"cat":"凤凰单丛","subcat":"","order":40,"name":"兰香强骨、香味并重系","desc":"芝兰香、八仙、兄弟仔；香、汤、回甘和结构兼顾","rows":[{"l":"稳定日饮","t":"日常可买","lo":55,"hi":110},{"l":"主力购买","t":"主力购买","lo":110,"hi":230},{"l":"精品体验","t":"精品体验","lo":230,"hi":500}],"rare":[{"l":"老丛名株/乌岽批次","lo":400,"hi":1200}],"you":1},{"cat":"凤凰单丛","subcat":"","order":50,"name":"穿透白花、辛凉浓烈系","desc":"夜来香、夜合香、通天香、姜花香；高辨识度但刺激风险更高","rows":[{"l":"稳定日饮","t":"日常可买","lo":70,"hi":140},{"l":"主力购买","t":"主力购买","lo":140,"hi":300},{"l":"精品体验","t":"精品体验","lo":300,"hi":700}],"rare":[{"l":"稀有老丛","lo":500,"hi":1500}]},{"cat":"凤凰单丛","subcat":"","order":60,"name":"坚果药木、厚味回甘系","desc":"锯朵仔、杏仁香、凤凰肉桂；非花香方向的深度基准","rows":[{"l":"稳定日饮","t":"日常可买","lo":60,"hi":120},{"l":"主力购买","t":"主力购买","lo":120,"hi":260},{"l":"精品体验","t":"精品体验","lo":260,"hi":600}],"rare":[{"l":"老丛名株","lo":400,"hi":1200}]},{"cat":"凤凰单丛","subcat":"","order":70,"name":"桂花果花、清甜异香系","desc":"桂花香、柚花香、橙花香；用于补齐风味光谱","rows":[{"l":"稳定日饮","t":"日常可买","lo":55,"hi":110},{"l":"主力购买","t":"主力购买","lo":110,"hi":230},{"l":"精品体验","t":"精品体验","lo":230,"hi":500}],"rare":[{"l":"稀有品系/老丛","lo":350,"hi":1000}]},{"cat":"凤凰单丛","subcat":"","order":80,"name":"宋种/单株/历史名株","desc":"来源与树龄主导价格，不设置普通饮用等级","rows":[],"rare":[{"l":"可信乌岽老丛宋种","lo":350,"hi":900},{"l":"来源清晰单株批次","lo":800,"hi":2500},{"l":"历史名株/极小批次","lo":3000,"hi":10000,"plus":true}],"avoid":"宋种1号母树买不到；进阶预算的“乌岽宋种/单株”高度可疑。想建立认知，先买来源可信的普通老丛宋种。"},{"cat":"普洱","subcat":"生茶","order":10,"name":"品牌拼配生茶（7542同档）","desc":"常规标杆拼配；按正规零售与正常仓储定价","rows":[{"l":"当年常规批次","t":"日常可买","lo":20,"hi":40},{"l":"较好年份/批次","t":"主力购买","lo":40,"hi":80},{"l":"优质中期批次","t":"精品体验","lo":80,"hi":180}],"note":"普洱另可按357g饼折算；本表仍统一显示元/50g。"},{"cat":"普洱","subcat":"生茶","order":20,"name":"景迈/南糯/帕沙/贺开均衡型","desc":"花香、山野或均衡型大众山头；先喝风格，不追名号","rows":[{"l":"稳定日饮","t":"日常可买","lo":45,"hi":80},{"l":"主力购买","t":"主力购买","lo":80,"hi":160},{"l":"精品体验","t":"精品体验","lo":160,"hi":300}],"rare":[{"l":"来源清晰古树","lo":250,"hi":600}],"you":1},{"cat":"普洱","subcat":"生茶","order":30,"name":"布朗山系大树","desc":"贺开、班盆、老曼峨、新班章周边；苦底与回甘结构明显","rows":[{"l":"稳定日饮","t":"日常可买","lo":60,"hi":110},{"l":"主力购买","t":"主力购买","lo":110,"hi":220},{"l":"精品体验","t":"精品体验","lo":220,"hi":450}],"rare":[{"l":"老曼峨/班盆等古树","lo":350,"hi":1000}]},{"cat":"普洱","subcat":"生茶","order":40,"name":"易武大树/古六山","desc":"麻黑、易武高山、蛮砖、倚邦；香扬水柔，更贴合你","rows":[{"l":"稳定日饮","t":"日常可买","lo":60,"hi":100},{"l":"主力购买","t":"主力购买","lo":100,"hi":220},{"l":"精品体验","t":"精品体验","lo":220,"hi":450}],"rare":[{"l":"麻黑古树/易武微产区","lo":350,"hi":1200,"plus":true}],"you":1},{"cat":"普洱","subcat":"生茶","order":50,"name":"勐库甜柔型","desc":"大户赛、小户赛、坝糯等；甜润、回甘和柔和度较好","rows":[{"l":"稳定日饮","t":"日常可买","lo":50,"hi":90},{"l":"主力购买","t":"主力购买","lo":90,"hi":180},{"l":"精品体验","t":"精品体验","lo":180,"hi":350}],"rare":[{"l":"来源清晰古树","lo":250,"hi":700}],"you":1},{"cat":"普洱","subcat":"生茶","order":60,"name":"冰岛五寨非老寨","desc":"地界、南迫、坝歪、糯伍；与冰岛老寨身份价分开","rows":[{"l":"可信体验","t":"日常可买","lo":120,"hi":220},{"l":"主力购买","t":"主力购买","lo":220,"hi":450},{"l":"精品体验","t":"精品体验","lo":450,"hi":900}],"rare":[{"l":"四寨核心古树","lo":800,"hi":2000}]},{"cat":"普洱","subcat":"生茶","order":70,"name":"邦东/昔归风格","desc":"邦东岩韵、昔归风格；香气与力量兼具","rows":[{"l":"稳定日饮","t":"日常可买","lo":80,"hi":140},{"l":"主力购买","t":"主力购买","lo":140,"hi":300},{"l":"精品体验","t":"精品体验","lo":300,"hi":600}],"rare":[{"l":"昔归核心/古树","lo":500,"hi":1500}]},{"cat":"普洱","subcat":"生茶","order":80,"name":"核心名山古树","desc":"老班章、冰岛老寨、曼松、薄荷塘等，全部按身份市场独立列价","rows":[],"rare":[{"l":"老班章古树","lo":800,"hi":2000},{"l":"冰岛老寨古树","lo":2500,"hi":6000},{"l":"曼松/薄荷塘核心古树","lo":2000,"hi":6000},{"l":"单株头春极小批次","lo":5000,"hi":15000,"plus":true}],"avoid":"进阶预算的“老班章/冰岛老寨/薄荷塘/曼松”不能按核心真货估值，“9.9老班章/冰岛”卖的是名字。想喝风格，应买同茶区非核心寨的大树。"},{"cat":"普洱","subcat":"熟茶","order":10,"name":"标杆熟茶（7572/7581同档）","desc":"晚上或低刺激场景的基础锚点","rows":[{"l":"当年常规批次","t":"日常可买","lo":20,"hi":40},{"l":"较好年份/仓储","t":"主力购买","lo":40,"hi":80},{"l":"优质中期批次","t":"精品体验","lo":80,"hi":160}]},{"cat":"普洱","subcat":"熟茶","order":20,"name":"精品熟茶/山头概念熟茶","desc":"小堆发酵、原料和干净度升级，名山溢价远小于生茶","rows":[{"l":"稳定日饮","t":"日常可买","lo":40,"hi":80},{"l":"主力购买","t":"主力购买","lo":80,"hi":160},{"l":"精品体验","t":"精品体验","lo":160,"hi":300}],"rare":[{"l":"小堆发酵/名家批次","lo":250,"hi":600}]},{"cat":"红茶","subcat":"中国红茶","order":10,"name":"常规滇红工夫/松针/金针","desc":"蜜甜厚润；芽头外形不等于汤感等级","rows":[{"l":"稳定日饮","t":"日常可买","lo":25,"hi":50},{"l":"主力购买","t":"主力购买","lo":50,"hi":100},{"l":"精品体验","t":"精品体验","lo":100,"hi":180}],"rare":[{"l":"特殊高等级/名家批次","lo":150,"hi":300}],"you":1},{"cat":"红茶","subcat":"中国红茶","order":20,"name":"古树滇红（非单株）","desc":"老树或古树原料身份；合理升级应体现在厚度与余韵","rows":[{"l":"稳定日饮","t":"日常可买","lo":60,"hi":110},{"l":"主力购买","t":"主力购买","lo":110,"hi":220},{"l":"精品体验","t":"精品体验","lo":220,"hi":450}],"rare":[{"l":"单株/明确微产区","lo":400,"hi":900}]},{"cat":"红茶","subcat":"中国红茶","order":30,"name":"祁门红茶","desc":"祁门香与细甜感；适合作为工夫红茶代表","rows":[{"l":"稳定日饮","t":"日常可买","lo":40,"hi":80},{"l":"主力购买","t":"主力购买","lo":80,"hi":160},{"l":"精品体验","t":"精品体验","lo":160,"hi":300}],"rare":[{"l":"核心产区传统手工","lo":250,"hi":600}]},{"cat":"红茶","subcat":"中国红茶","order":40,"name":"英德红茶（英红九号）","desc":"甜润顺口；用汤感和余韵筛选，不迷信金毫外观","rows":[{"l":"稳定日饮","t":"日常可买","lo":30,"hi":60},{"l":"主力购买","t":"主力购买","lo":60,"hi":120},{"l":"精品体验","t":"精品体验","lo":120,"hi":250}],"rare":[{"l":"金毫/有机/老树小批次","lo":200,"hi":500}]},{"cat":"红茶","subcat":"中国红茶","order":50,"name":"白琳工夫","desc":"甜柔、毫香与传统闽红风格；价格相对理性","rows":[{"l":"稳定日饮","t":"日常可买","lo":25,"hi":55},{"l":"主力购买","t":"主力购买","lo":55,"hi":110},{"l":"精品体验","t":"精品体验","lo":110,"hi":200}],"rare":[{"l":"传统小批次","lo":170,"hi":350}]},{"cat":"红茶","subcat":"中国红茶","order":60,"name":"坦洋工夫","desc":"性价比红茶；应保证干净甜润与基本厚度","rows":[{"l":"稳定日饮","t":"日常可买","lo":30,"hi":65},{"l":"主力购买","t":"主力购买","lo":65,"hi":130},{"l":"精品体验","t":"精品体验","lo":130,"hi":250}],"rare":[{"l":"传统核心产区精品","lo":200,"hi":450}]},{"cat":"红茶","subcat":"中国红茶","order":70,"name":"政和工夫","desc":"大叶种与醇厚路线；与政和白茶分开判断","rows":[{"l":"稳定日饮","t":"日常可买","lo":30,"hi":60},{"l":"主力购买","t":"主力购买","lo":60,"hi":120},{"l":"精品体验","t":"精品体验","lo":120,"hi":220}],"rare":[{"l":"老树/小批次","lo":180,"hi":400}]},{"cat":"红茶","subcat":"中国红茶","order":80,"name":"九曲红梅","desc":"浙江代表性红茶；甜香细腻，与龙井产区文化相连","rows":[{"l":"稳定日饮","t":"日常可买","lo":40,"hi":80},{"l":"主力购买","t":"主力购买","lo":80,"hi":160},{"l":"精品体验","t":"精品体验","lo":160,"hi":300}],"rare":[{"l":"西湖区传统核心","lo":250,"hi":500}]},{"cat":"红茶","subcat":"中国红茶","order":90,"name":"传统烟熏正山小种","desc":"松烟桂圆与厚汤；传统烟味应融入茶汤而非呛鼻","rows":[{"l":"稳定日饮","t":"日常可买","lo":60,"hi":100},{"l":"主力购买","t":"主力购买","lo":100,"hi":200},{"l":"精品体验","t":"精品体验","lo":200,"hi":400}],"rare":[{"l":"桐木传统烟熏","lo":350,"hi":900}]},{"cat":"红茶","subcat":"中国红茶","order":100,"name":"无烟正山小种/清甜小种","desc":"普通小种与桐木身份分开；10元/50g不作为推荐口粮","rows":[{"l":"正常小种工艺红茶","t":"日常可买","lo":45,"hi":90},{"l":"较好武夷小种","t":"主力购买","lo":90,"hi":180},{"l":"精品小种红茶","t":"精品体验","lo":180,"hi":350}],"rare":[{"l":"可信桐木正山小种","lo":250,"hi":700}],"you":1},{"cat":"红茶","subcat":"中国红茶","order":110,"name":"高香品种小种（妃子笑风格）","desc":"金牡丹、梅占、奇兰、黄旦等高香品种或拼配，偏花果甜香","rows":[{"l":"稳定日饮","t":"日常可买","lo":50,"hi":100},{"l":"主力购买","t":"主力购买","lo":100,"hi":200},{"l":"精品体验","t":"精品体验","lo":200,"hi":400}],"rare":[{"l":"品牌/小批次精品","lo":300,"hi":700}],"you":1},{"cat":"红茶","subcat":"中国红茶","order":120,"name":"品种芽头红茶（金骏眉工艺风格）","desc":"梅占、金牡丹等芽头红茶；不得混同真桐木金骏眉","rows":[{"l":"稳定日饮","t":"日常可买","lo":40,"hi":80},{"l":"主力购买","t":"主力购买","lo":80,"hi":160},{"l":"精品体验","t":"精品体验","lo":160,"hi":300}],"rare":[{"l":"高等级纯芽/小批次","lo":250,"hi":600}]},{"cat":"红茶","subcat":"中国红茶","order":130,"name":"大赤甘","desc":"成熟一芽二三叶路线；甜厚、性价比高","rows":[{"l":"稳定日饮","t":"日常可买","lo":60,"hi":100},{"l":"主力购买","t":"主力购买","lo":100,"hi":180},{"l":"精品体验","t":"精品体验","lo":180,"hi":300}],"rare":[{"l":"桐木核心精品","lo":250,"hi":500}]},{"cat":"红茶","subcat":"中国红茶","order":140,"name":"小赤甘","desc":"嫩度更高、甜香更细；与大赤甘是不同产品","rows":[{"l":"稳定日饮","t":"日常可买","lo":80,"hi":130},{"l":"主力购买","t":"主力购买","lo":130,"hi":240},{"l":"精品体验","t":"精品体验","lo":240,"hi":400}],"rare":[{"l":"桐木核心精品","lo":350,"hi":700}]},{"cat":"红茶","subcat":"中国红茶","order":150,"name":"银骏眉","desc":"嫩度通常高于赤甘；自身也有日常、主力和精品档","rows":[{"l":"稳定日饮","t":"日常可买","lo":120,"hi":200},{"l":"主力购买","t":"主力购买","lo":200,"hi":400},{"l":"精品体验","t":"精品体验","lo":400,"hi":700}],"rare":[{"l":"桐木高等级银骏眉","lo":600,"hi":1200}]},{"cat":"红茶","subcat":"中国红茶","order":160,"name":"桐木金骏眉","desc":"真实桐木纯芽属于稀缺身份市场，不与普通芽头红茶混列","rows":[],"rare":[{"l":"可信桐木纯芽入门","lo":300,"hi":600},{"l":"常规精品/头部品牌","lo":600,"hi":1500},{"l":"全手工及特殊园区","lo":1500,"hi":3000,"plus":true}],"avoid":"低于100元/50g的“桐木金骏眉”直接不按真桐木估值；100–300元仍属于高风险验证区，常见其他产区芽头红茶借名。"},{"cat":"红茶","subcat":"海外红茶","order":10,"name":"大吉岭春摘 First Flush","desc":"花香、清鲜、轻盈；与中国工夫红茶不是同一汤感路线","rows":[{"l":"可信庄园日饮","t":"日常可买","lo":80,"hi":140},{"l":"主力购买","t":"主力购买","lo":140,"hi":260},{"l":"精品体验","t":"精品体验","lo":260,"hi":500}],"rare":[{"l":"月光/稀有克隆","lo":400,"hi":900}]},{"cat":"红茶","subcat":"海外红茶","order":20,"name":"大吉岭夏摘 Second Flush","desc":"熟果与麝香葡萄香，汤体通常比春摘更完整","rows":[{"l":"可信庄园日饮","t":"日常可买","lo":60,"hi":110},{"l":"主力购买","t":"主力购买","lo":110,"hi":220},{"l":"精品体验","t":"精品体验","lo":220,"hi":450}],"rare":[{"l":"名园麝香葡萄香批次","lo":350,"hi":800}]},{"cat":"红茶","subcat":"海外红茶","order":30,"name":"锡兰高地红茶","desc":"纽沃勒埃利耶、乌瓦、汀布拉；明亮清爽、适合清饮或少量奶","rows":[{"l":"稳定日饮","t":"日常可买","lo":30,"hi":60},{"l":"主力购买","t":"主力购买","lo":60,"hi":120},{"l":"精品体验","t":"精品体验","lo":120,"hi":220}],"rare":[{"l":"单一庄园","lo":180,"hi":400}]},{"cat":"红茶","subcat":"海外红茶","order":40,"name":"锡兰中海拔红茶","desc":"康提、乌达普沙拉瓦；平衡、传统、适合日常","rows":[{"l":"稳定日饮","t":"日常可买","lo":25,"hi":50},{"l":"主力购买","t":"主力购买","lo":50,"hi":100},{"l":"精品体验","t":"精品体验","lo":100,"hi":180}],"rare":[{"l":"单一庄园","lo":150,"hi":300}]},{"cat":"红茶","subcat":"海外红茶","order":50,"name":"锡兰低地浓厚型红茶","desc":"鲁胡纳、萨伯勒格穆沃；浓厚甜熟，更适合奶茶方向","rows":[{"l":"稳定日饮","t":"日常可买","lo":25,"hi":50},{"l":"主力购买","t":"主力购买","lo":50,"hi":100},{"l":"精品体验","t":"精品体验","lo":100,"hi":180}],"rare":[{"l":"高芽尖/单一庄园","lo":150,"hi":350}]},{"cat":"白茶","subcat":"福建白茶","order":10,"name":"福鼎寿眉/贡眉","desc":"甜醇耐泡；前三四泡干净、有甜即可作为日饮","rows":[{"l":"稳定日饮","t":"日常可买","lo":15,"hi":40},{"l":"主力购买","t":"主力购买","lo":40,"hi":80},{"l":"精品体验","t":"精品体验","lo":80,"hi":160}],"rare":[{"l":"可信老茶/特殊年份","lo":150,"hi":500}],"avoid":"同产区、同等级、同规格的真实老白茶通常不应明显低于当年新茶；三五十元一饼且标七年以上的老寿眉，年份虚标或做旧风险极高。"},{"cat":"白茶","subcat":"福建白茶","order":20,"name":"福鼎白牡丹","desc":"香柔甜、兼顾花香与汤感；最适合作为白茶主力入口","rows":[{"l":"稳定日饮","t":"日常可买","lo":50,"hi":90},{"l":"主力购买","t":"主力购买","lo":90,"hi":180},{"l":"精品体验","t":"精品体验","lo":180,"hi":350}],"rare":[{"l":"荒野/牡丹王","lo":300,"hi":700}],"you":1},{"cat":"白茶","subcat":"福建白茶","order":30,"name":"福鼎白毫银针","desc":"全芽鲜爽；真正原产精品价格明显高于普通芽头白茶","rows":[{"l":"可信原产日饮","t":"日常可买","lo":100,"hi":160},{"l":"主力购买","t":"主力购买","lo":160,"hi":300},{"l":"精品体验","t":"精品体验","lo":300,"hi":550}],"rare":[{"l":"荒野头采/头部品牌","lo":500,"hi":1200,"plus":true}]},{"cat":"白茶","subcat":"福建白茶","order":40,"name":"政和白牡丹","desc":"比福鼎路线更醇厚浓甜，适合重汤感者","rows":[{"l":"稳定日饮","t":"日常可买","lo":40,"hi":80},{"l":"主力购买","t":"主力购买","lo":80,"hi":150},{"l":"精品体验","t":"精品体验","lo":150,"hi":280}],"rare":[{"l":"荒野/高山小批次","lo":250,"hi":550}]},{"cat":"白茶","subcat":"福建白茶","order":50,"name":"政和白毫银针","desc":"高等级芽头茶单独定价，不再混在综合政和白茶卡里","rows":[{"l":"稳定日饮","t":"日常可买","lo":80,"hi":140},{"l":"主力购买","t":"主力购买","lo":140,"hi":250},{"l":"精品体验","t":"精品体验","lo":250,"hi":450}],"rare":[{"l":"头采/高山精品","lo":400,"hi":900}]},{"cat":"白茶","subcat":"云南白茶","order":10,"name":"云南月光白/芽叶型白茶","desc":"兰花蜜香、甜柔，价格理性；与你偏好相符","rows":[{"l":"稳定日饮","t":"日常可买","lo":25,"hi":50},{"l":"主力购买","t":"主力购买","lo":50,"hi":100},{"l":"精品体验","t":"精品体验","lo":100,"hi":180}],"rare":[{"l":"大树原料","lo":150,"hi":350}],"you":1},{"cat":"白茶","subcat":"云南白茶","order":20,"name":"云南白毫银针/芽头型白茶","desc":"芽头鲜甜，需与福鼎原产银针身份分开","rows":[{"l":"稳定日饮","t":"日常可买","lo":40,"hi":80},{"l":"主力购买","t":"主力购买","lo":80,"hi":150},{"l":"精品体验","t":"精品体验","lo":150,"hi":280}],"rare":[{"l":"特定高山/头采","lo":220,"hi":500}]},{"cat":"白茶","subcat":"云南白茶","order":30,"name":"云南古树白茶","desc":"古树是原料身份，可制成芽叶型或芽头型，不是固定加工等级","rows":[{"l":"可信日饮","t":"日常可买","lo":60,"hi":110},{"l":"主力购买","t":"主力购买","lo":110,"hi":220},{"l":"精品体验","t":"精品体验","lo":220,"hi":450}],"rare":[{"l":"单株/微产区","lo":350,"hi":900}]},{"cat":"绿茶","subcat":"中国绿茶","order":10,"name":"大佛/钱塘龙井","desc":"龙井风格的理性购买区，与西湖身份价分开","rows":[{"l":"稳定日饮","t":"日常可买","lo":35,"hi":70},{"l":"主力购买","t":"主力购买","lo":70,"hi":140},{"l":"精品体验","t":"精品体验","lo":140,"hi":250}]},{"cat":"绿茶","subcat":"中国绿茶","order":20,"name":"西湖龙井43","desc":"可信西湖产区本身就有身份成本","rows":[{"l":"可信西湖产区日饮","t":"日常可买","lo":150,"hi":250},{"l":"明前主力购买","t":"主力购买","lo":250,"hi":450},{"l":"核心山场精品","t":"精品体验","lo":450,"hi":800}],"rare":[{"l":"狮峰/翁家山头采与头部品牌","lo":800,"hi":1800,"plus":true}],"avoid":"“龙井”不等于“西湖龙井”；远低于正常原产成本的“核心西湖龙井”，多需按钱塘、越州或外地龙井重新估值。"},{"cat":"绿茶","subcat":"中国绿茶","order":30,"name":"安吉白茶","desc":"鲜甜低涩；适合你，但应优先可追溯春茶","rows":[{"l":"稳定日饮","t":"日常可买","lo":45,"hi":80},{"l":"主力购买","t":"主力购买","lo":80,"hi":150},{"l":"精品体验","t":"精品体验","lo":150,"hi":280}],"rare":[{"l":"核心产区早春精品","lo":250,"hi":500}]},{"cat":"绿茶","subcat":"中国绿茶","order":40,"name":"蒙顶甘露","desc":"卷曲嫩芽、鲜爽回甘；你已有实际饮用经验","rows":[{"l":"稳定日饮","t":"日常可买","lo":45,"hi":80},{"l":"主力购买","t":"主力购买","lo":80,"hi":160},{"l":"精品体验","t":"精品体验","lo":160,"hi":300}],"rare":[{"l":"核心明前头采","lo":250,"hi":500}],"you":1},{"cat":"绿茶","subcat":"中国绿茶","order":50,"name":"黄山毛峰","desc":"鲜爽回甘、价格相对理性","rows":[{"l":"稳定日饮","t":"日常可买","lo":35,"hi":70},{"l":"主力购买","t":"主力购买","lo":70,"hi":140},{"l":"精品体验","t":"精品体验","lo":140,"hi":260}],"rare":[{"l":"核心产区头采精品","lo":220,"hi":500}]},{"cat":"绿茶","subcat":"中国绿茶","order":60,"name":"洞庭碧螺春","desc":"仅指洞庭东西山原产；外地碧螺春不放入同一价格轴","rows":[{"l":"可信原产日饮","t":"日常可买","lo":120,"hi":200},{"l":"明前主力购买","t":"主力购买","lo":200,"hi":400},{"l":"核心产区精品","t":"精品体验","lo":400,"hi":700}],"rare":[{"l":"东西山头采/头部品牌","lo":600,"hi":1500,"plus":true}],"avoid":"便宜“洞庭碧螺春”常见日照、四川或其他地区卷曲绿茶冒名；购买时必须区分洞庭原产与普通碧螺春工艺茶。"},{"cat":"绿茶","subcat":"中国绿茶","order":70,"name":"信阳毛尖","desc":"雨前与明前分层；十元级不作为推荐入口","rows":[{"l":"稳定雨前日饮","t":"日常可买","lo":35,"hi":70},{"l":"明前主力购买","t":"主力购买","lo":70,"hi":150},{"l":"精品明前","t":"精品体验","lo":150,"hi":300}],"rare":[{"l":"核心山场头采精品","lo":250,"hi":600}]},{"cat":"绿茶","subcat":"中国绿茶","order":80,"name":"都匀毛尖","desc":"贵州代表名优绿茶；鲜、甜、卷曲毫香兼具","rows":[{"l":"稳定日饮","t":"日常可买","lo":50,"hi":90},{"l":"主力购买","t":"主力购买","lo":90,"hi":180},{"l":"精品体验","t":"精品体验","lo":180,"hi":350}],"rare":[{"l":"核心头采","lo":300,"hi":650}]},{"cat":"绿茶","subcat":"中国绿茶","order":90,"name":"恩施玉露","desc":"中国代表性蒸青绿茶，风格与炒青名茶不同","rows":[{"l":"稳定日饮","t":"日常可买","lo":45,"hi":80},{"l":"主力购买","t":"主力购买","lo":80,"hi":160},{"l":"精品体验","t":"精品体验","lo":160,"hi":300}],"rare":[{"l":"核心产区手工精品","lo":250,"hi":500}]},{"cat":"绿茶","subcat":"中国绿茶","order":100,"name":"太平猴魁","desc":"布尖、捏尖与核心产区差价大","rows":[{"l":"稳定日饮","t":"日常可买","lo":55,"hi":100},{"l":"主力购买","t":"主力购买","lo":100,"hi":220},{"l":"精品体验","t":"精品体验","lo":220,"hi":450}],"rare":[{"l":"猴坑核心手工批次","lo":400,"hi":1000,"plus":true}]},{"cat":"绿茶","subcat":"中国绿茶","order":110,"name":"六安瓜片","desc":"单叶无芽无梗；手工火工与内山产区会明显抬价","rows":[{"l":"稳定日饮","t":"日常可买","lo":40,"hi":80},{"l":"主力购买","t":"主力购买","lo":80,"hi":160},{"l":"精品体验","t":"精品体验","lo":160,"hi":300}],"rare":[{"l":"内山/蝙蝠洞手工精品","lo":250,"hi":600}]},{"cat":"绿茶","subcat":"日本茶","order":10,"name":"煎茶","desc":"日本日常绿茶基准；鲜、旨、轻涩的平衡","rows":[{"l":"稳定日饮","t":"日常可买","lo":35,"hi":70},{"l":"主力购买","t":"主力购买","lo":70,"hi":130},{"l":"精品体验","t":"精品体验","lo":130,"hi":220}]},{"cat":"绿茶","subcat":"日本茶","order":20,"name":"深蒸煎茶","desc":"蒸制更深、汤色浓、碎度高，通常更厚更直接","rows":[{"l":"稳定日饮","t":"日常可买","lo":35,"hi":70},{"l":"主力购买","t":"主力购买","lo":70,"hi":130},{"l":"精品体验","t":"精品体验","lo":130,"hi":220}]},{"cat":"绿茶","subcat":"日本茶","order":30,"name":"玉露","desc":"遮阴高旨味路线；冲泡法和价格都不同于普通煎茶","rows":[{"l":"稳定体验","t":"日常可买","lo":80,"hi":130},{"l":"主力购买","t":"主力购买","lo":130,"hi":250},{"l":"精品体验","t":"精品体验","lo":250,"hi":500}],"rare":[{"l":"名园/比赛批次","lo":500,"hi":1200}]},{"cat":"绿茶","subcat":"日本茶","order":40,"name":"抹茶·饮用级","desc":"薄茶、浓茶用；价格波动大，需同时看常见20g/30g罐装","rows":[{"l":"日常薄茶","t":"日常可买","lo":180,"hi":300},{"l":"主力饮用","t":"主力购买","lo":300,"hi":600},{"l":"精品体验","t":"精品体验","lo":600,"hi":1200}],"rare":[{"l":"名门浓茶/限定批次","lo":1000,"hi":2500,"plus":true}],"note":"常见20g罐装约为上述50g价格的40%；抹茶市场波动较大。"},{"cat":"绿茶","subcat":"日本茶","order":50,"name":"抹茶·烘焙/食品级","desc":"用于拿铁、甜点或烘焙，不应与饮用级薄茶混价","rows":[{"l":"基础食品级","t":"日常可买","lo":60,"hi":120},{"l":"较好拿铁级","t":"主力购买","lo":120,"hi":220},{"l":"高完成度食品级","t":"精品体验","lo":220,"hi":350}]},{"cat":"绿茶","subcat":"日本茶","order":60,"name":"焙茶","desc":"低咖啡因感知、焙香温和；适合晚间和奶茶","rows":[{"l":"稳定日饮","t":"日常可买","lo":20,"hi":40},{"l":"主力购买","t":"主力购买","lo":40,"hi":80},{"l":"精品体验","t":"精品体验","lo":80,"hi":150}]},{"cat":"绿茶","subcat":"日本茶","order":70,"name":"玄米茶/番茶","desc":"日常消费型，价格不应按高级名优绿茶判断","rows":[{"l":"稳定日饮","t":"日常可买","lo":15,"hi":35},{"l":"主力购买","t":"主力购买","lo":35,"hi":70},{"l":"精品体验","t":"精品体验","lo":70,"hi":120}]},{"cat":"黄茶","subcat":"","order":10,"name":"霍山黄芽","desc":"相对可及的黄茶入口；甜栗、轻闷黄感","rows":[{"l":"稳定日饮","t":"日常可买","lo":40,"hi":80},{"l":"主力购买","t":"主力购买","lo":80,"hi":150},{"l":"精品体验","t":"精品体验","lo":150,"hi":280}],"rare":[{"l":"核心头采","lo":250,"hi":500}]},{"cat":"黄茶","subcat":"","order":20,"name":"蒙顶黄芽","desc":"蒙顶山芽型黄茶，与蒙顶甘露形成工艺对照","rows":[{"l":"稳定体验","t":"日常可买","lo":60,"hi":100},{"l":"主力购买","t":"主力购买","lo":100,"hi":200},{"l":"精品体验","t":"精品体验","lo":200,"hi":350}],"rare":[{"l":"核心明前","lo":300,"hi":650}]},{"cat":"黄茶","subcat":"","order":30,"name":"君山银针","desc":"高身份芽型黄茶；商品名滥用较多","rows":[{"l":"可信体验","t":"日常可买","lo":100,"hi":180},{"l":"主力购买","t":"主力购买","lo":180,"hi":350},{"l":"精品体验","t":"精品体验","lo":350,"hi":700}],"rare":[{"l":"核心头采","lo":600,"hi":1500,"plus":true}]},{"cat":"黑茶","subcat":"","order":10,"name":"六堡茶·现代工艺","desc":"熟香、槟榔或木甜路线；适合从干净仓储开始","rows":[{"l":"稳定日饮","t":"日常可买","lo":30,"hi":60},{"l":"主力购买","t":"主力购买","lo":60,"hi":120},{"l":"精品体验","t":"精品体验","lo":120,"hi":250}],"rare":[{"l":"中期好仓","lo":200,"hi":600}]},{"cat":"黑茶","subcat":"","order":20,"name":"六堡茶·传统工艺/农家茶","desc":"传统生香与转化路线，价格受仓储和年份影响更大","rows":[{"l":"稳定日饮","t":"日常可买","lo":50,"hi":100},{"l":"主力购买","t":"主力购买","lo":100,"hi":220},{"l":"精品体验","t":"精品体验","lo":220,"hi":450}],"rare":[{"l":"老茶/老茶婆","lo":400,"hi":1500,"plus":true}]},{"cat":"黑茶","subcat":"","order":30,"name":"安化茯砖","desc":"金花与甜醇路线，日常价格较亲民","rows":[{"l":"稳定日饮","t":"日常可买","lo":20,"hi":45},{"l":"主力购买","t":"主力购买","lo":45,"hi":90},{"l":"精品体验","t":"精品体验","lo":90,"hi":180}],"rare":[{"l":"老年份/名厂批次","lo":180,"hi":500}]},{"cat":"黑茶","subcat":"","order":40,"name":"安化千两/花卷茶","desc":"紧压花卷体系，按切片与整支规格折算","rows":[{"l":"稳定日饮","t":"日常可买","lo":30,"hi":60},{"l":"主力购买","t":"主力购买","lo":60,"hi":120},{"l":"精品体验","t":"精品体验","lo":120,"hi":250}],"rare":[{"l":"名厂年份茶","lo":200,"hi":600}]},{"cat":"黑茶","subcat":"","order":50,"name":"雅安藏茶","desc":"传统边销黑茶，整体价格亲民、汤感厚实","rows":[{"l":"稳定日饮","t":"日常可买","lo":15,"hi":35},{"l":"主力购买","t":"主力购买","lo":35,"hi":70},{"l":"精品体验","t":"精品体验","lo":70,"hi":140}],"rare":[{"l":"特殊年份/金尖","lo":120,"hi":350}]},{"cat":"花茶","subcat":"","order":10,"name":"日常茉莉花茶","desc":"以茶坯干净、花香入汤为基本要求","rows":[{"l":"稳定日饮","t":"日常可买","lo":25,"hi":50},{"l":"主力购买","t":"主力购买","lo":50,"hi":90},{"l":"精品体验","t":"精品体验","lo":90,"hi":160}]},{"cat":"花茶","subcat":"","order":20,"name":"高窨次茉莉花茶","desc":"窨次不是唯一标准，重点看鲜灵、入水与不闷不腻","rows":[{"l":"稳定日饮","t":"日常可买","lo":50,"hi":90},{"l":"主力购买","t":"主力购买","lo":90,"hi":180},{"l":"精品体验","t":"精品体验","lo":180,"hi":350}],"rare":[{"l":"福州传统小批次","lo":300,"hi":600}]},{"cat":"花茶","subcat":"","order":30,"name":"茉莉针王/银针型","desc":"高嫩度茶坯与多窨工艺，价格明显高于普通花茶","rows":[{"l":"稳定体验","t":"日常可买","lo":80,"hi":150},{"l":"主力购买","t":"主力购买","lo":150,"hi":300},{"l":"精品体验","t":"精品体验","lo":300,"hi":600}],"rare":[{"l":"顶级茶坯/多窨次","lo":500,"hi":1000}]}];
+const CAT_COLORS={"岩茶":"#8a6d3b","铁观音·闽南":"#c0894a","台湾乌龙":"#4f8a6d","凤凰单丛":"#7a5c9e","普洱":"#9e5a3a","红茶":"#b1503f","白茶":"#7f9bb0","绿茶":"#6f9b4e","黄茶":"#b3983d","黑茶":"#66594c","花茶":"#a66b88"};
+const CAT_ORDER={"岩茶":10,"铁观音·闽南":20,"台湾乌龙":30,"凤凰单丛":40,"普洱":50,"红茶":60,"白茶":70,"绿茶":80,"黄茶":90,"黑茶":100,"花茶":110};
+const SUBCAT_ORDER={"台湾乌龙｜台湾乌龙":10,"台湾乌龙｜大陆台式乌龙":20,"普洱｜生茶":10,"普洱｜熟茶":20,"红茶｜中国红茶":10,"红茶｜海外红茶":20,"白茶｜福建白茶":10,"白茶｜云南白茶":20,"绿茶｜中国绿茶":10,"绿茶｜日本茶":20};
+const GROUPED_CATS=new Set(["台湾乌龙","普洱","红茶","白茶","绿茶"]);
+DATA.sort((a,b)=>(CAT_ORDER[a.cat]??999)-(CAT_ORDER[b.cat]??999)||((SUBCAT_ORDER[`${a.cat}｜${a.subcat}`]??0)-(SUBCAT_ORDER[`${b.cat}｜${b.subcat}`]??0))||(a.order??999)-(b.order??999)||a.name.localeCompare(b.name,'zh-CN'));
+const TIER_CLASS={[D]:'daily',[M]:'main',[P]:'fine'};
 const cats=[...new Set(DATA.map(d=>d.cat))];
-let activeCats=new Set(cats), onlyYou=false;
-
+let activeCats=new Set(cats),onlyYou=false;
 const catsEl=document.getElementById('cats');
-const allChip=mk('全部',true);allChip.onclick=()=>{activeCats=new Set(cats);[...catsEl.children].forEach((c,i)=>{if(i===0)c.classList.add('on');else c.classList.add('on')});render()};
-catsEl.appendChild(allChip);
-cats.forEach(c=>{const ch=mk(c,true);ch.style.setProperty('--x',CAT_COLORS[c]);ch.onclick=()=>{ch.classList.toggle('on');if(ch.classList.contains('on'))activeCats.add(c);else activeCats.delete(c);allChip.classList.toggle('on',activeCats.size===cats.length);render()};catsEl.appendChild(ch)});
+const allChip=mk('全部',true);catsEl.appendChild(allChip);
+const chipMap=new Map();
+cats.forEach(c=>{const ch=mk(c,true);chipMap.set(c,ch);catsEl.appendChild(ch);ch.onclick=()=>{if(activeCats.size===1&&activeCats.has(c)){activeCats=new Set(cats)}else{activeCats=new Set([c])}syncChips();render()}});
+allChip.onclick=()=>{activeCats=new Set(cats);syncChips();render()};
 function mk(t,on){const s=document.createElement('span');s.className='chip'+(on?' on':'');s.textContent=t;return s}
-
-const youBtn=document.getElementById('youBtn');
-youBtn.onclick=()=>{onlyYou=!onlyYou;youBtn.classList.toggle('on',onlyYou);render()};
-document.getElementById('q').oninput=render;
-document.getElementById('pmax').oninput=render;
-
-function cheapest(d){return Math.min(...d.rows.filter(r=>r.t!==O).map(r=>r.lo).concat([Infinity]))}
-function render(){
-  const q=document.getElementById('q').value.trim();
-  const pm=parseFloat(document.getElementById('pmax').value);
-  const list=document.getElementById('list');list.innerHTML='';
-  let n=0;
-  DATA.forEach(d=>{
-    if(!activeCats.has(d.cat))return;
-    if(onlyYou&&!d.you)return;
-    if(q&&!(d.name.includes(q)||d.desc.includes(q)||d.cat.includes(q)))return;
-    if(!isNaN(pm)){const c=cheapest(d);if(!(c<=pm))return;}
-    n++;
-    list.appendChild(cardEl(d));
-  });
-  document.getElementById('count').textContent=`共 ${n} 项（点标题展开各档价位）`;
-  if(n===0)list.innerHTML='<div class="empty">没有匹配的茶 · 放宽筛选试试</div>';
-}
-function cardEl(d){
-  const card=document.createElement('div');card.className='card';
-  const c=cheapest(d);
-  const badge=isFinite(c)?`最低 <b>${c}</b> 元/50g起`:'<b>天价名号</b>';
-  const head=document.createElement('div');head.className='head';
-  head.innerHTML=`<span class="cat" style="background:${CAT_COLORS[d.cat]}">${d.cat}</span>
-    <span class="nm">${d.name} ${d.you?'<span class="star">★</span>':''} <span class="desc">${d.desc}</span></span>
-    <span class="badge">${badge}</span><span class="arrow">▶</span>`;
-  head.onclick=()=>card.classList.toggle('open');
-  const body=document.createElement('div');body.className='body';
-  const SCALE=250;
-  d.rows.forEach(r=>{
-    const cls=TIER_CLASS[r.t];
-    let mid='';
-    if(r.t===O){mid=`<div class="track"><span class="overtag">真货≈${r.lo}${r.hi>r.lo?'–'+r.hi:''} 元/50g · 超预算</span></div>`;}
-    else{const w=Math.min(100,Math.max(3,(r.hi/SCALE)*100));const x=Math.min(100,(r.lo/SCALE)*100);
-      mid=`<div class="track"><span class="fill f-${cls}" style="left:${x}%;width:${Math.max(4,w-x)}%"></span></div>`;}
-    const pv=r.t===O?'—':`${r.lo}–${r.hi}`;
-    body.innerHTML+=`<div class="prow"><div class="plabel">${r.l}<span class="tier t-${cls}">${r.t}</span></div>${mid}<div class="pval">${pv}</div></div>`;
-  });
-  if(d.avoid)body.innerHTML+=`<div class="avoid"><b>⚠ 避坑/降级真相：</b>${d.avoid}</div>`;
-  card.appendChild(head);card.appendChild(body);
-  return card;
-}
-render();
-</script>
-</body>
-</html>
+function syncChips(){const all=activeCats.size===cats.length;allChip.classList.toggle('on',all);cats.forEach(c=>chipMap.get(c).classList.toggle('on',activeCats.has(c)&&!all))}
+const youBtn=document.getElementById('youBtn');youBtn.onclick=()=>{onlyYou=!onlyYou;youBtn.classList.toggle('on',onlyYou);render()};document.getElementById('q').oninput=render;document.getElementById('pmax').oninput=render;
+function recommendedStart(d){if(d.rows&&d.rows.length)return Math.min(...d.rows.map(r=>r.lo));if(d.rare&&d.rare.length)return Math.min(...d.rare.map(r=>r.lo));return Infinity}
+function fmt(lo,hi,plus){return `${lo}${hi>lo?'–'+hi:''}${plus?'+':''}`}
+function searchableText(d){return [d.cat,d.subcat||'',d.name,d.desc,d.avoid||'',d.note||'',...(d.rows||[]).map(r=>r.l),...(d.rare||[]).map(r=>r.l)].join(' ')}
+function render(){const q=document.getElementById('q').value.trim();const pm=parseFloat(document.getElementById('pmax').value);const list=document.getElementById('list');list.innerHTML='';let filtered=DATA.filter(d=>activeCats.has(d.cat)&&(!onlyYou||d.you)&&(!q||searchableText(d).includes(q))&&(isNaN(pm)||recommendedStart(d)<=pm));document.getElementById('count').textContent=`共 ${filtered.length} 项 · ${new Set(filtered.map(d=>d.cat)).size} 类（点标题展开；价格均为元/50g）`;if(!filtered.length){list.innerHTML='<div class="empty">没有匹配的茶 · 放宽筛选试试</div>';return}
+const subcatsByCat=new Map();filtered.forEach(d=>{if(!subcatsByCat.has(d.cat))subcatsByCat.set(d.cat,new Set());if(d.subcat)subcatsByCat.get(d.cat).add(d.subcat)});let lastGroup='';filtered.forEach(d=>{const showGroup=GROUPED_CATS.has(d.cat)&&(subcatsByCat.get(d.cat)?.size||0)>1;const group=showGroup?`${d.cat}｜${d.subcat}`:'';if(showGroup&&group!==lastGroup){const g=document.createElement('div');g.className='group-title';g.innerHTML=`<b>${d.subcat}</b>`;list.appendChild(g)}lastGroup=group;list.appendChild(cardEl(d))})}
+function cardEl(d){const card=document.createElement('div');card.className='card';const start=recommendedStart(d);const rareOnly=(!d.rows||!d.rows.length);const badge=rareOnly?`<span class="badge rare">身份市场 <b>${start}</b> 元起</span>`:`<span class="badge">建议购买 <b>${start}</b> 元起</span>`;const head=document.createElement('div');head.className='head';head.innerHTML=`<span class="cat" style="background:${CAT_COLORS[d.cat]}">${d.cat}</span><span class="nm">${d.name} ${d.you?'<span class="star">★</span>':''}<span class="desc">${d.desc}</span></span>${badge}<span class="arrow">▶</span>`;head.onclick=()=>card.classList.toggle('open');const body=document.createElement('div');body.className='body';
+if(d.rows&&d.rows.length){body.innerHTML+='<div class="section-title">推荐购买价格</div>';const scale=Math.max(200,...d.rows.map(r=>r.hi))*1.06;d.rows.forEach(r=>{const cls=TIER_CLASS[r.t];const left=Math.min(96,(r.lo/scale)*100);const width=Math.max(5,Math.min(100-left,((r.hi-r.lo)/scale)*100));body.innerHTML+=`<div class="prow"><div class="plabel">${r.l}<span class="tier t-${cls}">${r.t}</span></div><div class="track"><span class="fill f-${cls}" style="left:${left}%;width:${width}%"></span></div><div class="pval">${fmt(r.lo,r.hi,false)}</div></div>`})}
+if(d.rare&&d.rare.length){body.innerHTML+='<div class="rarebox"><div class="rarehead">稀缺身份 / 特殊批次 <span class="rare-note">定价逻辑不同·不与喝感等级直接比价</span></div>'+d.rare.map(r=>`<div class="rare-row"><span>${r.l}</span><span class="rare-price">${fmt(r.lo,r.hi,r.plus)}</span></div>`).join('')+'</div>'}
+if(d.avoid)body.innerHTML+='<div class="avoid"><b>⚠ 防坑：</b>'+d.avoid+'</div>';if(d.note)body.innerHTML+='<div class="note">'+d.note+'</div>';if(rareOnly)body.innerHTML+='<div class="note">此类主要由来源、产区、树龄或批次稀缺性定价，不设置普通饮用等级。</div>';card.appendChild(head);card.appendChild(body);return card}
+syncChips();render();
+</script></body></html>
