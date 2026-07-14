@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>凤凰单丛互动筛选器</title>
+<style>
+:root{
+  --bg:#f6f4ee; --paper:#fffdf8; --paper2:#fbf8ef; --ink:#27251f; --muted:#706c61;
+  --line:#ded8ca; --accent:#48604a; --accent2:#8a6043; --good:#47765b; --warn:#a06d37;
+  --shadow:0 10px 28px rgba(48,43,32,.08); --radius:18px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;line-height:1.55}
+button,input,select{font:inherit}
+button{cursor:pointer}
+.hero{background:linear-gradient(135deg,#344a38 0%,#5c6e50 48%,#8a674d 100%);color:white;padding:38px 22px 34px}
+.hero-inner{max-width:1240px;margin:auto}
+.hero h1{font-size:clamp(28px,5vw,48px);line-height:1.15;margin:0 0 12px;letter-spacing:.02em}
+.hero p{max-width:850px;margin:0;color:rgba(255,255,255,.88);font-size:16px}
+.hero-badges{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px}
+.hero-badges span{background:rgba(255,255,255,.13);border:1px solid rgba(255,255,255,.18);padding:6px 10px;border-radius:999px;font-size:13px}
+.shell{max-width:1240px;margin:0 auto;padding:22px}
+.notice{background:#fff8dd;border:1px solid #e7d49d;border-radius:14px;padding:13px 15px;margin-bottom:18px;color:#67552f}
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px;position:sticky;top:0;z-index:15;padding:10px 0;background:linear-gradient(var(--bg) 78%,rgba(246,244,238,0))}
+.tab{border:1px solid var(--line);background:var(--paper);color:var(--ink);padding:9px 14px;border-radius:999px}
+.tab.active{background:var(--accent);border-color:var(--accent);color:#fff}
+.panel{display:none}.panel.active{display:block}
+.layout{display:grid;grid-template-columns:310px minmax(0,1fr);gap:20px;align-items:start}
+.sidebar{position:sticky;top:62px;background:var(--paper);border:1px solid var(--line);border-radius:var(--radius);padding:17px;box-shadow:var(--shadow)}
+.filter-group{padding:13px 0;border-bottom:1px dashed var(--line)}
+.filter-group:last-child{border-bottom:0}
+.filter-group h3{font-size:14px;margin:0 0 9px;color:var(--muted)}
+.field{width:100%;border:1px solid var(--line);background:#fff;border-radius:11px;padding:10px 11px;color:var(--ink)}
+.range-row{display:grid;grid-template-columns:1fr 42px;gap:8px;align-items:center}
+.range-row output{text-align:center;font-weight:700;color:var(--accent)}
+.chips{display:flex;flex-wrap:wrap;gap:7px}
+.chip-btn{border:1px solid var(--line);background:#fff;padding:6px 9px;border-radius:999px;font-size:13px}
+.chip-btn.active{background:#e5eee5;border-color:#89a18c;color:#29402d}
+.switch-row{display:flex;justify-content:space-between;gap:12px;align-items:center;font-size:14px}
+.switch{width:45px;height:25px;border-radius:999px;background:#d7d3ca;position:relative;border:0}
+.switch:after{content:"";position:absolute;width:19px;height:19px;top:3px;left:3px;border-radius:50%;background:white;transition:.2s}
+.switch.on{background:var(--accent)}.switch.on:after{left:23px}
+.reset{width:100%;border:0;background:#eee9df;padding:9px;border-radius:10px;margin-top:10px}
+.content-head{display:flex;justify-content:space-between;gap:12px;align-items:end;margin-bottom:13px}
+.content-head h2{margin:0;font-size:23px}
+.result-meta{color:var(--muted);font-size:14px}
+.sort{width:auto;min-width:150px}
+.cards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:15px}
+.card{background:var(--paper);border:1px solid var(--line);border-radius:var(--radius);padding:17px;box-shadow:var(--shadow);display:flex;flex-direction:column;gap:11px;transition:.18s}
+.card:hover{transform:translateY(-2px);box-shadow:0 14px 34px rgba(48,43,32,.11)}
+.card-top{display:flex;justify-content:space-between;gap:12px}
+.card h3{margin:0;font-size:19px;line-height:1.3}
+.alias{font-size:12px;color:var(--muted);margin-top:3px}
+.coord-badge{white-space:nowrap;align-self:start;background:#eef1e8;color:#3e543f;border:1px solid #cad4c2;border-radius:999px;padding:5px 8px;font-size:12px}
+.profile{margin:0;color:#4d493f;font-size:14px}
+.tags{display:flex;flex-wrap:wrap;gap:6px}
+.tag{background:var(--paper2);border:1px solid var(--line);padding:4px 7px;border-radius:8px;font-size:12px;color:#665f53}
+.tag.good{background:#e9f3eb;border-color:#bfd7c5;color:#31563c}
+.metrics{display:grid;grid-template-columns:repeat(5,1fr);gap:7px}
+.metric{min-width:0}
+.metric-label{font-size:11px;color:var(--muted);display:flex;justify-content:space-between;gap:3px}
+.bar{height:6px;background:#e8e4db;border-radius:999px;margin-top:4px;overflow:hidden}
+.bar i{display:block;height:100%;background:linear-gradient(90deg,#66816a,#9c7354);border-radius:999px}
+.price-strip{background:#f7f2e8;border-radius:12px;padding:9px 10px;font-size:12px;display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.price-strip b{display:block;font-size:13px;color:#4c493f}
+.card-actions{display:flex;gap:8px;margin-top:auto}
+.card-actions button{flex:1;border:1px solid var(--line);background:#fff;border-radius:10px;padding:8px}
+.card-actions button.primary{background:var(--accent);border-color:var(--accent);color:white}
+.details{display:none;background:#faf7f0;border-radius:12px;padding:11px;font-size:13px}
+.details.open{display:block}
+.details p{margin:5px 0}
+.empty{grid-column:1/-1;background:var(--paper);border:1px dashed var(--line);border-radius:var(--radius);padding:35px;text-align:center;color:var(--muted)}
+.compare-dock{position:fixed;left:50%;bottom:15px;transform:translateX(-50%);z-index:30;max-width:min(920px,calc(100% - 24px));width:max-content;background:#272b25;color:white;border-radius:16px;padding:10px 12px;box-shadow:0 16px 40px rgba(0,0,0,.25);display:none;align-items:center;gap:10px}
+.compare-dock.show{display:flex}
+.compare-list{display:flex;gap:6px;flex-wrap:wrap}
+.compare-pill{background:rgba(255,255,255,.13);padding:5px 8px;border-radius:8px;font-size:12px}
+.compare-dock button{border:0;border-radius:9px;padding:7px 10px}
+.modal{position:fixed;inset:0;background:rgba(23,22,19,.56);z-index:50;display:none;padding:18px;overflow:auto}
+.modal.open{display:block}
+.modal-card{max-width:1050px;margin:35px auto;background:var(--paper);border-radius:20px;padding:20px;box-shadow:0 20px 60px rgba(0,0,0,.25)}
+.modal-head{display:flex;justify-content:space-between;gap:15px;align-items:center}
+.modal-head h2{margin:0}
+.close{border:0;background:#eee9df;border-radius:9px;padding:7px 10px}
+.table-wrap{overflow:auto;margin-top:15px}
+table{border-collapse:collapse;width:100%;min-width:760px}
+th,td{border-bottom:1px solid var(--line);padding:10px;text-align:left;vertical-align:top}
+th{background:#f3efe6;position:sticky;top:0}
+.score{font-weight:700;color:var(--accent)}
+.coord-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:15px}
+.coord-card{background:var(--paper);border:1px solid var(--line);border-radius:var(--radius);padding:18px;box-shadow:var(--shadow)}
+.coord-card h3{margin:0 0 5px}
+.coord-card .big-key{font-size:13px;color:var(--accent2);font-weight:700}
+.coord-card .coord-types{margin-top:10px;font-size:13px;color:var(--muted)}
+.calculator{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(320px,.85fr);gap:18px}
+.calc-card,.guide-card{background:var(--paper);border:1px solid var(--line);border-radius:var(--radius);padding:19px;box-shadow:var(--shadow)}
+.form-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:13px}
+.form-grid label{font-size:13px;color:var(--muted)}
+.form-grid input,.form-grid select{margin-top:5px}
+.calc-result{margin-top:16px;border-radius:15px;padding:16px;background:#eef2e9;border:1px solid #cad8c7}
+.calc-result .big{font-size:30px;font-weight:800;color:#35533a}
+.verdict{font-weight:700;margin:5px 0}
+.guide-list{display:grid;gap:10px}
+.guide-item{padding:11px;border:1px solid var(--line);border-radius:12px;background:#fff}
+.brew-choice{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+.brew-card{background:var(--paper);border:1px solid var(--line);border-radius:var(--radius);padding:18px;box-shadow:var(--shadow);margin-bottom:14px}
+.brew-card h3{margin:0 0 8px}
+.footer{max-width:1240px;margin:15px auto 70px;padding:0 22px;color:var(--muted);font-size:13px}
+@media(max-width:940px){
+  .layout{grid-template-columns:1fr}.sidebar{position:static}
+  .cards,.coord-grid{grid-template-columns:1fr}.calculator{grid-template-columns:1fr}
+}
+@media(max-width:620px){
+  .shell{padding:14px}.hero{padding:28px 16px}.cards{grid-template-columns:1fr}
+  .metrics{grid-template-columns:repeat(5,54px);overflow:auto;padding-bottom:3px}
+  .content-head{align-items:stretch;flex-direction:column}.sort{width:100%}
+  .price-strip{grid-template-columns:1fr}.form-grid{grid-template-columns:1fr}
+  .compare-dock{width:calc(100% - 20px);align-items:stretch;flex-direction:column}
+  .tabs{top:0;overflow-x:auto;flex-wrap:nowrap}.tab{flex:none}
+}
+</style>
+</head>
+<body>
+<header class="hero">
+  <div class="hero-inner">
+    <h1>凤凰单丛互动筛选器</h1>
+    <p>按真正的风味结构筛茶，而不是被“高山、老丛、入门、进阶”等商品标签带着走。所有价格统一换算为每50g，并同时考虑120ml认真泡与180ml办公室泡。</p>
+    <div class="hero-badges"><span>7个风味坐标</span><span>40+茶型</span><span>价格档自动判断</span><span>双器具筛选</span><span>最多4款对比</span></div>
+  </div>
+</header>
+
+<main class="shell">
+  <div class="notice"><strong>使用原则：</strong>具体成品表现 ＞ 季节与焙火 ＞ 香型大类 ＞ 高山、老丛标签 ＞ 品牌等级。价格区间只是自饮市场参考，不代表官方质量等级。</div>
+  <nav class="tabs">
+    <button class="tab active" data-tab="finder">茶型筛选</button>
+    <button class="tab" data-tab="coords">七大坐标</button>
+    <button class="tab" data-tab="calculator">商品价格判断</button>
+    <button class="tab" data-tab="brew">冲泡与选购指南</button>
+  </nav>
+
+  <section id="finder" class="panel active">
+    <div class="layout">
+      <aside class="sidebar">
+        <div class="filter-group">
+          <h3>搜索茶名、别名或风味</h3>
+          <input id="search" class="field" placeholder="例如：八仙、奶甜、坚果、夜合">
+        </div>
+        <div class="filter-group">
+          <h3>风味坐标</h3>
+          <select id="coordFilter" class="field"><option value="">全部坐标</option></select>
+        </div>
+        <div class="filter-group">
+          <h3>器具场景</h3>
+          <div class="chips" id="vesselChips">
+            <button class="chip-btn active" data-value="all">全部</button>
+            <button class="chip-btn" data-value="120">120ml认真泡</button>
+            <button class="chip-btn" data-value="180">180ml办公室</button>
+            <button class="chip-btn" data-value="both">两者兼顾</button>
+          </div>
+        </div>
+        <div class="filter-group">
+          <h3>最低香气强度</h3>
+          <div class="range-row"><input id="aromaMin" type="range" min="1" max="5" value="1" step=".5"><output id="aromaOut">1</output></div>
+        </div>
+        <div class="filter-group">
+          <h3>最低汤感</h3>
+          <div class="range-row"><input id="bodyMin" type="range" min="1" max="5" value="1" step=".5"><output id="bodyOut">1</output></div>
+        </div>
+        <div class="filter-group">
+          <h3>最高苦涩风险</h3>
+          <div class="range-row"><input id="riskMax" type="range" min="1" max="5" value="5" step=".5"><output id="riskOut">5</output></div>
+        </div>
+        <div class="filter-group">
+          <div class="switch-row"><span>只看“香水汤后段”均衡款</span><button id="targetSwitch" class="switch" aria-label="均衡筛选"></button></div>
+        </div>
+        <div class="filter-group">
+          <h3>价格查看档次</h3>
+          <div class="chips" id="tierChips">
+            <button class="chip-btn active" data-value="口粮">口粮</button>
+            <button class="chip-btn" data-value="进阶">进阶</button>
+            <button class="chip-btn" data-value="精品">精品</button>
+          </div>
+        </div>
+        <button id="reset" class="reset">重置全部筛选</button>
+      </aside>
+      <div>
+        <div class="content-head">
+          <div><h2>茶型结果</h2><div id="resultMeta" class="result-meta"></div></div>
+          <select id="sort" class="field sort">
+            <option value="recommended">综合推荐</option>
+            <option value="aroma">香气从高到低</option>
+            <option value="body">汤感从高到低</option>
+            <option value="finish">中后段从高到低</option>
+            <option value="risk">苦涩风险从低到高</option>
+            <option value="price">口粮起价从低到高</option>
+          </select>
+        </div>
+        <div id="cards" class="cards"></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="coords" class="panel">
+    <div class="content-head"><div><h2>七大风味坐标</h2><div class="result-meta">先选结构，再在同一坐标内比较季节、焙火、山场和树龄。</div></div></div>
+    <div id="coordGrid" class="coord-grid"></div>
+  </section>
+
+  <section id="calculator" class="panel">
+    <div class="calculator">
+      <div class="calc-card">
+        <h2>真实商品价格判断</h2>
+        <p class="result-meta">选择茶型，输入商品总价和净含量，自动换算每50g价格并判断所处档位。</p>
+        <div class="form-grid">
+          <label>茶型<select id="calcType" class="field"></select></label>
+          <label>商品总价（元）<input id="calcPrice" class="field" type="number" min="0" step=".01" value="68"></label>
+          <label>净含量（g）<input id="calcWeight" class="field" type="number" min="1" step="1" value="80"></label>
+          <label>主要场景<select id="calcVessel" class="field"><option value="120">120ml认真泡</option><option value="180">180ml办公室</option><option value="both">两者兼顾</option></select></label>
+        </div>
+        <div id="calcResult" class="calc-result"></div>
+      </div>
+      <aside class="guide-card">
+        <h2>价格档不是品质保证</h2>
+        <div class="guide-list">
+          <div class="guide-item"><strong>口粮档</strong><br>品种味应清楚，标准泡前三泡不能寡淡；允许后段较短，但不能只有香、没有茶味。</div>
+          <div class="guide-item"><strong>进阶档</strong><br>香气进入茶汤，汤体和细腻度明显提升，第四、第五泡仍有实质滋味。</div>
+          <div class="guide-item"><strong>精品市场档</strong><br>升级应体现在水路、层次、协调性和后段，而不只是香气更大。</div>
+          <div class="guide-item"><strong>超出精品区间</strong><br>可能是明确单株、古树或核心山场，也可能只是品牌、礼盒和故事溢价，需要更严格验证。</div>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <section id="brew" class="panel">
+    <div class="brew-choice">
+      <button class="chip-btn active" data-brew="all">全部指南</button>
+      <button class="chip-btn" data-brew="120">120ml</button>
+      <button class="chip-btn" data-brew="180">180ml</button>
+      <button class="chip-btn" data-brew="buy">选购检查</button>
+    </div>
+    <div id="brewContent"></div>
+  </section>
+</main>
+
+<div id="compareDock" class="compare-dock">
+  <div><strong>已选 <span id="compareCount">0</span>/4</strong></div>
+  <div id="compareList" class="compare-list"></div>
+  <button id="openCompare">对比</button><button id="clearCompare">清空</button>
+</div>
+
+<div id="compareModal" class="modal">
+  <div class="modal-card">
+    <div class="modal-head"><h2>茶型对比</h2><button id="closeCompare" class="close">关闭</button></div>
+    <div id="compareTable" class="table-wrap"></div>
+  </div>
+</div>
+
+<footer class="footer">本页面基于《凤凰单丛香型坐标与价格参考》整理。评分和价格用于筛选与比较，不替代具体批次实喝。</footer>
+
+<script>
+const DB = {"coordinates": [{"id": 1, "name": "蜜甜熟果、厚水", "short": "蜜甜厚水", "keywords": ["花蜜", "熟果", "甘蔗甜"], "scores": {"aroma": 3.5, "water": 4.5, "body": 4.5, "risk": 2.5, "finish": 4.0}, "desc": "花蜜、熟果、甘蔗或番薯蜜甜。香气不一定最炸，但更容易进入茶汤，汤体通常较圆，适合长期喝与办公室。", "prices": {"口粮": [25, 50], "进阶": [55, 120], "精品": [150, 350]}, "office": "高", "buying": "优先看香是否入水、第四五泡是否仍有蜜甜；高山或老丛应升级水路与持续性，而不是只变得更清淡。"}, {"id": 2, "name": "银花白花、奶甜清凉", "short": "银花奶甜", "keywords": ["白花", "奶甜", "清凉"], "scores": {"aroma": 4.5, "water": 3.5, "body": 3.5, "risk": 3.0, "finish": 3.5}, "desc": "金银花、玉兰、白花、奶甜和清凉感。香气醒目，但普通或轻火产品容易出现“闻起来香，喝进去薄”。", "prices": {"口粮": [35, 70], "进阶": [75, 150], "精品": [180, 400]}, "office": "中高", "buying": "偏好汤感时优先春茶、中火熟做；雪片适合追求高香，但汤体与持续性风险更高。"}, {"id": 3, "name": "黄栀明亮、甜花果", "short": "黄栀甜花", "keywords": ["栀子", "果蜜", "甜花"], "scores": {"aroma": 4.5, "water": 3.5, "body": 3.5, "risk": 3.0, "finish": 3.5}, "desc": "栀子花、黄色甜花和果蜜香，明亮直接。内部跨度很大，既有香高汤轻，也有甜香厚实、后段较强的类型。", "prices": {"口粮": [35, 80], "进阶": [90, 180], "精品": [220, 500]}, "office": "高", "buying": "不能只看“高香”，要确认甜香是否入水、汤是否撑得住。凹富后通常位于本坐标偏贵一侧。"}, {"id": 4, "name": "兰香强骨、香味并重", "short": "兰香强骨", "keywords": ["兰花", "茶味", "强回甘"], "scores": {"aroma": 4.0, "water": 4.0, "body": 4.5, "risk": 3.5, "finish": 4.5}, "desc": "兰香深长，茶味、回甘和中段结构通常较强。理想状态是香气、汤感和骨架同时成立。", "prices": {"口粮": [45, 90], "进阶": [100, 220], "精品": [250, 600]}, "office": "很高", "buying": "低价款也可能清雅偏淡；进阶茶应在香、汤、回甘和第四五泡同时体现升级。"}, {"id": 5, "name": "穿透白花、辛凉浓烈", "short": "穿透浓花", "keywords": ["茉莉", "姜花", "浓夜花"], "scores": {"aroma": 5.0, "water": 3.8, "body": 4.0, "risk": 4.0, "finish": 4.0}, "desc": "茉莉、夜花、姜花、白花和微辛凉，穿透力最强。茶汤往往不弱，但苦涩、辛锐与香气疲劳风险较高。", "prices": {"口粮": [60, 120], "进阶": [130, 280], "精品": [320, 800]}, "office": "中高", "buying": "不要一次买夜来、夜合、茉莉、通天等多个相邻白花系；优先确认香是否入汤、辛涩能否化开。"}, {"id": 6, "name": "坚果药木、厚味回甘", "short": "坚果药木", "keywords": ["杏仁", "药木", "桂皮"], "scores": {"aroma": 3.0, "water": 4.0, "body": 4.5, "risk": 3.5, "finish": 4.5}, "desc": "杏仁、核果、药材、桂皮、木质和苦甘。第一泡未必最惊艳，但汤体、辨识度和中后段往往更强。", "prices": {"口粮": [55, 110], "进阶": [120, 260], "精品": [300, 700]}, "office": "高", "buying": "重点看特殊香气是否清楚、苦涩是否拖尾、回甘是否有力。大乌叶不是稳定香型名，必须看具体成品。"}, {"id": 7, "name": "桂花果花、清甜异香", "short": "桂花果花", "keywords": ["桂花", "柚花", "橙花"], "scores": {"aroma": 4.0, "water": 3.5, "body": 3.5, "risk": 3.0, "finish": 3.5}, "desc": "桂花、柚花、橙花、果甜和少见奶香。整体较轻盈，适合补充风味光谱，但具体汤感差异很大。", "prices": {"口粮": [50, 100], "进阶": [110, 230], "精品": [260, 650]}, "office": "中等", "buying": "适合买小样补充风味，不宜仅凭稀有名字盲买大包装；必须确认茶汤不空。"}], "types": [{"name": "蜜兰香", "aliases": "蜜兰、蜜兰香单丛", "coord": 1, "profile": "花蜜、熟果与甘蔗甜的基础坐标；轻火偏鲜爽，中火偏熟甜厚水。", "aroma": 3.8, "water": 4.4, "body": 4.3, "risk": 2.5, "finish": 4.0, "vessels": ["120", "180", "both"], "tags": ["春茶优先", "中火办公室", "长期口粮"], "risk_note": "轻火低等级产品可能香高汤薄；中火过重可能炭火压香。", "brew120": "7–8g，沸水，前段快速出汤。", "brew180": "6–6.5g；中火款尤其适合办公室。", "coord_name": "蜜甜熟果、厚水", "coord_short": "蜜甜厚水", "prices": {"口粮": [25, 50], "进阶": [55, 120], "精品": [150, 350]}, "office": "高", "price_min": 25}, {"name": "宋种蜜香 / 香番薯", "aliases": "香番薯、宋种蜜香", "coord": 1, "profile": "熟番薯、蜂蜜、木质和深甜感，重汤质与中后段。", "aroma": 3.5, "water": 4.6, "body": 4.7, "risk": 3.0, "finish": 4.7, "vessels": ["120", "both"], "tags": ["深甜", "老树感", "认真泡"], "risk_note": "名称和老树故事溢价高，需确认第四五泡是否真有深度。", "brew120": "7–8g，前两泡快出，重点观察中后段。", "brew180": "可6–6.5g，但精品茶在办公室会损失细节。", "coord_name": "蜜甜熟果、厚水", "coord_short": "蜜甜厚水", "prices": {"口粮": [25, 50], "进阶": [55, 120], "精品": [150, 350]}, "office": "高", "price_min": 25}, {"name": "白叶蜜兰 / 白叶单丛", "aliases": "白叶、白叶蜜兰", "coord": 1, "profile": "甜香直接、适口性好、价格容易下探；汤体和耐泡未必突出。", "aroma": 3.7, "water": 3.8, "body": 3.4, "risk": 2.5, "finish": 3.2, "vessels": ["120", "180"], "tags": ["性价比", "甜香直接"], "risk_note": "易出现前三泡好喝、后段快速转水。", "brew120": "7g起，避免为了浓度长闷。", "brew180": "6–6.5g，先确认标准泡不寡淡。", "coord_name": "蜜甜熟果、厚水", "coord_short": "蜜甜厚水", "prices": {"口粮": [25, 50], "进阶": [55, 120], "精品": [150, 350]}, "office": "高", "price_min": 25}, {"name": "地方蜜香类型", "aliases": "大庵蜜香、狮头蜜香等", "coord": 1, "profile": "具体产地、树系或茶农系统的蜜香变奏，仍属于蜜甜厚水坐标。", "aroma": 3.7, "water": 4.3, "body": 4.4, "risk": 3.0, "finish": 4.2, "vessels": ["120", "both"], "tags": ["地方树系", "需看批次"], "risk_note": "名字不能直接推导品质；应问清季节、焙火和香入水程度。", "brew120": "7–8g，适合认真比较树系与工艺。", "brew180": "浓度足的中火款可以6g左右。", "coord_name": "蜜甜熟果、厚水", "coord_short": "蜜甜厚水", "prices": {"口粮": [25, 50], "进阶": [55, 120], "精品": [150, 350]}, "office": "高", "price_min": 25}, {"name": "米兰 / 百花蜜等商品名", "aliases": "米兰、百花蜜", "coord": 1, "profile": "并非统一官方香型；若呈甘蔗甜、复合花蜜、厚水，则归入本坐标。", "aroma": 3.6, "water": 4.5, "body": 4.6, "risk": 2.5, "finish": 4.2, "vessels": ["180", "both"], "tags": ["商品名", "厚水潜力", "先问品系"], "risk_note": "必须按具体商品判断，不能把全市场同名茶视为同一品种。", "brew120": "7g左右，观察是否只有甜香故事。", "brew180": "5.5–6.5g，适合验证“厚水低涩”是否兑现。", "coord_name": "蜜甜熟果、厚水", "coord_short": "蜜甜厚水", "prices": {"口粮": [25, 50], "进阶": [55, 120], "精品": [150, 350]}, "office": "高", "price_min": 25}, {"name": "鸭屎香 / 银花香", "aliases": "鸭屎香、银花香", "coord": 2, "profile": "白花、银花、奶甜和轻清凉；春茶、中火熟做更容易兼顾香与汤。", "aroma": 4.6, "water": 3.8, "body": 3.7, "risk": 3.0, "finish": 3.7, "vessels": ["120", "180", "both"], "tags": ["白花高香", "春茶优先", "中火熟做"], "risk_note": "雪片或轻火低等级款最容易香浮、汤薄、后段快掉。", "brew120": "7–8g，沸水，5–10秒级快出。", "brew180": "5.5–6.5g；优先中火、春茶、香入水型。", "coord_name": "银花白花、奶甜清凉", "coord_short": "银花奶甜", "prices": {"口粮": [35, 70], "进阶": [75, 150], "精品": [180, 400]}, "office": "中高", "price_min": 35}, {"name": "玉兰香", "aliases": "玉兰香单丛", "coord": 2, "profile": "白花香清楚，通常比鸭屎香更柔、更雅，汤体多为中等。", "aroma": 4.2, "water": 3.6, "body": 3.4, "risk": 2.8, "finish": 3.5, "vessels": ["120", "180"], "tags": ["白花清柔", "小样优先"], "risk_note": "高山清雅款可能变成柔而寡淡，需标准泡先验证浓度。", "brew120": "7g，前段快出，关注汤内白花而非只闻盖香。", "brew180": "5.5–6g，浓度不足则不适合办公室。", "coord_name": "银花白花、奶甜清凉", "coord_short": "银花奶甜", "prices": {"口粮": [35, 70], "进阶": [75, 150], "精品": [180, 400]}, "office": "中高", "price_min": 35}, {"name": "金玉兰 / 娘仔伞等玉兰系", "aliases": "金玉兰、娘仔伞、地方玉兰系", "coord": 2, "profile": "玉兰白花坐标的甜亮或地方树系变奏，不视为新的风味大类。", "aroma": 4.3, "water": 3.6, "body": 3.5, "risk": 3.0, "finish": 3.6, "vessels": ["120", "both"], "tags": ["甜亮白花", "地方树系"], "risk_note": "名称来自树形、地点或树系，需看具体成品。", "brew120": "7g左右，适合比较细腻度。", "brew180": "仅推荐浓度足、香入水的批次。", "coord_name": "银花白花、奶甜清凉", "coord_short": "银花奶甜", "prices": {"口粮": [35, 70], "进阶": [75, 150], "精品": [180, 400]}, "office": "中高", "price_min": 35}, {"name": "黄枝香 / 黄栀香", "aliases": "黄枝香、黄栀香", "coord": 3, "profile": "栀子花香明亮、甜感直观，汤感通常中等。", "aroma": 4.5, "water": 3.5, "body": 3.5, "risk": 3.0, "finish": 3.5, "vessels": ["120", "180"], "tags": ["栀子花", "甜香直接"], "risk_note": "普通产品可能只有高扬香气，汤体偏轻。", "brew120": "7g，前段快出，观察香水融合。", "brew180": "5.5–6g；标准泡不薄才值得进办公室。", "coord_name": "黄栀明亮、甜花果", "coord_short": "黄栀甜花", "prices": {"口粮": [35, 80], "进阶": [90, 180], "精品": [220, 500]}, "office": "高", "price_min": 35}, {"name": "凹富后 / 塌堀后", "aliases": "凹富后、塌堀后", "coord": 3, "profile": "黄栀花、奶甜与果蜜，通常比普通黄栀更甜、更柔，第一口讨喜。", "aroma": 4.6, "water": 4.0, "body": 4.0, "risk": 2.8, "finish": 3.9, "vessels": ["120", "180", "both"], "tags": ["核心三角", "奶甜果蜜", "双器具"], "risk_note": "前段甜花香不能替代中后段；需确认第四泡不塌。", "brew120": "7g，6/8/12/18秒起。", "brew180": "5.5–6g，甜香通常能承受放大。", "coord_name": "黄栀明亮、甜花果", "coord_short": "黄栀甜花", "prices": {"口粮": [35, 80], "进阶": [90, 180], "精品": [220, 500]}, "office": "高", "price_min": 35}, {"name": "宋种黄枝香", "aliases": "乌岽宋茶、东方红、团树叶", "coord": 3, "profile": "香、汤、木质、山韵与中后段更复杂，不只是栀子香更强。", "aroma": 4.2, "water": 4.5, "body": 4.7, "risk": 3.3, "finish": 4.8, "vessels": ["120"], "tags": ["高价老树", "中后段", "认真泡"], "risk_note": "名称溢价与真实性风险高，不适合仅凭故事购买。", "brew120": "7–8g，重点喝第三泡以后。", "brew180": "不推荐作为办公室主力，容易浪费细节。", "coord_name": "黄栀明亮、甜花果", "coord_short": "黄栀甜花", "prices": {"口粮": [35, 80], "进阶": [90, 180], "精品": [220, 500]}, "office": "高", "price_min": 35}, {"name": "老仙翁", "aliases": "老仙翁单丛", "coord": 3, "profile": "黄枝香老丛类型，理想状态兼具香气、厚度、老树感和持续性。", "aroma": 4.2, "water": 4.2, "body": 4.5, "risk": 3.2, "finish": 4.5, "vessels": ["120", "both"], "tags": ["老丛", "厚度", "后段"], "risk_note": "不能只凭“老仙翁”三个字默认厚水。", "brew120": "7–8g，观察木质、回甘与后段。", "brew180": "仅浓度足的中火商品款适合。", "coord_name": "黄栀明亮、甜花果", "coord_short": "黄栀甜花", "prices": {"口粮": [35, 80], "进阶": [90, 180], "精品": [220, 500]}, "office": "高", "price_min": 35}, {"name": "大乌叶黄枝香", "aliases": "大乌叶、乌叶黄枝", "coord": 3, "profile": "香气醒目、第一印象强；普通产品易香高汤薄，老丛好料可更厚。", "aroma": 4.8, "water": 3.1, "body": 3.2, "risk": 3.5, "finish": 3.1, "vessels": ["120", "180"], "tags": ["爆香", "风险型"], "risk_note": "“大乌叶”不是稳定香型名，购买时必须确认具体归属。", "brew120": "6.5–7g，避免高投茶掩盖薄水。", "brew180": "仅适合本身浓度强的批次。", "coord_name": "黄栀明亮、甜花果", "coord_short": "黄栀甜花", "prices": {"口粮": [35, 80], "进阶": [90, 180], "精品": [220, 500]}, "office": "高", "price_min": 35}, {"name": "贡香", "aliases": "贡香单丛", "coord": 3, "profile": "偏浓烈、高辨识度，可能很扛180ml稀释。", "aroma": 4.8, "water": 3.7, "body": 3.8, "risk": 3.6, "finish": 3.7, "vessels": ["180", "both"], "tags": ["浓烈", "办公室潜力"], "risk_note": "高香不等于细腻，需判断辛涩与后段。", "brew120": "6–7g，前段快出。", "brew180": "5–5.5g起，利用大器具摊开强度。", "coord_name": "黄栀明亮、甜花果", "coord_short": "黄栀甜花", "prices": {"口粮": [35, 80], "进阶": [90, 180], "精品": [220, 500]}, "office": "高", "price_min": 35}, {"name": "向东种 / 青竹丝", "aliases": "向东种、青竹丝", "coord": 3, "profile": "常见甜花与果香，但“奶糖”“水蜜桃”等不能视为固定品种标准。", "aroma": 4.3, "water": 3.7, "body": 3.6, "risk": 3.1, "finish": 3.7, "vessels": ["120", "both"], "tags": ["甜花果香", "需看批次"], "risk_note": "文案中的具体水果香容易被放大。", "brew120": "7g，适合观察果香是否入水。", "brew180": "浓度足可6g左右。", "coord_name": "黄栀明亮、甜花果", "coord_short": "黄栀甜花", "prices": {"口粮": [35, 80], "进阶": [90, 180], "精品": [220, 500]}, "office": "高", "price_min": 35}, {"name": "其他地方黄枝系", "aliases": "狮头脚黄枝、大庵宋种、湖厝黄枝、粗香黄枝等", "coord": 3, "profile": "产地、叶形或主人命名的长尾类型，仍归入黄栀甜花坐标。", "aroma": 4.2, "water": 3.7, "body": 3.7, "risk": 3.2, "finish": 3.7, "vessels": ["120"], "tags": ["长尾名丛", "先买样"], "risk_note": "仅凭名字无法推断味道与等级。", "brew120": "小样标准泡，建立具体批次档案。", "brew180": "通过120ml验证后再测试。", "coord_name": "黄栀明亮、甜花果", "coord_short": "黄栀甜花", "prices": {"口粮": [35, 80], "进阶": [90, 180], "精品": [220, 500]}, "office": "高", "price_min": 35}, {"name": "芝兰香", "aliases": "芝兰香单丛", "coord": 4, "profile": "清雅、细长、回味好，是兰香基础坐标；低价款也可能偏淡。", "aroma": 3.8, "water": 3.8, "body": 3.8, "risk": 3.0, "finish": 4.0, "vessels": ["120", "180"], "tags": ["兰香基准", "清雅"], "risk_note": "“清雅”不能成为寡淡的借口。", "brew120": "7g，观察喉部留香与回味。", "brew180": "6g左右，需先确认浓度足。", "coord_name": "兰香强骨、香味并重", "coord_short": "兰香强骨", "prices": {"口粮": [45, 90], "进阶": [100, 220], "精品": [250, 600]}, "office": "很高", "price_min": 45}, {"name": "八仙 / 八仙过海", "aliases": "八仙、八仙过海", "coord": 4, "profile": "兰花、花果、蜜韵，茶味强、回甘明显、耐泡度较好；双器具综合适配最高之一。", "aroma": 4.4, "water": 4.3, "body": 4.7, "risk": 3.5, "finish": 4.7, "vessels": ["120", "180", "both"], "tags": ["核心三角", "强茶味", "双器具"], "risk_note": "高投茶或慢出汤会放大苦底，但强度通常有内容支撑。", "brew120": "7–8g，5/7/10/15秒起。", "brew180": "5.5–6g，10/14/22/35秒起。", "coord_name": "兰香强骨、香味并重", "coord_short": "兰香强骨", "prices": {"口粮": [45, 90], "进阶": [100, 220], "精品": [250, 600]}, "office": "很高", "price_min": 45}, {"name": "兄弟仔 / 兄弟茶", "aliases": "兄弟仔、兄弟茶", "coord": 4, "profile": "白兰、兰花、喉部留香或清凉感，通常比普通芝兰更深、更细。", "aroma": 4.3, "water": 4.2, "body": 4.3, "risk": 3.4, "finish": 4.5, "vessels": ["120", "both"], "tags": ["白兰", "喉韵", "进阶"], "risk_note": "价格通常不低，应验证喉韵与后段是否真实。", "brew120": "7g，适合认真泡。", "brew180": "浓度足的批次可5.5–6g。", "coord_name": "兰香强骨、香味并重", "coord_short": "兰香强骨", "prices": {"口粮": [45, 90], "进阶": [100, 220], "精品": [250, 600]}, "office": "很高", "price_min": 45}, {"name": "鸡笼刊", "aliases": "鸡笼刊单丛", "coord": 4, "profile": "老树芝兰类型，常带兰香、厚度、木质或山野感，重点在中后段。", "aroma": 3.9, "water": 4.4, "body": 4.6, "risk": 3.5, "finish": 4.8, "vessels": ["120"], "tags": ["老树芝兰", "中后段"], "risk_note": "精品价值容易在办公室被削弱。", "brew120": "7–8g，重点第三泡后。", "brew180": "不建议作为主要泡法。", "coord_name": "兰香强骨、香味并重", "coord_short": "兰香强骨", "prices": {"口粮": [45, 90], "进阶": [100, 220], "精品": [250, 600]}, "office": "很高", "price_min": 45}, {"name": "竹叶 / 竹叶芝兰", "aliases": "竹叶、竹叶芝兰", "coord": 4, "profile": "较清、冷、细，可能带竹叶或清绿感，力度通常不如八仙。", "aroma": 3.8, "water": 3.8, "body": 3.6, "risk": 3.1, "finish": 3.9, "vessels": ["120"], "tags": ["清冷兰香", "细线条"], "risk_note": "容易被大盖碗泡得更淡。", "brew120": "7g，水温足，避免投茶过低。", "brew180": "仅浓度强的批次适合。", "coord_name": "兰香强骨、香味并重", "coord_short": "兰香强骨", "prices": {"口粮": [45, 90], "进阶": [100, 220], "精品": [250, 600]}, "office": "很高", "price_min": 45}, {"name": "雷扣柴 / 霹顶香", "aliases": "雷扣柴、霹顶香", "coord": 4, "profile": "芝兰名丛，常有较强香气，优质批次兼具木质、果甜和深后段。", "aroma": 4.4, "water": 4.3, "body": 4.5, "risk": 3.6, "finish": 4.7, "vessels": ["120", "both"], "tags": ["木质果甜", "深后段"], "risk_note": "高价商品应证明中后段，不应只卖传奇名字。", "brew120": "7g，逐泡观察变化。", "brew180": "5.5–6g，若强度足可成为办公室特色茶。", "coord_name": "兰香强骨、香味并重", "coord_short": "兰香强骨", "prices": {"口粮": [45, 90], "进阶": [100, 220], "精品": [250, 600]}, "office": "很高", "price_min": 45}, {"name": "似八仙 / 白八仙 / 收山芝兰", "aliases": "似八仙、白八仙、收山芝兰", "coord": 4, "profile": "兰香坐标的柔化、清化或成熟变奏；不是独立的大风味世界。", "aroma": 4.0, "water": 4.0, "body": 4.0, "risk": 3.3, "finish": 4.1, "vessels": ["120", "both"], "tags": ["兰香变奏", "先买样"], "risk_note": "名称相近但批次差异大。", "brew120": "7g标准泡比较。", "brew180": "通过标准泡后再放大。", "coord_name": "兰香强骨、香味并重", "coord_short": "兰香强骨", "prices": {"口粮": [45, 90], "进阶": [100, 220], "精品": [250, 600]}, "office": "很高", "price_min": 45}, {"name": "姜花香 / 姜母香", "aliases": "姜花香、姜母香", "coord": 5, "profile": "姜花、白花与轻微姜辣或辛凉；香气高，滋味甜爽中带辛感。", "aroma": 4.9, "water": 3.7, "body": 3.9, "risk": 4.0, "finish": 4.0, "vessels": ["120", "180"], "tags": ["辛凉", "高穿透"], "risk_note": "辛锐和苦涩可能在高投茶下放大。", "brew120": "6–7g，前段极快出。", "brew180": "5–5.5g，利用大器具摊开强度。", "coord_name": "穿透白花、辛凉浓烈", "coord_short": "穿透浓花", "prices": {"口粮": [60, 120], "进阶": [130, 280], "精品": [320, 800]}, "office": "中高", "price_min": 60}, {"name": "通天香", "aliases": "通天香单丛", "coord": 5, "profile": "穿透力极强，优质产品应在汤里也有白花、微辛和持续回味。", "aroma": 5.0, "water": 4.0, "body": 4.0, "risk": 4.1, "finish": 4.2, "vessels": ["120", "180", "both"], "tags": ["满室闻香", "强风格"], "risk_note": "只在空气中香而茶汤空，不算优秀。", "brew120": "6–7g，4/6/9/14秒起。", "brew180": "5g左右，办公室反而可能更舒服。", "coord_name": "穿透白花、辛凉浓烈", "coord_short": "穿透浓花", "prices": {"口粮": [60, 120], "进阶": [130, 280], "精品": [320, 800]}, "office": "中高", "price_min": 60}, {"name": "夜来香", "aliases": "夜来香单丛", "coord": 5, "profile": "茉莉、白花与浓夜花，辛感通常比通天香弱，花香更集中。", "aroma": 4.9, "water": 3.7, "body": 3.9, "risk": 3.9, "finish": 4.0, "vessels": ["120", "180"], "tags": ["浓夜花", "高香"], "risk_note": "连续饮用可能香气疲劳；需关注汤体是否跟得上。", "brew120": "6–7g，快速出汤。", "brew180": "5–5.5g，可把强度调到舒适区。", "coord_name": "穿透白花、辛凉浓烈", "coord_short": "穿透浓花", "prices": {"口粮": [60, 120], "进阶": [130, 280], "精品": [320, 800]}, "office": "中高", "price_min": 60}, {"name": "夜合香", "aliases": "夜合、夜合香", "coord": 5, "profile": "比夜来香更甜熟、更浓厚，花香较暗、较饱满，偏好汤感的人通常更容易接受。", "aroma": 4.7, "water": 4.2, "body": 4.4, "risk": 3.7, "finish": 4.3, "vessels": ["120", "180", "both"], "tags": ["浓厚甜熟", "双器具"], "risk_note": "强度高，120ml不宜盲目满投8g。", "brew120": "6–7g，前段快出。", "brew180": "5–5.5g，浓度通常仍足。", "coord_name": "穿透白花、辛凉浓烈", "coord_short": "穿透浓花", "prices": {"口粮": [60, 120], "进阶": [130, 280], "精品": [320, 800]}, "office": "中高", "price_min": 60}, {"name": "茉莉香", "aliases": "茉莉香单丛", "coord": 5, "profile": "香气线条较直、干净，通常没有姜花那么辛，也不一定有夜合那么厚。", "aroma": 4.7, "water": 3.5, "body": 3.5, "risk": 3.5, "finish": 3.6, "vessels": ["120"], "tags": ["纯净白花", "风格相邻"], "risk_note": "与夜来、通天重叠度高，不建议同期大量购买。", "brew120": "7g，观察汤内香和后段。", "brew180": "浓度足才适合。", "coord_name": "穿透白花、辛凉浓烈", "coord_short": "穿透浓花", "prices": {"口粮": [60, 120], "进阶": [130, 280], "精品": [320, 800]}, "office": "中高", "price_min": 60}, {"name": "满堂香", "aliases": "满堂香单丛", "coord": 5, "profile": "强调满室浓香的地方名丛或高香类型，并非统一扩种品系。", "aroma": 5.0, "water": 3.6, "body": 3.8, "risk": 4.0, "finish": 3.8, "vessels": ["120", "180"], "tags": ["地方高香", "先买样"], "risk_note": "商品名信息不足，需问清具体品系。", "brew120": "小样、低投茶起步。", "brew180": "强度足时适合5g左右。", "coord_name": "穿透白花、辛凉浓烈", "coord_short": "穿透浓花", "prices": {"口粮": [60, 120], "进阶": [130, 280], "精品": [320, 800]}, "office": "中高", "price_min": 60}, {"name": "杏仁香", "aliases": "杏仁香单丛", "coord": 6, "profile": "杏仁核、坚果与轻药香，比白花型沉稳。", "aroma": 3.2, "water": 4.0, "body": 4.2, "risk": 3.4, "finish": 4.3, "vessels": ["120", "180"], "tags": ["坚果", "沉稳"], "risk_note": "特殊香气若不清楚，容易只剩普通木质与苦涩。", "brew120": "7g，适合观察核果香与回甘。", "brew180": "6g左右，浓度足则耐喝。", "coord_name": "坚果药木、厚味回甘", "coord_short": "坚果药木", "prices": {"口粮": [55, 110], "进阶": [120, 260], "精品": [300, 700]}, "office": "高", "price_min": 55}, {"name": "锯朵仔 / 锯剁仔", "aliases": "锯朵仔、锯剁仔", "coord": 6, "profile": "杏仁香代表品系，常见杏仁、奶坚果、竹叶或药香，汤感中上、辨识度高。", "aroma": 3.7, "water": 4.3, "body": 4.6, "risk": 3.4, "finish": 4.6, "vessels": ["120", "180", "both"], "tags": ["核心三角", "非花香深度", "双器具"], "risk_note": "小叶采制成本高，价格不低；应验证特殊香气与中后段。", "brew120": "7–8g，重点喝结构。", "brew180": "5.5–6g，适合办公室扩展风味光谱。", "coord_name": "坚果药木、厚味回甘", "coord_short": "坚果药木", "prices": {"口粮": [55, 110], "进阶": [120, 260], "精品": [300, 700]}, "office": "高", "price_min": 55}, {"name": "金鹏杏仁 / 大庵杏仁 / 桃仁香", "aliases": "金鹏杏仁、大庵杏仁、桃仁香", "coord": 6, "profile": "核果坚果坐标的地方或甜柔变奏；桃仁通常更甜，大庵老丛可能更厚。", "aroma": 3.5, "water": 4.1, "body": 4.3, "risk": 3.4, "finish": 4.3, "vessels": ["120", "both"], "tags": ["核果变奏", "地方树系"], "risk_note": "不能只凭地方名判断老丛真实性。", "brew120": "7g，小样对比。", "brew180": "浓度足可6g左右。", "coord_name": "坚果药木、厚味回甘", "coord_short": "坚果药木", "prices": {"口粮": [55, 110], "进阶": [120, 260], "精品": [300, 700]}, "office": "高", "price_min": 55}, {"name": "凤凰肉桂香", "aliases": "肉桂香单丛、凤凰肉桂", "coord": 6, "profile": "中药肉桂、木质、辛香与熟果，茶味有骨架；不是武夷肉桂。", "aroma": 3.8, "water": 4.0, "body": 4.5, "risk": 3.9, "finish": 4.5, "vessels": ["120", "180"], "tags": ["辛香木质", "强骨架"], "risk_note": "泡重容易辛锐、苦涩或发燥。", "brew120": "6.5–7g，前段快出。", "brew180": "5.5g左右，摊开辛锐感。", "coord_name": "坚果药木、厚味回甘", "coord_short": "坚果药木", "prices": {"口粮": [55, 110], "进阶": [120, 260], "精品": [300, 700]}, "office": "高", "price_min": 55}, {"name": "山茄叶肉桂 / 过江龙等", "aliases": "山茄叶肉桂、七星肉桂、过江龙、二垭肉桂", "coord": 6, "profile": "凤凰肉桂香的具体树系，差异应体现在辛香、木质、汤体和后段。", "aroma": 3.9, "water": 4.1, "body": 4.6, "risk": 4.0, "finish": 4.6, "vessels": ["120", "both"], "tags": ["具体树系", "强结构"], "risk_note": "名称稀有不等于品质高。", "brew120": "6.5–7g，适合认真泡。", "brew180": "强度足的批次可5–5.5g。", "coord_name": "坚果药木、厚味回甘", "coord_short": "坚果药木", "prices": {"口粮": [55, 110], "进阶": [120, 260], "精品": [300, 700]}, "office": "高", "price_min": 55}, {"name": "附子香 / 黄茶香 / 苦种", "aliases": "附子香、黄茶香、苦种", "coord": 6, "profile": "药草、成熟香或明显苦底；优质苦种看苦能否迅速化甜。", "aroma": 2.8, "water": 3.8, "body": 4.5, "risk": 4.5, "finish": 4.4, "vessels": ["120"], "tags": ["技术型", "苦甘结构"], "risk_note": "盲买风险高，劣质产品可能只剩苦涩。", "brew120": "小样、低投茶、快速出汤。", "brew180": "不建议作为首轮办公室实验。", "coord_name": "坚果药木、厚味回甘", "coord_short": "坚果药木", "prices": {"口粮": [55, 110], "进阶": [120, 260], "精品": [300, 700]}, "office": "高", "price_min": 55}, {"name": "桂花香", "aliases": "桂花香单丛", "coord": 7, "profile": "甜桂花、清甜和口腔留香明显；香气直接，汤体未必很厚。", "aroma": 4.2, "water": 3.5, "body": 3.4, "risk": 2.9, "finish": 3.5, "vessels": ["120", "180"], "tags": ["甜桂花", "清甜"], "risk_note": "注意是否只有香气、茶汤偏空。", "brew120": "7g，观察甜香是否入水。", "brew180": "5.5–6g，标准泡不薄再进办公室。", "coord_name": "桂花果花、清甜异香", "coord_short": "桂花果花", "prices": {"口粮": [50, 100], "进阶": [110, 230], "精品": [260, 650]}, "office": "中等", "price_min": 50}, {"name": "白桂花 / 金桂花等桂花系", "aliases": "白桂花、金桂花、乌岽桂花、官头輋桂花", "coord": 7, "profile": "桂花香的清化、甜亮或地方变奏，名称不等于固定等级。", "aroma": 4.3, "water": 3.6, "body": 3.5, "risk": 3.0, "finish": 3.6, "vessels": ["120", "both"], "tags": ["桂花变奏", "先买样"], "risk_note": "乌岽等产地标签不能替代汤体与持续性。", "brew120": "7g，小样标准泡。", "brew180": "浓度足的甜亮型可用。", "coord_name": "桂花果花、清甜异香", "coord_short": "桂花果花", "prices": {"口粮": [50, 100], "进阶": [110, 230], "精品": [260, 650]}, "office": "中等", "price_min": 50}, {"name": "柚花香 / 柚叶 / 油茶叶", "aliases": "柚花香、柚叶、油茶叶", "coord": 7, "profile": "柑橘白花、清鲜与轻果皮感；柚叶偏清，油茶叶可能多一点木质和汤感。", "aroma": 4.1, "water": 3.5, "body": 3.5, "risk": 3.1, "finish": 3.6, "vessels": ["120"], "tags": ["柑橘白花", "清鲜"], "risk_note": "清鲜型在180ml里容易被进一步稀释。", "brew120": "7g，沸水，避免低温泡薄。", "brew180": "仅浓度强的批次适合。", "coord_name": "桂花果花、清甜异香", "coord_short": "桂花果花", "prices": {"口粮": [50, 100], "进阶": [110, 230], "精品": [260, 650]}, "office": "中等", "price_min": 50}, {"name": "橙花香", "aliases": "橙花香单丛", "coord": 7, "profile": "橙花与柑橘果甜，市场较少，容易被做青和焙火改变。", "aroma": 4.2, "water": 3.5, "body": 3.4, "risk": 3.0, "finish": 3.5, "vessels": ["120"], "tags": ["稀有果花", "先买样"], "risk_note": "商品描述容易夸张，需小样验证。", "brew120": "7g标准泡。", "brew180": "不作为首选。", "coord_name": "桂花果花、清甜异香", "coord_short": "桂花果花", "prices": {"口粮": [50, 100], "进阶": [110, 230], "精品": [260, 650]}, "office": "中等", "price_min": 50}, {"name": "杨梅香 / 杨梅叶", "aliases": "杨梅香、杨梅叶", "coord": 7, "profile": "可能出现红果与酸甜果香，较少见。", "aroma": 4.0, "water": 3.4, "body": 3.4, "risk": 3.2, "finish": 3.4, "vessels": ["120"], "tags": ["红果酸甜", "稀有"], "risk_note": "名称与描述的真实性风险较高。", "brew120": "只建议小样。", "brew180": "不优先。", "coord_name": "桂花果花、清甜异香", "coord_short": "桂花果花", "prices": {"口粮": [50, 100], "进阶": [110, 230], "精品": [260, 650]}, "office": "中等", "price_min": 50}, {"name": "山茄叶奶香", "aliases": "山茄叶奶香", "coord": 7, "profile": "少见的奶甜异香类型，应以茶汤中的奶甜和汤感为准。", "aroma": 4.2, "water": 3.8, "body": 3.8, "risk": 3.1, "finish": 3.8, "vessels": ["120", "both"], "tags": ["奶甜异香", "稀有"], "risk_note": "不要只闻干茶或盖香判断“奶香”。", "brew120": "7g，重点喝汤内奶甜。", "brew180": "浓度足可5.5–6g。", "coord_name": "桂花果花、清甜异香", "coord_short": "桂花果花", "prices": {"口粮": [50, 100], "进阶": [110, 230], "精品": [260, 650]}, "office": "中等", "price_min": 50}, {"name": "其他花香名丛", "aliases": "湖厝花香、高枝香、甜竹坑花香等", "coord": 7, "profile": "信息不足的地方花香名丛，适合买样，不适合仅凭名字盲买大包装。", "aroma": 4.0, "water": 3.5, "body": 3.5, "risk": 3.2, "finish": 3.5, "vessels": ["120"], "tags": ["长尾名丛", "小样"], "risk_note": "必须问清品系、季节、焙火与汤感。", "brew120": "小样标准泡。", "brew180": "通过120ml测试后再考虑。", "coord_name": "桂花果花、清甜异香", "coord_short": "桂花果花", "prices": {"口粮": [50, 100], "进阶": [110, 230], "精品": [260, 650]}, "office": "中等", "price_min": 50}]};
+const state = {coord:"", vessel:"all", aroma:1, body:1, risk:5, target:false, tier:"口粮", query:"", sort:"recommended", compare:[]};
+const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
+const clamp=n=>Math.max(0,Math.min(100,n/5*100));
+const fmt=n=>Number.isInteger(n)?n:n.toFixed(1);
+const coordById=id=>DB.coordinates.find(c=>c.id===id);
+
+function init(){
+  DB.coordinates.forEach(c=>{
+    const o=document.createElement("option"); o.value=c.id; o.textContent=`${c.id}. ${c.name}`; $("#coordFilter").appendChild(o);
+  });
+  DB.types.forEach((t,i)=>{
+    t._id=i;
+    const o=document.createElement("option"); o.value=i; o.textContent=`${t.name}｜${t.coord_short}`; $("#calcType").appendChild(o);
+  });
+  bind();
+  renderCards(); renderCoords(); calculate(); renderBrew("all");
+}
+
+function bind(){
+  $$(".tab").forEach(b=>b.onclick=()=>{$$(".tab").forEach(x=>x.classList.remove("active"));b.classList.add("active");$$(".panel").forEach(p=>p.classList.remove("active"));$("#"+b.dataset.tab).classList.add("active")});
+  $("#search").oninput=e=>{state.query=e.target.value.trim().toLowerCase();renderCards()};
+  $("#coordFilter").onchange=e=>{state.coord=e.target.value;renderCards()};
+  bindChipGroup("#vesselChips",v=>{state.vessel=v;renderCards()});
+  bindChipGroup("#tierChips",v=>{state.tier=v;renderCards()});
+  [["aromaMin","aroma","aromaOut"],["bodyMin","body","bodyOut"],["riskMax","risk","riskOut"]].forEach(([id,key,out])=>{
+    $("#"+id).oninput=e=>{state[key]=+e.target.value;$("#"+out).value=e.target.value;renderCards()}
+  });
+  $("#targetSwitch").onclick=()=>{state.target=!state.target;$("#targetSwitch").classList.toggle("on",state.target);renderCards()};
+  $("#sort").onchange=e=>{state.sort=e.target.value;renderCards()};
+  $("#reset").onclick=reset;
+  ["calcType","calcPrice","calcWeight","calcVessel"].forEach(id=>$("#"+id).oninput=calculate);
+  $("#openCompare").onclick=openCompare; $("#clearCompare").onclick=()=>{state.compare=[];updateCompareDock();renderCards()};
+  $("#closeCompare").onclick=()=>$("#compareModal").classList.remove("open");
+  $("#compareModal").onclick=e=>{if(e.target.id==="compareModal")$("#compareModal").classList.remove("open")};
+  $$(".brew-choice .chip-btn").forEach(b=>b.onclick=()=>{$$(".brew-choice .chip-btn").forEach(x=>x.classList.remove("active"));b.classList.add("active");renderBrew(b.dataset.brew)});
+}
+function bindChipGroup(sel,cb){$$(sel+" .chip-btn").forEach(b=>b.onclick=()=>{$$(sel+" .chip-btn").forEach(x=>x.classList.remove("active"));b.classList.add("active");cb(b.dataset.value)})}
+function reset(){
+  Object.assign(state,{coord:"",vessel:"all",aroma:1,body:1,risk:5,target:false,tier:"口粮",query:"",sort:"recommended"});
+  $("#search").value="";$("#coordFilter").value="";$("#aromaMin").value=1;$("#bodyMin").value=1;$("#riskMax").value=5;
+  $("#aromaOut").value=1;$("#bodyOut").value=1;$("#riskOut").value=5;$("#targetSwitch").classList.remove("on");$("#sort").value="recommended";
+  $$("#vesselChips .chip-btn").forEach((x,i)=>x.classList.toggle("active",i===0));
+  $$("#tierChips .chip-btn").forEach(x=>x.classList.toggle("active",x.dataset.value==="口粮"));
+  renderCards();
+}
+function recommendationScore(t){
+  let s=t.aroma+t.water*1.2+t.body*1.3+t.finish*1.2-t.risk*.65;
+  if(t.vessels.includes("both"))s+=1.2;
+  if(t.tags.includes("核心三角"))s+=1.3;
+  return s;
+}
+function filtered(){
+  const q=state.query;
+  let arr=DB.types.filter(t=>{
+    const text=[t.name,t.aliases,t.profile,t.coord_name,...t.tags].join(" ").toLowerCase();
+    const vesselOK=state.vessel==="all" || t.vessels.includes(state.vessel) || (state.vessel!=="both"&&t.vessels.includes("both"));
+    const targetOK=!state.target || (t.aroma>=3.5&&t.water>=3.8&&t.body>=3.8&&t.finish>=3.8&&t.risk<=3.6);
+    return (!q||text.includes(q)) && (!state.coord||t.coord==state.coord) && vesselOK &&
+      t.aroma>=state.aroma && t.body>=state.body && t.risk<=state.risk && targetOK;
+  });
+  const sorts={
+    recommended:(a,b)=>recommendationScore(b)-recommendationScore(a),
+    aroma:(a,b)=>b.aroma-a.aroma, body:(a,b)=>b.body-a.body, finish:(a,b)=>b.finish-a.finish,
+    risk:(a,b)=>a.risk-b.risk, price:(a,b)=>a.prices[state.tier][0]-b.prices[state.tier][0]
+  };
+  return arr.sort(sorts[state.sort]);
+}
+function metric(label,val,inverse=false){const pct=clamp(inverse?6-val:val);return `<div class="metric"><div class="metric-label"><span>${label}</span><b>${fmt(val)}</b></div><div class="bar"><i style="width:${pct}%"></i></div></div>`}
+function renderCards(){
+  const arr=filtered(); $("#resultMeta").textContent=`找到 ${arr.length} 个茶型｜当前显示 ${state.tier}价格（每50g）`;
+  $("#cards").innerHTML=arr.length?arr.map(t=>{
+    const p=t.prices, selected=state.compare.includes(t._id);
+    const vesselTags=[t.vessels.includes("120")||t.vessels.includes("both")?"120ml":null,t.vessels.includes("180")||t.vessels.includes("both")?"180ml":null].filter(Boolean);
+    return `<article class="card">
+      <div class="card-top"><div><h3>${t.name}</h3><div class="alias">${t.aliases}</div></div><span class="coord-badge">${t.coord}. ${t.coord_short}</span></div>
+      <p class="profile">${t.profile}</p>
+      <div class="tags">${t.tags.map(x=>`<span class="tag ${x==="核心三角"||x==="双器具"?"good":""}">${x}</span>`).join("")}${vesselTags.map(x=>`<span class="tag good">${x}</span>`).join("")}</div>
+      <div class="metrics">${metric("香气",t.aroma)}${metric("入水",t.water)}${metric("汤感",t.body)}${metric("风险",t.risk,true)}${metric("后段",t.finish)}</div>
+      <div class="price-strip"><div><span>口粮</span><b>¥${p.口粮[0]}–${p.口粮[1]}</b></div><div><span>进阶</span><b>¥${p.进阶[0]}–${p.进阶[1]}</b></div><div><span>精品</span><b>¥${p.精品[0]}–${p.精品[1]}</b></div></div>
+      <div id="details-${t._id}" class="details"><p><strong>主要风险：</strong>${t.risk_note}</p><p><strong>120ml：</strong>${t.brew120}</p><p><strong>180ml：</strong>${t.brew180}</p><p><strong>购买判断：</strong>${coordById(t.coord).buying}</p></div>
+      <div class="card-actions"><button onclick="toggleDetails(${t._id})">展开信息</button><button class="primary" onclick="toggleCompare(${t._id})">${selected?"移出对比":"加入对比"}</button></div>
+    </article>`}).join(""):`<div class="empty">没有符合当前条件的茶型。可以降低汤感要求、放宽苦涩风险，或重置筛选。</div>`;
+}
+window.toggleDetails=id=>{$("#details-"+id).classList.toggle("open")};
+window.toggleCompare=id=>{
+  const i=state.compare.indexOf(id);
+  if(i>=0)state.compare.splice(i,1); else if(state.compare.length<4)state.compare.push(id); else alert("最多同时对比4款");
+  updateCompareDock();renderCards();
+};
+function updateCompareDock(){
+  const dock=$("#compareDock");dock.classList.toggle("show",state.compare.length>0);$("#compareCount").textContent=state.compare.length;
+  $("#compareList").innerHTML=state.compare.map(id=>`<span class="compare-pill">${DB.types[id].name}</span>`).join("");
+}
+function openCompare(){
+  const items=state.compare.map(id=>DB.types[id]); if(!items.length)return;
+  const rows=[
+    ["风味坐标",t=>t.coord_name],["核心描述",t=>t.profile],["香气",t=>t.aroma],["香入水",t=>t.water],
+    ["汤感",t=>t.body],["苦涩风险",t=>t.risk],["中后段",t=>t.finish],
+    ["口粮价/50g",t=>`¥${t.prices.口粮[0]}–${t.prices.口粮[1]}`],
+    ["进阶价/50g",t=>`¥${t.prices.进阶[0]}–${t.prices.进阶[1]}`],
+    ["120ml",t=>t.brew120],["180ml",t=>t.brew180],["主要风险",t=>t.risk_note]
+  ];
+  $("#compareTable").innerHTML=`<table><thead><tr><th>维度</th>${items.map(t=>`<th>${t.name}</th>`).join("")}</tr></thead><tbody>${rows.map(([n,f])=>`<tr><th>${n}</th>${items.map(t=>`<td class="${typeof f(t)==="number"?"score":""}">${f(t)}</td>`).join("")}</tr>`).join("")}</tbody></table>`;
+  $("#compareModal").classList.add("open");
+}
+function renderCoords(){
+  $("#coordGrid").innerHTML=DB.coordinates.map(c=>{
+    const list=DB.types.filter(t=>t.coord===c.id).map(t=>t.name).join("、");
+    return `<article class="coord-card"><div class="coord-badge">${c.id}</div><h3>${c.name}</h3><div class="big-key">${c.keywords.join(" · ")}</div><p>${c.desc}</p>
+      <div class="metrics">${metric("香气",c.scores.aroma)}${metric("入水",c.scores.water)}${metric("汤感",c.scores.body)}${metric("风险",c.scores.risk,true)}${metric("后段",c.scores.finish)}</div>
+      <div class="price-strip" style="margin-top:12px"><div><span>口粮</span><b>¥${c.prices.口粮[0]}–${c.prices.口粮[1]}</b></div><div><span>进阶</span><b>¥${c.prices.进阶[0]}–${c.prices.进阶[1]}</b></div><div><span>精品</span><b>¥${c.prices.精品[0]}–${c.prices.精品[1]}</b></div></div>
+      <div class="coord-types"><strong>内部茶型：</strong>${list}</div><div class="coord-types"><strong>选购重点：</strong>${c.buying}</div></article>`;
+  }).join("");
+}
+function classify(per50,p){
+  const [q1,q2]=p.口粮,[j1,j2]=p.进阶,[f1,f2]=p.精品;
+  if(per50<q1)return ["低于常见口粮区间","价格很低，不一定是便宜捡漏；更要警惕季节、原料等级、香高汤薄或商品名混用。"];
+  if(per50<=q2)return ["口粮档","应做到品种味清楚、标准泡前三泡不寡淡。"];
+  if(per50<j1)return ["口粮与进阶之间","价格处于过渡区，是否划算主要看香入水与第四泡持续性。"];
+  if(per50<=j2)return ["进阶档","应明显提升汤体、细腻度和第四五泡表现。"];
+  if(per50<f1)return ["进阶与精品之间","需要有较明确的山场、树龄或工艺升级，不能只换包装和故事。"];
+  if(per50<=f2)return ["精品市场档","升级重点应在水路、层次、协调性和后段，而不只是高香。"];
+  return ["高于常见精品区间","可能涉及明确单株、古树、核心山场或品牌礼盒溢价，需要更强证据。"];
+}
+function calculate(){
+  const t=DB.types[+$("#calcType").value||0], price=+$("#calcPrice").value, weight=+$("#calcWeight").value, vessel=$("#calcVessel").value;
+  if(!price||!weight){$("#calcResult").innerHTML="请输入有效的价格与克重。";return}
+  const per50=price/weight*50, [tier,note]=classify(per50,t.prices);
+  const suitable=t.vessels.includes(vessel)||t.vessels.includes("both");
+  const vesselText=vessel==="120"?"120ml认真泡":vessel==="180"?"180ml办公室":"两者兼顾";
+  $("#calcResult").innerHTML=`<div class="big">¥${per50.toFixed(1)} / 50g</div><div class="verdict">${tier}</div>
+    <p>${note}</p><p><strong>${t.name}</strong>属于“${t.coord_name}”坐标。对${vesselText}：<strong>${suitable?"方向匹配":"不是优先方向"}</strong>。</p>
+    <p><strong>重点核验：</strong>${t.risk_note}</p>`;
+}
+function renderBrew(mode){
+  const blocks=[
+    {id:"120",title:"120ml认真泡",body:`<p>适合观察香气层次、汤体与苦涩结构、中后段变化，以及高山、老丛和精品茶的细节。</p><p><strong>基准：</strong>7–8g、沸水、前段快速出汤。强势香型可从6–7g起，避免满投后辛涩压香。</p><p><strong>优先：</strong>八仙、凹富后、锯朵仔、宋种与名丛；精品茶先在这里证明自己。</p>`},
+    {id:"180",title:"180ml办公室泡",body:`<p>应选择本身浓度足、香气入水、稍晚出汤仍可喝、降低投茶后不会寡淡的茶。</p><p><strong>基准：</strong>强势单丛5–6g；中火、厚水型6–6.5g。实际注水按日常盖盖水位，不按标称180ml硬算。</p><p><strong>优先：</strong>八仙、凹富后、中火熟做鸭屎香、汤质好的蜜兰香、锯朵仔、夜合香。</p>`},
+    {id:"buy",title:"选购检查清单",body:`<p><strong>问清：</strong>春茶还是雪片？轻火还是中火？香主要在盖上还是汤里？汤偏清爽还是醇厚？第四五泡是否仍有味？坐杯会不会明显苦涩？</p><p><strong>标准泡淘汰线：</strong>第一泡只有香、第二泡不增浓、第三泡明显转水，或只剩“干净柔和”而没有实际茶味。</p><p><strong>高山/老丛：</strong>合理升级应是更细、更协调、更持久；不能自动等于更浓、更香或更好喝。</p>`},
+    {id:"buy",title:"六点品鉴坐标",body:`<p>蜜兰香＝蜜甜厚水；鸭屎香＝银花奶甜；凹富后＝黄栀果蜜；八仙＝兰香强骨；夜合或通天＝穿透浓花；锯朵仔＝坚果药木。</p><p><strong>核心三角：</strong>八仙看结构，凹富后看香甜愉悦，锯朵仔看非花香深度。</p>`}
+  ];
+  $("#brewContent").innerHTML=blocks.filter(x=>mode==="all"||x.id===mode).map(x=>`<article class="brew-card"><h3>${x.title}</h3>${x.body}</article>`).join("");
+}
+init();
+</script>
+</body></html>
