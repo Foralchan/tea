@@ -31,13 +31,14 @@
 const tools=[
  {id:"price",title:"茶叶价格总库",desc:"查询、筛选与比较茶叶价格信息。",file:"price.html",icon:"price-icon.svg",tint:"#edf3e8"},
  {id:"office",title:"办公室泡茶速查",desc:"按杯量快速查看办公室冲泡参数。",file:"office.html",icon:"office-icon.svg",tint:"#e6f1f4"},
- {id:"phoenix",title:"凤凰单丛筛选器",desc:"按香型与偏好筛选凤凰单丛。",file:"phoenix.html",icon:"phoenix-icon.svg",tint:"#f5ece3"}
+ {id:"phoenix",title:"凤凰单丛筛选器",desc:"按香型与偏好筛选凤凰单丛。",file:"phoenix.html",icon:"phoenix-icon.svg",tint:"#f5ece3"},
+ {id:"foundations",title:"茶叶三联感官图谱",desc:"用三张交互图谱理解感官词、芳香分子与茶汤感受。",file:"foundations/",icon:"sensory-icon.svg",tint:"#e8f0e8",external:true}
 ];
 const tabs=document.querySelector("#tabs"),grid=document.querySelector("#grid"),home=document.querySelector("#home"),viewer=document.querySelector("#viewer"),frame=document.querySelector("#frame"),title=document.querySelector("#viewer-title"),open=document.querySelector("#open");
 function render(){
  const active=tools.find(x=>x.id===location.hash.slice(1));
- tabs.innerHTML=tools.map(x=>`<a class="${active&&x.id===active.id?"active":""}" href="#${x.id}">${x.title}</a>`).join("");
- grid.innerHTML=tools.map(x=>`<a class="card" href="#${x.id}" style="--tint:${x.tint}"><img src="${x.icon}" alt=""><h2>${x.title}</h2><p>${x.desc}</p><span class="enter">打开工具 →</span></a>`).join("");
+ tabs.innerHTML=tools.map(x=>`<a class="${active&&x.id===active.id?"active":""}" href="${x.external?x.file:"#"+x.id}" target="${x.external?"_blank":"_self"}">${x.title}</a>`).join("");
+ grid.innerHTML=tools.map(x=>`<a class="card" href="${x.external?x.file:"#"+x.id}" target="${x.external?"_blank":"_self"}" style="--tint:${x.tint}"><img src="${x.icon}" alt=""><h2>${x.title}</h2><p>${x.desc}</p><span class="enter">打开工具 →</span></a>`).join("");
  home.hidden=!!active;viewer.hidden=!active;
  if(!active){frame.innerHTML="";document.title="茶叶工具箱";return}
  title.textContent=active.title;open.href=active.file;frame.innerHTML=`<iframe src="${active.file}" title="${active.title}"></iframe>`;document.title=active.title+" · 茶叶工具箱";
