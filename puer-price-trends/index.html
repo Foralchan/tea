@@ -1,0 +1,480 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link rel="icon" type="image/svg+xml" href="../puer-price-trends-icon.svg">
+  <title>云南普洱茶主要产区春茶价格走势｜2017—2026</title>
+  <style>
+    :root{
+      --ink:#17211b;--muted:#66736b;--paper:#f5f1e8;--card:#fffdf8;--line:#d8d2c4;
+      --jade:#11634d;--jade2:#2f8b6b;--tea:#a55a2a;--gold:#c99a3d;--red:#a74335;
+      --blue:#456f8d;--violet:#6a5b8d;--shadow:0 18px 50px rgba(32,48,39,.09);
+    }
+    *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--paper);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;line-height:1.75}
+    a{color:var(--jade);text-underline-offset:3px}button,select,input{font:inherit}
+    .nav{position:sticky;top:0;z-index:30;background:rgba(245,241,232,.92);backdrop-filter:blur(16px);border-bottom:1px solid rgba(110,107,96,.18)}
+    .navin{max-width:1240px;margin:auto;padding:10px 24px;display:flex;gap:18px;align-items:center;overflow:auto;white-space:nowrap}.brand{font-weight:800;color:var(--jade);margin-right:auto}.nav a{text-decoration:none;color:#49554e;font-size:13px}.nav a:hover{color:var(--jade)}
+    .hero{background:radial-gradient(circle at 90% 10%,rgba(201,154,61,.25),transparent 35%),linear-gradient(135deg,#0c4638,#143e34 58%,#4e3a22);color:white;padding:72px 24px 58px}
+    .heroIn{max-width:1160px;margin:auto}.eyebrow{font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:#d5c38d;font-weight:800}.hero h1{font-family:Georgia,"Songti SC",serif;font-size:clamp(34px,5.4vw,72px);line-height:1.08;margin:14px 0 18px;max-width:1000px}.hero p{max-width:850px;color:#dbe5df;font-size:17px}.metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:36px}.metric{padding:18px;border:1px solid rgba(255,255,255,.18);border-radius:16px;background:rgba(255,255,255,.07)}.metric b{font-size:29px;display:block;color:#ffe4a6}.metric span{font-size:12px;color:#d8e1dc}
+    main{max-width:1240px;margin:auto;padding:42px 24px 80px}.section{scroll-margin-top:70px;margin:52px 0}.section h2{font-family:Georgia,"Songti SC",serif;font-size:34px;line-height:1.2;margin:0 0 16px}.lead{max-width:900px;color:#526159;font-size:16px}.notice{border-left:5px solid var(--gold);background:#fff6dc;padding:18px 22px;border-radius:0 14px 14px 0;margin:24px 0;box-shadow:var(--shadow)}
+    .grid{display:grid;grid-template-columns:repeat(12,1fr);gap:18px}.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:22px;box-shadow:var(--shadow);min-width:0}.span6{grid-column:span 6}.span7{grid-column:span 7}.span5{grid-column:span 5}.span12{grid-column:span 12}.card h3{margin:0 0 4px;font-size:18px}.sub{font-size:12px;color:var(--muted);margin-bottom:14px}.chart{min-height:320px;position:relative}.chart.small{min-height:250px}.chart svg{display:block;width:100%;height:100%;overflow:visible}.axis{stroke:#bfb9aa;stroke-width:1}.gridline{stroke:#e7e1d5;stroke-width:1}.tick{fill:#728078;font-size:11px}.legend{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;color:var(--muted)}.dot{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:6px}.control{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin:12px 0}.control select,.control input{background:white;border:1px solid #c9c3b5;border-radius:10px;padding:8px 11px;color:var(--ink)}
+    .tooltip{position:fixed;z-index:60;pointer-events:none;background:#15221c;color:white;padding:9px 11px;border-radius:9px;font-size:12px;line-height:1.5;max-width:280px;box-shadow:0 8px 30px rgba(0,0,0,.24);opacity:0;transition:opacity .12s}.tooltip.show{opacity:1}
+    .pill{display:inline-block;border-radius:999px;padding:4px 9px;font-size:11px;font-weight:700}.a{background:#d9eee4;color:#12523f}.b{background:#f6e7bd;color:#744f09}.c{background:#f3d7d2;color:#843c32}.x{background:#e6e3dc;color:#777}
+    .finding{display:grid;grid-template-columns:48px 1fr;gap:14px;padding:18px 0;border-bottom:1px solid var(--line)}.finding:last-child{border-bottom:0}.n{height:42px;width:42px;border-radius:12px;background:var(--jade);color:white;display:grid;place-items:center;font-weight:800}.finding h4{margin:0 0 4px}.finding p{margin:0;color:#55645c}
+    .stages{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}.stage{position:relative;overflow:hidden}.stage:before{content:"";position:absolute;inset:0 0 auto;height:5px;background:var(--jade)}.stage:nth-child(2):before{background:var(--gold)}.stage:nth-child(3):before{background:var(--red)}.stage .year{font-size:12px;color:var(--muted);font-weight:800;letter-spacing:.1em}.stage h3{margin:8px 0}.stage p{font-size:14px;color:#54625a}
+    .regionTabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px}.tab{border:1px solid #cfc8b9;background:#fff;padding:8px 13px;border-radius:999px;cursor:pointer;color:#536159}.tab.active{background:var(--jade);color:white;border-color:var(--jade)}.regionPane{display:none}.regionPane.active{display:block}.regionPane h3{font-size:25px}.regionPane .verdict{font-weight:800;color:var(--tea)}
+    .micro{border-top:4px solid var(--gold)}.micro .price{font-size:25px;font-weight:800;color:var(--jade);margin:8px 0}.micro p{font-size:14px;color:#56635d}.micro .boundary{font-size:12px;border-top:1px dashed var(--line);padding-top:10px;color:#7b6658}
+    .gapCards{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.gap{background:#f1ead9;border-radius:14px;padding:16px}.gap b{font-size:25px;color:var(--red);display:block}.gap span{font-size:12px;color:var(--muted)}
+    .audit{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}.check{padding:14px;border-radius:12px;background:#f1f5f1;border-left:4px solid var(--jade)}.check.bad{background:#fbefec;border-left-color:var(--red)}.check b{display:block}.check span{font-size:13px;color:#5f6c65}
+    .tableWrap{overflow:auto;border:1px solid var(--line);border-radius:14px;background:white}table{border-collapse:collapse;width:100%;font-size:13px}th,td{padding:11px 12px;border-bottom:1px solid #e7e2d8;text-align:left;vertical-align:top}th{position:sticky;top:0;background:#f2eee4;color:#536059;z-index:2}tbody tr:hover{background:#fff9e9}.num{text-align:right;font-variant-numeric:tabular-nums}.nowrap{white-space:nowrap}
+    .sourceList{columns:2;column-gap:36px}.sourceList li{break-inside:avoid;margin-bottom:9px;font-size:13px}.foot{background:#13251e;color:#d8e2dd;padding:38px 24px}.footin{max-width:1160px;margin:auto}.foot p{max-width:900px;color:#b9c7c0;font-size:13px}.kbd{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;background:#e9e5db;padding:2px 6px;border-radius:6px;font-size:12px}.hidden{display:none!important}
+    .resultTag{display:inline-flex;align-items:center;gap:7px;background:#dfeee7;color:#0f5a43;border-radius:999px;padding:5px 10px;font-size:11px;font-weight:800;letter-spacing:.04em}.trendGrid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}.trendCard{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px;position:relative;overflow:hidden}.trendCard:before{content:"";position:absolute;left:0;top:0;bottom:0;width:5px;background:var(--jade)}.trendCard.down:before{background:var(--red)}.trendCard.up:before{background:var(--gold)}.trendCard.split:before{background:var(--violet)}.trendCard .signal{font-size:11px;font-weight:800;color:var(--muted);letter-spacing:.08em}.trendCard h3{font-size:17px;margin:6px 0}.trendCard p{font-size:13px;color:#5b685f;margin:0}.trendCard .number{font-size:23px;font-weight:900;color:var(--tea);margin:8px 0 4px}.premiumKey{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:12px 0}.premiumKey div{border-radius:12px;padding:11px;font-size:12px}.tier1{background:#f4d9d2;color:#74372e}.tier2{background:#f5e5bd;color:#76500a}.tier3{background:#dcebe3;color:#275f4e}.tier4{background:#e7e4de;color:#5e655f}.microControls{display:flex;gap:10px;flex-wrap:wrap;margin:15px 0}.microGrid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.microTile{background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px}.microTile b{display:block}.microTile .mp{font-weight:900;color:var(--tea);font-size:18px}.microTile small{display:block;color:var(--muted);line-height:1.5}.valueGrid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}.valueCard{background:linear-gradient(145deg,#fffdf8,#f1ecdf);border:1px solid var(--line);border-radius:18px;padding:20px}.valueCard h3{margin:0 0 4px}.valueCard .route{font-size:14px;color:#4c5c53}.valueCard .saving{display:inline-block;margin-top:8px;background:#dcebe3;color:#12523f;border-radius:999px;padding:5px 10px;font-size:12px;font-weight:800}.routeArrow{color:var(--gold);font-weight:900;padding:0 5px}.finalChart{background:linear-gradient(145deg,#102f27,#173f34);color:white;border-radius:24px;padding:24px;box-shadow:var(--shadow)}.finalChart .sub{color:#bdd0c7}.finalChart .control select{background:#f7f3e9}.methodBox{font-size:13px;color:#5d6962;background:#f0ede5;border-radius:14px;padding:16px}.kicker{color:var(--tea);font-weight:900;font-size:13px;text-transform:uppercase;letter-spacing:.1em}
+    @media(max-width:900px){.metrics{grid-template-columns:repeat(2,1fr)}.span6,.span7,.span5{grid-column:span 12}.stages{grid-template-columns:1fr}.gapCards{grid-template-columns:repeat(2,1fr)}.sourceList{columns:1}.audit{grid-template-columns:1fr}.trendGrid{grid-template-columns:repeat(2,1fr)}.microGrid{grid-template-columns:repeat(2,1fr)}.valueGrid{grid-template-columns:1fr}.premiumKey{grid-template-columns:repeat(2,1fr)}}
+    @media(max-width:560px){.hero{padding-top:46px}.metrics{grid-template-columns:1fr}.hero h1{font-size:38px}.gapCards{grid-template-columns:1fr}.card{padding:16px}.section h2{font-size:28px}.trendGrid,.microGrid{grid-template-columns:1fr}}
+    @media print{.nav,.control{display:none}.hero{padding:30px 20px;background:#183f33!important}.card{box-shadow:none;break-inside:avoid}.section{break-inside:auto}.chart{min-height:260px}}
+  </style>
+</head>
+<body>
+  <div class="tooltip" id="tooltip"></div>
+  <nav class="nav"><div class="navin">
+    <div class="brand">云茶价格十年</div>
+    <a href="#summary">结论</a><a href="#trends">15条趋势</a><a href="#timeline">曲线</a><a href="#premium">500g溢价</a><a href="#micro">小微产区</a><a href="#value">品饮路线</a><a href="#tfdata">茶农之家</a><a href="#uncertainty">边界</a><a href="#atlas">全景图</a>
+  </div></nav>
+
+  <header class="hero">
+    <div class="heroIn">
+      <div class="eyebrow">Yunnan Pu'er Spring Tea Price Signals</div>
+      <h1>云南普洱茶主要产区<br>春茶价格走势</h1>
+      <p>2017—2026 年公开春茶鲜叶、晒青毛茶与产地采购参考价研究。看价格层级、地块分化与市场格局，不制造“真实成交指数”。</p>
+      <div class="metrics">
+        <div class="metric"><b>10 年</b><span>实际研究区间，数据截至 2026-08-01</span></div>
+        <div class="metric"><b>15 条</b><span>可直接用于判断市场的明显趋势</span></div>
+        <div class="metric"><b>5 板块</b><span>班章、易武、冰岛、临沧其他、普洱市</span></div>
+        <div class="metric"><b>72 条</b><span>新增西双版纳古树/大树/小树分档明细，默认展示核心 40</span></div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section id="summary" class="section">
+      <h2>先说结论：不是一条普涨曲线</h2>
+      <p class="lead">公开价格显示的是“市场如何给产地命名和分层”，不是成交量加权后的全市场均价。最稳健的十年图景，是头部早期抬升、成熟名寨高位平台、长尾先承压、微地块继续分化。</p>
+      <div class="grid">
+        <div class="card span7">
+          <div class="finding"><div class="n">1</div><div><h4>2017—2019：头部抬升</h4><p>冰岛与曼松的顶级档位明显上移；但 2019 已出现“个别头部上涨、广泛样本趋稳”。</p></div></div>
+          <div class="finding"><div class="n">2</div><div><h4>2020—2022：高低分化</h4><p>发布方两度指出高端或名山坚挺，同时中低端、非名山和低价茶承压。</p></div></div>
+          <div class="finding"><div class="n">3</div><div><h4>2023—2026：广谱调整，不是同步下跌</h4><p>老班章等成熟锚点回调；薄荷塘一类、米地和部分文化 IP/微地块仍有韧性。</p></div></div>
+          <div class="finding"><div class="n">4</div><div><h4>价差巨大，但不能证明单调扩大</h4><p>顶级与普通原料长期相差两至三位数量级；样本和等级变化阻止我们构造连续价差指数。</p></div></div>
+        </div>
+        <div class="card span5">
+          <h3>2026 最新市场快照</h3>
+          <div class="finding"><div class="n">顶</div><div><h4>米地贡茶园</h4><p><b>76,000元/kg</b>，公开采购价榜首。</p></div></div>
+          <div class="finding"><div class="n">稳</div><div><h4>曼松、薄荷塘一类</h4><p>分别约45,000与25,000元/kg，头部微区仍有韧性。</p></div></div>
+          <div class="finding"><div class="n">降</div><div><h4>老班章</h4><p>古树8,500、混采/大树3,500元/kg，成熟锚回调。</p></div></div>
+          <div class="finding"><div class="n">众</div><div><h4>主流消费带</h4><p>另一发布体系判断300—800元/kg将成为大众主战场。</p></div></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="trends" class="section">
+      <div class="resultTag">RESULTS FIRST｜先看结论</div>
+      <h2 style="margin-top:12px">十五条牵动市场的明显趋势</h2>
+      <p class="lead">这些不是把所有山头平均后的“指数”，而是价格位置、等级裂变和市场注意力中最稳定、最有解释力的信号。红色偏弱，金色偏强，紫色代表明显分化。</p>
+      <div class="trendGrid">
+        <article class="trendCard down"><div class="signal">01｜成熟锚回调</div><h3>老班章：1.2万平台被打破</h3><div class="number">12,000 → 8,500/kg</div><p>高等级从2019—2024的平台降至2026；混采/大树由约7,000降至3,500，次等级调整更深。</p></article>
+        <article class="trendCard down"><div class="signal">02｜争议焦点</div><h3>贺开：不是崩盘，是上沿收窄</h3><div class="number">约1,500—4,500 → 1,800—3,200/kg</div><p>跨年标签并不完全一致，但更像长期横盘偏弱；“持续暴跌”缺少同口径证据。</p></article>
+        <article class="trendCard split"><div class="signal">03｜班章内部</div><h3>班盆承接中高价，老曼峨信号冲突</h3><div class="number">班盆 2,800—4,000/kg</div><p>班盆仍明显低于老班章；老曼峨2026预报价600—800与2025高等级表差异巨大，不能直接写成暴跌。</p></article>
+        <article class="trendCard split"><div class="signal">04｜等级经济</div><h3>冰岛不是一个价格，而是一座价格金字塔</h3><div class="number">老寨 2.6万—9.5万/kg</div><p>老寨一类、二类、大树和五寨外围拉开巨大梯度；名称“冰岛”本身已成为溢价入口。</p></article>
+        <article class="trendCard up"><div class="signal">05｜性价比稳定</div><h3>小户赛十年仍在数千元带</h3><div class="number">约1,500—3,300/kg</div><p>没有复制冰岛老寨的超级化，是理解勐库甜柔取向时更现实的入口。</p></article>
+        <article class="trendCard down"><div class="signal">06｜名寨调整</div><h3>昔归：2021—2023见顶后回落</h3><div class="number">12,000 → 8,500/kg</div><p>仍是临沧头部，但最新价格不再支持单边上升叙事；那罕、邦东成为更低成本的板块参照。</p></article>
+        <article class="trendCard up"><div class="signal">07｜易武顶级微区</div><h3>薄荷塘一类抗跌，二类回落</h3><div class="number">一类 22,000 → 25,000/kg</div><p>一类2022—2026小幅上升，二类降至9,000；稀缺性溢价集中在最窄等级。</p></article>
+        <article class="trendCard split"><div class="signal">08｜高位平台</div><h3>曼松：顶级稳定，广义产区价很宽</h3><div class="number">顶级约45,000/kg</div><p>王子山古树维持头部，但2026村寨体系给出1,600—10,900，说明“曼松”地理和树级跨度极大。</p></article>
+        <article class="trendCard up"><div class="signal">09｜微区注意力</div><h3>哆依树、天门山继续获得溢价</h3><div class="number">8,500—55,000/kg</div><p>2026预报价称哆依树微涨、天门山上升；它们代表易武注意力继续向高杆和极窄地块下沉。</p></article>
+        <article class="trendCard"><div class="signal">10｜成熟易武</div><h3>麻黑没有超级化，反而更适合做基准</h3><div class="number">约2,400—4,000/kg</div><p>长期处于数千元带，是辨认易武风格与微地块溢价之间差异的重要参照。</p></article>
+        <article class="trendCard down"><div class="signal">11｜价格回归</div><h3>犀牛塘2026下调约13%</h3><div class="number">6,200—15,600/kg</div><p>仍属小众精品高价区，但发布方已明确称其价格理性回归，是新兴山头松动的典型。</p></article>
+        <article class="trendCard split"><div class="signal">12｜普洱市双层化</div><h3>贡茶园与大产区脱钩</h3><div class="number">米地 76,000 vs 迷帝 1,200—2,200/kg</div><p>同音名称也可能对应完全不同的地理尺度；核心园溢价不能代表整个墨江或普洱市。</p></article>
+        <article class="trendCard up"><div class="signal">13｜文化IP</div><h3>景迈申遗提升注意力，不等于原料全面暴涨</h3><div class="number">1,000—1,800 → 1,800—3,000/kg</div><p>官方蓝皮书确认2025为1,000—1,800；此前媒体的“1万—1.8万”多写了一个零。</p></article>
+        <article class="trendCard up"><div class="signal">14｜新高价叙事</div><h3>钉耙山、凤凰窝进入普洱市头部</h3><div class="number">1.2万—6万/kg</div><p>公开记录时间短，能证明市场开始单独定价，不能证明长期上涨已经成立。</p></article>
+        <article class="trendCard down"><div class="signal">15｜行业底盘</div><h3>300—800元/kg正在成为大众主战场</h3><div class="number">150—400元/500g</div><p>2026发布方将这一价带描述为中端消费主流；名山价格故事与行业最大量级市场正在分离。</p></article>
+      </div>
+    </section>
+
+    <section id="timeline" class="section">
+      <h2>三个阶段，三种市场逻辑</h2>
+      <div class="stages">
+        <article class="card stage"><div class="year">2017—2019</div><h3>头部抬升与树级化</h3><p>价格表从“山头”走向老树/古树、一类/二类。曼松与冰岛抬升最清楚，老班章开始形成约 1.2 万元的长期锚。</p></article>
+        <article class="card stage"><div class="year">2020—2022</div><h3>高端坚挺与长尾承压</h3><p>疫情、流通与库存使中低端先承压；名山仍供不应求。2020 国有林政策还造成部分山头主动不发布。</p></article>
+        <article class="card stage"><div class="year">2023—2026</div><h3>调整、分层与双体系</h3><p>多数或中低端下调，但最高等级、极窄地块与文化 IP 抗跌。两套公开体系对 2026 方向给出相反判断。</p></article>
+      </div>
+      <div class="grid" style="margin-top:18px">
+        <div class="card span7">
+          <h3>代表性高等级价格区间</h3>
+          <div class="sub">对数坐标；每年只画公开上下限，不插值、不跨缺失连线。颜色提示可比性。</div>
+          <div class="control"><label>选择山头 <select id="rangeSelect"></select></label></div>
+          <div class="legend"><span><i class="dot" style="background:#11634d"></i>较可比</span><span><i class="dot" style="background:#c99a3d"></i>大体可比</span><span><i class="dot" style="background:#a74335"></i>仅作层级/案例</span></div>
+          <div id="rangeChart" class="chart"></div>
+        </div>
+        <div class="card span5">
+          <h3>年度头部梯队</h3>
+          <div class="sub">同年榜单快照，不等同品质排名；选取公开报道可核验的高等级。</div>
+          <div class="control"><label>年份 <select id="rankYear"><option>2023</option><option>2024</option><option>2025</option><option>2026</option></select></label></div>
+          <div id="rankChart" class="chart"></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="regions" class="section">
+      <h2>五个板块：价格位置与内部结构</h2>
+      <div class="regionTabs" id="regionTabs"></div>
+      <div class="card" id="regionContent"></div>
+      <div class="grid" style="margin-top:18px">
+        <div class="card span7"><h3>等级分化：最高档与次等级</h3><div class="sub">空缺年份不连线。老班章次等级在 2024—2026 下调快于古树；薄荷塘一类保持强势而二类回落。</div><div id="gradeChart" class="chart"></div></div>
+        <div class="card span5"><h3>核心判断</h3>
+          <div class="finding"><div class="n">班</div><div><h4>班章：高位后调整</h4><p>不是十年最强上升样本；成熟品牌锚稳定，次等级降得更快。</p></div></div>
+          <div class="finding"><div class="n">冰</div><div><h4>冰岛：高价与口径细分</h4><p>一类、二类、大树、中小树让内部层级更透明，也让精确同比更困难。</p></div></div>
+          <div class="finding"><div class="n">易</div><div><h4>易武：微地块超级化</h4><p>薄荷塘、曼松进入顶层；麻黑等成熟产区并未同步超级化。</p></div></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="micro" class="section">
+      <div class="resultTag">35+ MICRO ORIGINS｜微产区雷达</div>
+      <h2 style="margin-top:12px">小微产区：从寨名、地块到高杆树级</h2>
+      <p class="lead">这里不再只挑五个故事，而是把班章/勐海、易武、勐库/临沧和普洱市的微区放在同一张雷达里。价格采用2025代表表或2026最新公开区间；点击筛选可比较不同板块。</p>
+      <div class="card">
+        <div class="microControls"><label>板块 <select id="microRegion"><option value="all">全部</option><option>班章/勐海</option><option>易武/象明</option><option>冰岛/临沧</option><option>普洱市</option></select></label><label>价位 <select id="microTier"><option value="all">全部</option><option value="top">顶级核心</option><option value="high">高价微区</option><option value="mid">成熟中价</option><option value="daily">日常长尾</option></select></label><span id="microCount" class="pill x"></span></div>
+        <div id="microGrid" class="microGrid"></div>
+      </div>
+      <div class="notice"><b>最值得继续跟踪的七个微区：</b>薄荷塘、哆依树、天门山、犀牛塘、绿水塘/磨烈、墨江凤凰窝、钉耙山。它们分别代表顶级等级坚挺、新注意力上移、价格回归和普洱市微地块高价化。</div>
+    </section>
+
+    <section id="premium" class="section">
+      <div class="resultTag">PRICE PREMIUM｜统一换算 500g</div>
+      <h2 style="margin-top:12px">2025 原料溢价全景：同一斤茶，价格差到哪里</h2>
+      <p class="lead">2026完整108山头底表未公开，因此这一张采用覆盖更完整的2025代表性毛茶参考表；所有区间从“元/公斤”除以2，换算为“元/500g”。这是原料成本代理，不是357g茶饼或品牌成品零售价。</p>
+      <div class="premiumKey"><div class="tier1"><b>顶级核心</b><br>≥5,000元/500g</div><div class="tier2"><b>高价微区</b><br>2,000—4,999元/500g</div><div class="tier3"><b>成熟中价</b><br>750—1,999元/500g</div><div class="tier4"><b>日常长尾</b><br>&lt;750元/500g</div></div>
+      <div class="card">
+        <div class="control"><label>板块 <select id="premiumRegion"><option value="all">全部板块</option><option>班章/勐海</option><option>易武/象明</option><option>冰岛/临沧</option><option>普洱市</option></select></label><label>等级 <select id="premiumTier"><option value="all">全部价位</option><option value="top">顶级核心</option><option value="high">高价微区</option><option value="mid">成熟中价</option><option value="daily">日常长尾</option></select></label><span id="premiumCount" class="pill x"></span></div>
+        <div class="sub">横轴为元/500g，对数坐标；线段表示公开上下限，中点仅用于排序。悬停查看原始等级与来源性质。</div>
+        <div id="premiumChart" class="chart" style="min-height:760px"></div>
+      </div>
+      <div class="grid" style="margin-top:16px">
+        <div class="card span6"><h3>一眼看懂名寨溢价</h3><p>冰岛老寨古树中点约21,500元/500g，而小户赛古树约1,175元；老班章古树约7,000元，而贺开约1,250元；薄荷塘一类约11,750元，而麻黑约1,625元。</p></div>
+        <div class="card span6"><h3>真正昂贵的是“最窄标签”</h3><p>价格最高的往往不是一个大茶区，而是“老寨＋一类”“王子山＋古树”“皇家古茶园＋一类”“下茶地＋一类”。每增加一层可传播的稀缺标签，价格梯度都会被重新拉开。</p></div>
+      </div>
+    </section>
+
+    <section id="value" class="section">
+      <div class="resultTag">TASTING ROUTES｜20%预算学习80%板块风格</div>
+      <h2 style="margin-top:12px">我的推荐：先买“风格入口”，再决定要不要付名寨溢价</h2>
+      <p class="lead">“80%风味”是品饮学习策略，不是化学或盲评证明：目标是在相邻生态和工艺条件下，先认识一个板块常见的香气、苦甜、汤感和回甘，再判断顶级寨名是否值得。下列百分比按2025公开原料区间中点估算，不是零售价承诺。</p>
+      <div class="valueGrid">
+        <article class="valueCard"><h3>冰岛甜柔系列</h3><div class="route"><b>冰岛老寨</b><span class="routeArrow">→</span>地界/南迫<span class="routeArrow">→</span><b>小户赛</b>、大户赛</div><p>先从小户赛建立勐库香甜、柔润和回甘的基准，再用地界或南迫观察冰岛五寨的提升，最后才碰老寨。</p><span class="saving">小户赛约为老寨原料中点的 5%</span></article>
+        <article class="valueCard"><h3>班章力量系列</h3><div class="route"><b>老班章</b><span class="routeArrow">→</span>班盆<span class="routeArrow">→</span><b>贺开</b>、帕沙、老曼峨甜茶</div><p>贺开适合学习勐海厚度与回甘，老曼峨用来理解苦底，班盆则是距离老班章更近的中间阶梯。</p><span class="saving">贺开约为老班章原料中点的 18%</span></article>
+        <article class="valueCard"><h3>易武香柔系列</h3><div class="route"><b>薄荷塘/曼松</b><span class="routeArrow">→</span>弯弓/百花潭<span class="routeArrow">→</span><b>麻黑</b>、落水洞、张家湾</div><p>麻黑是最好的易武基准之一；张家湾和落水洞适合低成本确认你是否真的喜欢易武取向，再决定是否升级到微地块。</p><span class="saving">麻黑约为薄荷塘一类中点的 14%</span></article>
+        <article class="valueCard"><h3>昔归岩韵系列</h3><div class="route"><b>昔归</b><span class="routeArrow">→</span><b>那罕</b>、邦东、曼岗</div><p>那罕和邦东更适合用来学习临沧东部的香气与骨架；如果盲饮并不喜欢，就没有必要为昔归寨名支付六倍以上。</p><span class="saving">那罕约为昔归原料中点的 16%</span></article>
+        <article class="valueCard"><h3>普洱市生态香系列</h3><div class="route"><b>困鹿山/凤凰窝/米地贡园</b><span class="routeArrow">→</span><b>景迈大寨</b>、邦崴、千家寨、无量山</div><p>先用景迈和邦崴建立生态香与汤感基准，再比较困鹿山或凤凰窝；不要把“贡茶园”溢价误当成整个普洱市的普遍价格。</p><span class="saving">景迈约为凤凰窝中点的 8%</span></article>
+        <article class="valueCard"><h3>古六山小叶种/传统线</h3><div class="route"><b>曼松/猫耳朵</b><span class="routeArrow">→</span><b>倚邦</b>、革登、莽枝、攸乐</div><p>想理解传统六山，不必从曼松开始。倚邦、革登和莽枝提供更低成本的横向比较，也更容易辨认自己偏好的香气与细腻度。</p><span class="saving">倚邦约为曼松古树中点的 7%</span></article>
+      </div>
+      <div class="notice"><b>购买顺序建议：</b>先买每个候选25—50g同年份、同工艺小样，盲饮两轮；只有当你能稳定辨认并偏好该板块，再升级到名寨。公开原料价只用于识别溢价，不用于判断某款成品真伪或合理零售价。</div>
+    </section>
+
+    <section class="section">
+      <h2>顶级与普通原料：差距长期巨大</h2>
+      <div class="gapCards">
+        <div class="gap"><b>≈417×</b><span>2017 冰岛老寨中点 vs 大理南涧小树中点</span></div>
+        <div class="gap"><b>≈267×</b><span>2020 曼松古树 vs 流水村小树</span></div>
+        <div class="gap"><b>≥560×</b><span>2022 冰岛一类最低价 vs 非名山不足百元</span></div>
+        <div class="gap"><b>95—253×</b><span>2026 米地古树 vs 另一体系所称中端主流</span></div>
+      </div>
+      <div class="notice"><b>不能画成连续“价差指数”。</b> 这些横截面的样本、等级和发布体系不同。可以支持“两至三位数量级价差长期存在”，不能支持“价差十年单调扩大”。</div>
+    </section>
+
+    <section id="tfdata" class="section">
+      <div class="resultTag">NEW SOURCE AUDIT｜茶农之家原件</div>
+      <h2 style="margin-top:12px">“1550 村寨”能拿到多少真实数据？</h2>
+      <p class="lead">拿到了研究会 177 页官方蓝皮书，但没有拿到 1550 个村寨的逐村底表。公开网页可审计部分是 9 条 2023—2025 官方连续样本和 20 个有明确数值的 2026 山头；用户随后提供的“西双版纳产区山头价格汇总”截图又补充了 72 条分古树/大树/小树记录。截图本身未印年份，因贺开、天门山一类与 2026 摘要完全吻合，暂作为 2026 候选明细展示，等待原始发布页确认。</p>
+      <div class="gapCards">
+        <div class="gap"><b>177 页</b><span>研究会官方《云茶产业绿色发展蓝皮书（2026）》</span></div>
+        <div class="gap"><b>1405 村</b><span>蓝皮书正文确认的截至 2025 年监测覆盖</span></div>
+        <div class="gap"><b>72 条</b><span>用户截图中的西双版纳分树级明细；年份待原页确认</span></div>
+        <div class="gap"><b>9 条</b><span>官方附表可复核的 2023—2025 连续区间</span></div>
+      </div>
+      <div class="grid" style="margin-top:18px">
+        <div class="card span12">
+          <h3>西双版纳核心 40 山头：古树、大树、小树溢价阶梯</h3>
+          <div class="sub">默认展示 40 个代表样本；可切换查看截图全部 72 条。价格换算为元/500g，横轴为对数尺度。空白就是原图空值，不补齐；同一行三种树级分别展示，不求平均。</div>
+          <div class="control"><label>样本 <select id="xsbnaScope"><option value="key">核心 40</option><option value="all">全部 72</option></select></label><label>乡镇 <select id="xsbnaTown"><option value="all">全部乡镇</option><option>布朗山乡</option><option>勐混镇</option><option>格朗和乡</option><option>勐宋乡</option><option>西定乡</option><option>易武镇</option><option>象明乡</option><option>瑶区乡</option></select></label><label>树级 <select id="xsbnaGrade"><option value="all">古树＋大树＋小树</option><option value="ancient">仅古树</option><option value="big">仅大树</option><option value="small">仅小树</option></select></label><span id="xsbnaCount" class="pill b"></span></div>
+          <div class="legend"><span><i class="dot" style="background:#a74335"></i>古树</span><span><i class="dot" style="background:#c99a3d"></i>大树</span><span><i class="dot" style="background:#2f8b6b"></i>小树</span></div>
+          <div id="xsbnaChart" class="chart" style="min-height:920px"></div>
+        </div>
+        <div class="card span12">
+          <h3>2026 新闻摘要：20 个跨产区预报价区间</h3>
+          <div class="sub">按公斤区间除以 2，仅用于原料价格比较；不是 500g 成品包装零售价。横轴为对数尺度，避免冰岛、天门山遮蔽普通价带。</div>
+          <div class="control"><label>板块 <select id="tfRegion"><option value="all">全部</option><option value="班章/勐海">班章/勐海</option><option value="易武/象明">易武/象明</option><option value="冰岛/勐库">冰岛/勐库</option><option value="临沧其他">临沧其他</option><option value="普洱市">普洱市</option></select></label><span id="tfCount" class="pill b"></span></div>
+          <div id="tf2026Chart" class="chart" style="min-height:650px"></div>
+        </div>
+        <div class="card span12">
+          <h3>官方附表：9 个核心山头 2023—2025 区间曲线</h3>
+          <div class="sub">每个小图的竖线是年度区间，曲线连接几何中点，只用于观察方向。冰岛、曼松是高位平台；昔归、磨烈回调；景迈、困鹿山、钉耙山上移。</div>
+          <div id="tfTrendChart" class="chart" style="min-height:570px"></div>
+        </div>
+      </div>
+      <div class="notice"><b>使用决定：</b>公开网页的 27 个去重标签继续作为高置信核心池；截图的 72 条明细另设“用户提供、年份待原页确认”证据层，默认只展示其中 40 个代表山头。截图把同名茶区拆成古树/大树/小树，解释力很强，但不是 1550 村寨完整表。蓝皮书承认有限缺口会线性插值、部分电商价格未剔除，且未公开逐村样本量与权重，因此只采用直接印出的区间，不采用其有算术矛盾的综合跌幅。</div>
+    </section>
+
+    <section id="uncertainty" class="section">
+      <h2>不确定性不是脚注，而是结果的一部分</h2>
+      <div class="audit">
+        <div class="check bad"><b>已删除：2026 “累计下跌 42.6%”</b><span>公开报道写指数 100→87.4，数学上是 -12.6%；原表与权重未公开，相关指数不绘图。</span></div>
+        <div class="check"><b>已纠正：2025 景迈多一个零</b><span>研究会官方 PDF 附表为 1,000—1,800 元/kg；媒体页面的 1万—1.8万元不再作为冲突值。</span></div>
+        <div class="check"><b>已拆分：2023—2026 双体系</b><span>山头采购价与村寨预报价分别显示，不平均、不续线。</span></div>
+        <div class="check"><b>已保留：2020 政策性缺失</b><span>部分国有林山头主动不发布，空值不等于退出市场或归零。</span></div>
+        <div class="check"><b>已排除：特殊树与拍卖</b><span>茶王树、茶后、单株、采摘权、包树和品牌特殊单品不进入常规原料曲线。</span></div>
+        <div class="check"><b>已纠正：元/市斤</b><span>2019 冰岛、绿水塘部分鲜叶使用元/市斤；原始单位保留，不冒充元/公斤毛茶。</span></div>
+        <div class="check bad"><b>截图异常值不代修</b><span>章家三队树级倒挂、薄荷塘二类列位异常、铜箐河水印遮挡均保留原状并提示，不推断缺失数字。</span></div>
+      </div>
+      <div class="card" style="margin-top:18px"><h3>核心样本完整度 / 可比性矩阵</h3><div class="sub">绿色较可比，黄色大体可比，红色仅作层级或案例，灰色为空值。点击单元格查看说明。</div><div class="control"><label>筛选板块 <select id="heatFilter"><option value="all">全部</option><option value="班章/勐海">班章/勐海</option><option value="易武/象明">易武/象明</option><option value="冰岛/勐库">冰岛/勐库</option><option value="临沧其他">临沧其他</option><option value="普洱市">普洱市</option></select></label></div><div id="heatmap" class="chart"></div></div>
+    </section>
+
+    <section id="method" class="section">
+      <h2>最后再说方法：两套价格体系不能拼接</h2>
+      <p class="lead">前面的判断已经尽量用可比记录表达；这里保留最必要的阅读边界。空值不补齐，鲜叶不换算成毛茶，茶王树、单株、拍卖、包树和成品零售全部排除。</p>
+      <div class="grid">
+        <div class="card span6"><h3>体系 A｜昆明春茶周</h3><div class="sub">2017—2026，50→108个山头</div><p>更适合观察名山和高等级价格位置；但名单、树级与采法逐年变化。</p><span class="pill a">主趋势</span></div>
+        <div class="card span6"><h3>体系 B｜村寨预报价</h3><div class="sub">2023—2026；蓝皮书确认 1405 村，2026 发布称 1550 村</div><p>适合观察覆盖、产区叙事和最新区间；完整逐村底表未公开，属于预报价，不是成交审计底账。</p><span class="pill b">最新结构</span></div>
+        <div class="card span12"><h3>同一名称，两套观察</h3><div class="sub">绿色圆点为体系A采购价，金色横线为体系B预报价。差异本身就是结果：大山头名称往往覆盖不同地块和等级。</div><div class="control"><label>年份 <select id="dualYear"><option>2025</option><option>2026</option></select></label></div><div id="dualChart" class="chart"></div></div>
+      </div>
+    </section>
+
+    <section id="sources" class="section">
+      <h2>来源与证据边界</h2>
+      <p class="lead">相同价格表的多个转载网站只计一个发布事件。以下优先列近母源、权威媒体和明确回溯到春茶周的完整表。</p>
+      <ol class="sourceList">
+        <li><a href="https://www.chinanews.com.cn/m/cj/2017/04-19/8203460.shtml">2017 首届昆明春茶周｜中新网</a></li>
+        <li><a href="https://www.jiemian.com/article/1300947.html">2017 完整扩展表｜界面/说茶网</a></li>
+        <li><a href="https://news.sina.cn/2018-04-19/detail-ifzihneq1541114.d.html">2018 60 山头完整表｜云南网稿件转载</a></li>
+        <li><a href="https://m.kunming.cn/news/c/2019-04-25/12632150.shtml">2019 69 山头发布｜云南日报/昆明信息港</a></li>
+        <li><a href="https://m.ipucha.com/show-11-912.html">2019 完整表｜爱普茶网（明确母源）</a></li>
+        <li><a href="https://m.kunming.cn/news/c/2020-04-24/12924431.shtml">2020 100 山头完整表｜昆明信息港</a></li>
+        <li><a href="https://news.sina.cn/2021-04-30/detail-ikmxzfmk9870059.d.html">2021 76 山头｜春城晚报/新浪</a></li>
+        <li><a href="https://yndaily.yunnan.cn/content/202204/20/content_64159.html">2022 99 山头｜云南日报</a></li>
+        <li><a href="https://www.chinanews.com.cn/cj/2022/04-19/9733368.shtml">2022 市场分化｜中新网</a></li>
+        <li><a href="https://m.kunming.cn/news/c/2023-05-04/13699421.shtml">2023 111 山头、125 村寨｜昆明信息港</a></li>
+        <li><a href="https://www.yn.news.cn/20240422/ef797fcddf774feeb5ee8249cff17602/c.html">2024 80 山头｜新华网云南频道</a></li>
+        <li><a href="https://www.chinanews.com/cj/2024/04-19/10202068.shtml">2024 代表性采购价｜中新网</a></li>
+        <li><a href="https://finance.sina.com.cn/roll/2025-04-28/doc-ineutcss8957954.shtml">2025 87 山头｜中新网转载</a></li>
+        <li><a href="https://www.cfsn.cn/news/detail/32/291917.html">2025 1405 村寨预报价｜中国食品安全网</a></li>
+        <li><a href="https://www.kunming.cn/news/c/2025-04-08/13931143.shtml">2025 茶农之家核心村寨区间｜昆明信息港</a></li>
+        <li><a href="https://www.chinanews.com.cn/cj/2026/04-24/10610494.shtml">2026 108 山头采购价｜中新网</a></li>
+        <li><a href="https://www.kunming.cn/news/c/2026-04-24/14036057.shtml">2026 1550 村寨预报价｜昆明信息港</a></li>
+        <li><a href="https://cdnproduce.yntv.cn/ysxw/QMTNRK_YUNSHI/C6198C5723C545A0B5E963778716D652/fe84f461a38017c6b5a15088bb4873a8.pdf">《云茶产业绿色发展蓝皮书（2026）》｜研究会官方 PDF</a></li>
+        <li><a href="https://yn.people.com.cn/n2/2024/0316/c372455-40777857.html">2024 茶农之家预报价方法｜人民网云南</a></li>
+        <li><a href="https://www.kunming.cn/news/c/2026-04-27/14036760.shtml">2026 春茶周采集方法｜昆明信息港</a></li>
+        <li><a href="https://m.ipucha.com/show-11-8133.html">2020—2022 逐项对照｜爱普茶网</a></li>
+        <li><a href="https://www.3ctea.com/pu-er-cha-jia-ge-2025/">2025 163山头分等级参考表｜中国茶叶百科（低权重二级表）</a></li>
+        <li><a href="https://www.ynsnt.cn/snzx/202604/20260424_11149.html">2026 核心村寨区间与小微产区｜云南三农通转载都市时报</a></li>
+        <li>用户于 2026-08-01 提供“西双版纳产区山头价格汇总”截图｜72 行、古树/大树/小树分档；年份与原始发布页待确认</li>
+      </ol>
+      <div class="notice"><b>本报告能说明：</b>公开市场如何给产地命名、分级和定价，以及价格层级如何变化。<br><b>不能说明：</b>全产区真实加权成交均价、成交量、利润、品质排序、收藏回报或未来价格。</div>
+    </section>
+
+    <section id="atlas" class="section">
+      <div class="finalChart">
+        <div class="kicker" style="color:#f2cb7b">FINAL VISUAL｜最后一张全景图</div>
+        <h2 style="margin-top:10px">2017—2026 山头价格曲线宇宙</h2>
+        <p class="sub">每个小图是一条公开高等级/代表等级轨迹；纵轴统一使用对数尺度，空缺不连线。用板块筛选观察哪些是高位平台、哪些上升、哪些回调、哪些只有短期高价记录。</p>
+        <div class="control"><label>板块 <select id="atlasRegion"><option value="all">全部板块</option><option value="班章/勐海">班章/勐海</option><option value="易武/象明">易武/象明</option><option value="冰岛/勐库">冰岛/勐库</option><option value="临沧其他">临沧其他</option><option value="普洱市">普洱市</option></select></label><label><input id="atlasLabel" type="checkbox" checked> 显示价格标签</label><span id="atlasCount" class="pill b"></span></div>
+        <div id="atlasChart" class="chart" style="min-height:980px"></div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="foot"><div class="footin"><b>云南普洱茶主要产区春茶价格走势｜2017—2026</b><p>离线单文件报告。图表由内嵌原生 SVG/JavaScript 生成，不依赖 CDN 或临时在线服务。独立审查已完成，数据截止 2026-08-01。</p></div></footer>
+
+<script>
+const years=[2017,2018,2019,2020,2021,2022,2023,2024,2025,2026];
+const coverage=[50,60,69,100,76,99,111,80,87,108];
+const COLORS={A:'#11634d',B:'#c99a3d',C:'#a74335',X:'#c8c4ba'};
+const series={
+ '老班章':{region:'班章/勐海',data:[[6000,12000,'C','老树'],[7000,11000,'B','老树'],[12000,12000,'B','古树；另有混采6000—8000'],[12000,12000,'B','挑采'],[12000,12000,'B','挑采'],[11000,12000,'B','挑采'],[12000,12000,'B','古树'],[12000,12000,'B','古树'],[9000,9000,'B','古树'],[8500,8500,'B','古树']]},
+ '贺开':{region:'班章/勐海',data:[[1500,3500,'C','邦盆/曼弄古树范围'],null,null,null,[1800,4500,'C','公开历年盘点'],null,null,[1500,2700,'C','茶区参考价'],[1800,3200,'C','二级代表表'],[1800,3200,'C','体系B预报价']]},
+ '冰岛老寨':{region:'冰岛/勐库',data:[[35000,40000,'C','老树'],[38000,42000,'B','老树'],[46000,46000,'B','一类古树'],[28000,36000,'C','古树混采'],[58000,60000,'B','一类古树'],[56000,70000,'B','一类古树'],[45000,45000,'C','古树'],[35000,35000,'C','勐库冰岛古树'],[48000,48000,'C','勐库冰岛古树'],[35000,35000,'C','老寨一类']]},
+ '曼松':{region:'易武/象明',data:[[16000,22000,'C','老树'],[32000,36000,'B','老树'],[40000,40000,'B','古树'],[40000,40000,'B','古树'],[40000,60000,'B','古树'],[35000,45000,'B','古树'],[50000,50000,'B','王子山古树'],[48000,48000,'B','古树'],[45000,45000,'B','古树'],[45000,45000,'B','王子山古树']]},
+ '薄荷塘一类':{region:'易武/象明',data:[[18000,20000,'C','高杆老树'],[20000,23000,'B','一类毛茶'],[20000,20000,'B','一类毛茶'],null,null,[22000,22000,'B','一类古树'],[22000,22000,'B','一类古树'],[24000,24000,'B','一类古树'],[24000,24000,'B','一类古树'],[25000,25000,'B','一类古树']]},
+ '昔归':{region:'临沧其他',data:[[4500,6000,'C','老树'],[8000,9500,'B','老树'],[8000,9000,'A','古树'],[7500,9000,'A','古树'],[11000,12000,'A','古树'],[8000,10000,'A','古树'],[12000,12000,'A','古树'],[11000,11000,'A','古树'],[8500,8500,'A','古树'],null]},
+ '绿水塘':{region:'冰岛/勐库',data:[[9000,11000,'C','老树'],[9500,12000,'A','老树毛茶'],[10000,12000,'A','毛茶'],[11000,14000,'B','混采/挑采'],[15000,17000,'B','未标采法'],[15000,21000,'B','混采/挑采'],[19000,19000,'B','古树'],null,null,null]},
+ '麻黑':{region:'易武/象明',data:[[2500,3500,'C','老树'],[1600,1900,'B','老树'],[1800,2500,'A','古树'],[1600,2000,'A','古树'],[2000,2000,'B','未标等级'],null,null,null,null,null]},
+ '小户赛':{region:'冰岛/勐库',data:[[1500,2200,'C','老树'],[1600,1800,'B','老树'],[1500,2500,'B','古树'],[1200,1300,'A','古树'],[1900,2200,'A','古树'],[1900,2200,'A','古树'],null,null,null,null]},
+ '忙肺':{region:'临沧其他',data:[[500,800,'C','老树'],[500,650,'B','老树'],[500,650,'A','古树'],[350,480,'B','未标等级'],[600,800,'B','毛茶'],[600,800,'B','原料'],null,null,null,null]},
+ '景迈大寨/山':{region:'普洱市',data:[[1000,1800,'C','整山老树'],[800,1000,'C','整山混采'],[800,1200,'B','大寨古树'],[500,750,'C','大寨未分级'],[1500,1600,'A','大寨古树'],[1500,1600,'A','大寨古树'],null,[1500,1500,'B','景迈山古树'],null,null]},
+ '景迈芒景':{region:'普洱市',data:[null,[600,800,'C','混采'],[600,800,'A','古树'],[600,800,'A','古树'],[600,800,'A','古树'],[400,500,'B','古树'],null,null,null,null]},
+ '邦崴':{region:'普洱市',data:[[600,1300,'C','未标等级'],[800,1200,'B','毛茶'],[800,1000,'A','古树'],[600,1000,'A','古树'],[800,800,'A','古树'],[800,800,'A','古树'],null,null,null,null]},
+ '困鹿山':{region:'普洱市',data:[[2000,3000,'C','泛山头'],null,[50000,80000,'C','皇家古茶园一类毛茶'],[8000,12000,'C','古茶园大树'],[35000,40000,'C','古树'],[35000,40000,'C','古树'],[35000,35000,'C','古树'],[48000,48000,'C','古树'],[45000,45000,'C','古树'],null]},
+ '米地贡茶园':{region:'普洱市',data:[null,null,null,null,null,[28000,56000,'C','古树'],[28000,35000,'C','古树'],[76000,76000,'B','古树'],[76000,76000,'B','古树'],[76000,76000,'B','古树']]}
+};
+const prequotes={
+ 2025:{'老班章':[10000,15600],'冰岛老寨':[26000,95000]},
+ 2026:{'老班章':[8000,15000],'冰岛老寨':[26000,95000],'曼松':[1600,10900]}
+};
+const purchase={2025:{'老班章':9000,'冰岛老寨':48000},2026:{'老班章':8500,'冰岛老寨':35000,'曼松':45000}};
+const rankings={
+ 2023:[['曼松',50000],['冰岛老寨',45000],['困鹿山',35000],['米地',31500],['墨江凤凰窝',30000],['薄荷塘',22000],['绿水塘',19000],['昔归',12000],['老班章',12000]],
+ 2024:[['米地',76000],['曼松',48000],['困鹿山',48000],['冰岛',35000],['薄荷塘',24000],['团结丫口',18000],['老班章',12000],['昔归',11000],['景迈山',1500]],
+ 2025:[['米地',76000],['冰岛',48000],['曼松',45000],['困鹿山',45000],['凤凰窝',25000],['薄荷塘',24000],['团结丫口',19000],['老班章',9000],['昔归',8500]],
+ 2026:[['米地',76000],['青竹堂',68000],['曼松',45000],['冰岛老寨',35000],['凤凰窝',28000],['薄荷塘',25000],['老班章',8500]]
+};
+const regionCopy={
+ '班章/勐海':{title:'班章与勐海',verdict:'成熟 IP 从“持续涨价”转向“等级保卫战”。',text:'老班章约 1.2 万元的高等级锚在 2019—2024 多次出现，2025—2026 回调；混采/大树下降更快。班盆、老曼峨长期明显低于老班章，板块内部并未被一个品牌名抹平。'},
+ '易武/象明':{title:'易武与象明',verdict:'最高微地块超级化，成熟普通山头未同步。',text:'曼松早期上升后形成高位平台；薄荷塘一类 2022—2026 从 2.2 万升到 2.5 万，而二类回落。麻黑长期处于数千元，显示价格重心集中于少数极窄地块。'},
+ '冰岛/勐库':{title:'冰岛与勐库',verdict:'高价位置稳固，内部分类与口径变化最剧烈。',text:'冰岛一类/二类/大树/中小树形成等级矩阵；绿水塘进入高价小微梯队；小户赛则长期在 1200—2500 元附近，是成熟但未超级化的对照。'},
+ '临沧其他':{title:'临沧其他',verdict:'昔归完成名寨化后调整，普通产区更稳定。',text:'昔归在 2018—2021 上移，2024—2025 回落；忙肺长期处在数百元价带。临沧不是整体同步上涨，而是少数名寨和微产区脱离长尾。'},
+ '普洱市':{title:'普洱市',verdict:'地理尺度改变，比板块平均涨价更重要。',text:'景迈、芒景、邦崴早期多在数百至一两千元；困鹿山皇家古茶园、米地贡茶园等更窄地块进入数万元。泛山头与核心园不可连线。'}
+};
+const tf2026=[
+ ['冰岛老寨','冰岛/勐库',26000,95000],['老班章','班章/勐海',8000,15000],['曼松','易武/象明',1600,10900],['贺开','班章/勐海',1800,3200],['班盆','班章/勐海',2800,4000],['老曼峨','班章/勐海',600,800],
+ ['昔归','临沧其他',6800,10600],['磨烈','冰岛/勐库',3600,6200],['小户赛','冰岛/勐库',1600,3300],['钉耙山','普洱市',29000,60000],['景迈山','普洱市',1800,3000],['困鹿山','普洱市',16800,37800],
+ ['墨江凤凰窝','普洱市',12000,30000],['刮风寨','易武/象明',4500,6500],['麻黑','易武/象明',2400,3200],['哆依树','易武/象明',8500,15000],['弯弓','易武/象明',4000,6500],['天门山','易武/象明',40000,55000],
+ ['犀牛塘','班章/勐海',6200,15600],['砍盆箐','普洱市',2300,3400]
+].map(r=>({name:r[0],region:r[1],low:r[2],high:r[3]}));
+const tfCore=[
+ {name:'冰岛老寨',region:'冰岛/勐库',vals:[[26000,95000],[26000,95000],[26000,95000]]},
+ {name:'老班章',region:'班章/勐海',vals:[[12600,25000],[11000,20000],[10000,15600]]},
+ {name:'景迈山',region:'普洱市',vals:[[600,1200],[800,1500],[1000,1800]]},
+ {name:'曼松王子山',region:'易武/象明',vals:[[18000,45000],[18000,45000],[18000,45000]]},
+ {name:'昔归',region:'临沧其他',vals:[[9000,15000],[8000,13000],[7000,11000]]},
+ {name:'困鹿山',region:'普洱市',vals:[[10000,23000],[11000,25000],[12000,28000]]},
+ {name:'钉耙山',region:'普洱市',vals:[[40000,50000],[50000,55000],[55000,60000]]},
+ {name:'绿水塘',region:'冰岛/勐库',vals:[[18000,22000],[19000,21000],[19000,21000]]},
+ {name:'磨烈',region:'冰岛/勐库',vals:[[4500,8000],[4000,7000],[3600,6200]]}
+];
+const xsbna72=[
+ ['老班章','布朗山乡',12000,18000,8000,10000,2500,3500],['老曼峨','布朗山乡',2800,3600,1300,1800,420,600],['新班章','布朗山乡',3500,6000,1800,3620,400,800],['班盆老寨','勐混镇',2000,6800,1600,3800,320,800],
+ ['坝卡竜','布朗山乡',1600,2400,560,800,160,240],['坝卡囡','布朗山乡',2000,3500,560,800,116,240],['曼兴龙','布朗山乡',1000,1760,560,720,160,240],['章家三队村','布朗山乡',450,630,1600,2100,150,180],
+ ['贺开','勐混镇',1800,3200,900,1500,400,700],['曼弄老寨','勐混镇',1500,2600,500,1500,120,300],['曼弄新寨','勐混镇',1500,2600,900,1200,500,700],['广别老寨村','勐混镇',2200,6000,1100,2000,160,400],
+ ['广别新寨村','勐混镇',2800,4000,1500,2600,200,450],['多依寨','格朗和乡',1000,1600,480,720,120,160],['姑娘寨','格朗和乡',1040,1440,400,560,120,160],['南糯山','格朗和乡',1800,2300,400,800,120,200],
+ ['南糯山半坡','格朗和乡',1700,2100,800,1200,500,800],['帕沙村','格朗和乡',2220,9000,1200,1800,240,600],['石头老寨','格朗和乡',1500,2000,500,800,300,580],['石头新寨','格朗和乡',1400,2000,600,900,150,200],
+ ['犀牛塘','格朗和乡',7200,18000,2400,6000,480,1200],['保塘旧寨','勐宋乡',2000,3600,800,1200,240,600],['滑竹梁子','勐宋乡',2000,7200,1100,1800,480,900],['曼迈','勐宋乡',1500,2400,500,800,180,300],
+ ['曼西良','勐宋乡',null,null,400,500,50,140],['三迈村','勐宋乡',1500,2600,500,700,150,260],['巴达','西定乡',1200,1760,720,960,320,600],['巴达大黑山','西定乡',1000,1200,800,1000,300,500],
+ ['西定村','西定乡',720,1440,320,400,160,240],['章朗村','西定乡',4200,11000,1400,3000,280,720],['白茶园','易武镇',13000,15000,10000,13000,2000,3000],['弯弓凤凰窝高杆','易武镇',18000,20000,12000,16000,2500,3500],
+ ['薄荷塘一类','易武镇',45000,60000,null,null,null,null],['薄荷塘二类','易武镇',null,null,18000,30000,null,null],['黑水梁子','易武镇',2600,3500,1300,1600,400,600],['白沙河','易武镇',2800,3800,1500,2000,500,800],
+ ['茶坪','易武镇',3000,5000,1500,2000,500,600],['茶王树地','易武镇',5000,8000,2800,3800,600,1100],['冷水河','易武镇',12000,18000,null,null,2500,3500],['大漆树','易武镇',1800,3000,700,800,200,400],
+ ['丁家寨','易武镇',1800,4500,1200,1500,700,1000],['哆依树一类','易武镇',40000,55000,16000,20000,2000,3000],['高山寨','易武镇',3600,5400,1200,1800,400,640],['旧庙寨','易武镇',1200,2200,600,1100,200,300],
+ ['落水洞','易武镇',2600,3300,1000,1900,500,600],['麻黑高杆','易武镇',6000,6000,2800,4500,1000,2000],['马叭寨','易武镇',4500,8000,1700,2200,800,1000],['曼洒村','易武镇',2000,3200,700,1100,250,400],
+ ['曼秀村','易武镇',1200,2800,1000,1300,400,600],['三合社','易武镇',1500,3000,700,1000,500,600],['石门坎','易武镇',8000,8000,5000,7000,null,null],['天门山一类','易武镇',40000,55000,null,null,null,null],
+ ['天门山二类','易武镇',null,null,10000,20000,null,null],['香椿林','易武镇',3500,8500,1800,2100,900,1200],['一扇磨','易武镇',2200,4500,900,2200,400,800],['易比村','易武镇',1300,2500,1000,1200,300,800],
+ ['背阴山','象明乡',12000,26000,5000,8000,800,1500],['大黑树林','象明乡',15000,35000,6000,9000,null,null],['革登老寨','象明乡',1200,2000,720,960,400,720],['蛮砖','象明乡',1500,1900,1100,1400,500,900],
+ ['桃子寨','象明乡',1440,2240,880,1200,320,400],['瓦竜','象明乡',4500,6000,2000,3800,400,800],['曼松','象明乡',1800,12200,800,1200,300,600],['曼松王子山','象明乡',36000,90000,12000,30000,2400,6000],
+ ['莽枝','象明乡',1200,1600,800,1040,320,640],['值蚌','象明乡',960,1200,640,800,400,560],['倚邦','象明乡',6000,7800,1600,2800,400,800],['曼拱','象明乡',1000,1600,360,540,140,220],
+ ['猫耳朵','象明乡',9600,24000,5000,8000,null,null],['百花箐','瑶区乡',15000,18000,8000,9600,2500,3500],['蟒蛇箐','瑶区乡',4500,8400,1200,1500,500,700],['铜箐河','瑶区乡',15000,18000,null,null,null,null]
+].map((r,i)=>({seq:i+1,name:r[0],town:r[1],county:['易武镇','象明乡','瑶区乡'].includes(r[1])?'勐腊县':'勐海县',ancient:r[2]==null?null:[r[2],r[3]],big:r[4]==null?null:[r[4],r[5]],small:r[6]==null?null:[r[6],r[7]]}));
+const xsbnaKey=new Set(['老班章','老曼峨','新班章','班盆老寨','贺开','广别老寨村','南糯山','帕沙村','犀牛塘','滑竹梁子','白茶园','弯弓凤凰窝高杆','薄荷塘一类','薄荷塘二类','黑水梁子','白沙河','茶坪','茶王树地','冷水河','大漆树','丁家寨','哆依树一类','高山寨','落水洞','麻黑高杆','石门坎','天门山一类','天门山二类','香椿林','一扇磨','背阴山','大黑树林','蛮砖','瓦竜','曼松','曼松王子山','倚邦','猫耳朵','百花箐','铜箐河']);
+const xsbnaNotes={'章家三队村':'原图古树低于大树，疑似录入或列位异常；不修正','薄荷塘二类':'原图数值位于“大树”列；按原图保留','铜箐河':'原图后两列被水印遮挡；保留为空值'};
+const price2025=[
+ ['老班章古树','班章/勐海','古树',10000,18000],['老班章混采','班章/勐海','混采',3000,6000],['新班章','班章/勐海','古树',3000,5000],['班盆老寨','班章/勐海','古树',2200,3500],['贺开','班章/勐海','古树',1800,3200],['广别老寨','班章/勐海','古树',2500,4000],['老曼峨甜茶','班章/勐海','古树',2500,3300],['那卡','班章/勐海','古树',2600,3500],['帕沙','班章/勐海','古树',1800,3200],['滑竹梁子','班章/勐海','古树',1000,2500],['南糯山拔玛','班章/勐海','古树',1000,2500],['章家三队','班章/勐海','混采',500,1000],
+ ['薄荷塘一类','易武/象明','一类古树',22000,25000],['薄荷塘二类','易武/象明','二类古树',12000,15000],['曼松王子山','易武/象明','古树',35000,60000],['哆依树','易武/象明','古树',9000,12000],['天门山','易武/象明','古树',5000,8000],['弯弓','易武/象明','古树',3800,6000],['白茶园','易武/象明','古树',4000,6500],['百花潭','易武/象明','古树',4500,6000],['铜箐河','易武/象明','古树',4500,6000],['蟒蛇箐','易武/象明','古树',4000,5500],['冷水河高杆','易武/象明','高杆古树',7000,10000],['麻黑','易武/象明','古树',2500,4000],['麻黑石门坎','易武/象明','古树',4000,5500],['落水洞','易武/象明','古树',2000,3000],['高山寨','易武/象明','古树',1800,2200],['张家湾','易武/象明','古树',1500,2000],['倚邦','易武/象明','古树',2800,3600],['猫耳朵','易武/象明','小叶种古树',6000,12000],['革登老寨','易武/象明','古树',1800,2500],['莽枝','易武/象明','古树',1500,2000],['攸乐','易武/象明','古树',1500,2200],
+ ['冰岛老寨','冰岛/临沧','古树',26000,60000],['冰岛老寨大树','冰岛/临沧','大树',6000,12000],['冰岛地界','冰岛/临沧','古树',3000,6000],['冰岛南迫','冰岛/临沧','古树',2500,5500],['冰岛坝歪','冰岛/临沧','古树',2500,5000],['冰岛糯伍','冰岛/临沧','古树',2500,5000],['磨烈/绿水塘','冰岛/临沧','古树',4000,6000],['小荒田','冰岛/临沧','古树',3000,8000],['小户赛','冰岛/临沧','古树',2200,2500],['大户赛','冰岛/临沧','古树',1500,2000],['懂过','冰岛/临沧','古树',1500,2200],['坝糯藤条','冰岛/临沧','古树',900,1500],['昔归','冰岛/临沧','古树',8000,12000],['那罕','冰岛/临沧','古树',1200,2000],['邦东','冰岛/临沧','古树',900,1500],['曼岗','冰岛/临沧','古树',500,1500],['忙肺','冰岛/临沧','古树',1000,2000],
+ ['米地贡茶园','普洱市','核心贡茶园古树',76000,76000],['困鹿山皇家古茶园一类','普洱市','一类古树',16000,24000],['困鹿山皇家古茶园二类','普洱市','二类古树',5000,9000],['景迈大寨','普洱市','古树',1200,1800],['景迈大坪掌','普洱市','古树',1800,2500],['芒景','普洱市','古树',1200,2200],['邦崴','普洱市','古树',1200,2000],['砍盆箐','普洱市','古树',10000,16000],['墨江迷帝','普洱市','广义产区古树',1200,2200],['墨江凤凰窝','普洱市','古树',12000,25000],['千家寨','普洱市','古树',900,1800],['老海塘','普洱市','古树',800,1500],['老乌山','普洱市','古树',800,1000],['景东无量山','普洱市','古树',600,1100],['景东哀牢山','普洱市','古树',500,1000]
+].map(r=>({name:r[0],region:r[1],grade:r[2],low:r[3],high:r[4]}));
+const microNames=new Set(['班盆老寨','贺开','广别老寨','老曼峨甜茶','那卡','滑竹梁子','南糯山拔玛','薄荷塘一类','薄荷塘二类','哆依树','天门山','弯弓','白茶园','百花潭','铜箐河','蟒蛇箐','冷水河高杆','麻黑石门坎','落水洞','高山寨','张家湾','猫耳朵','革登老寨','冰岛地界','冰岛南迫','冰岛坝歪','冰岛糯伍','磨烈/绿水塘','小荒田','小户赛','大户赛','懂过','坝糯藤条','那罕','曼岗','米地贡茶园','困鹿山皇家古茶园一类','困鹿山皇家古茶园二类','景迈大坪掌','芒景','砍盆箐','墨江凤凰窝','千家寨','老海塘','老乌山','景东无量山','景东哀牢山']);
+const microExtra=[
+ {name:'犀牛塘',region:'班章/勐海',grade:'2026预报价',low:6200,high:15600,note:'2026较2025约-13%'},
+ {name:'钉耙山',region:'普洱市',grade:'2026预报价',low:29000,high:60000,note:'公开高价记录仍短'},
+ {name:'金厂河',region:'易武/象明',grade:'古树',low:1500,high:3000,note:'更细地块化名称'},
+ {name:'黑水梁子',region:'易武/象明',grade:'古树',low:3000,high:3500,note:'小微区'},
+ {name:'麻黑大漆树',region:'易武/象明',grade:'古树',low:1800,high:2800,note:'麻黑内部地块'},
+ {name:'正气塘',region:'冰岛/临沧',grade:'古树',low:1000,high:1600,note:'勐库外围'},
+ {name:'大忠山',region:'冰岛/临沧',grade:'古树',low:1500,high:3000,note:'大户赛地块'},
+ {name:'白莺山',region:'冰岛/临沧',grade:'古树',low:1500,high:3000,note:'云县代表'},
+ {name:'苦竹山',region:'普洱市',grade:'古树',low:800,high:1200,note:'日常长尾'},
+ {name:'文山顶',region:'普洱市',grade:'古树',low:800,high:1200,note:'日常长尾'}
+];
+const microData=price2025.filter(r=>microNames.has(r.name)).concat(microExtra);
+const rawRows=[];
+Object.entries(series).forEach(([name,s])=>s.data.forEach((d,i)=>{if(d)rawRows.push({year:years[i],name,region:s.region,system:'A',grade:d[3],low:d[0],high:d[1],comp:d[2],note:d[2]==='C'?'地理/等级口径变化较大':'公开价格信号'});}));
+tf2026.forEach(r=>rawRows.push({name:r.name,year:2026,region:r.region,system:'B',grade:'茶农之家预报价',low:r.low,high:r.high,comp:'C',note:'体系 B；公开报道有明确数值'}));
+rawRows.push({name:'钉耙山',year:2024,region:'普洱市',system:'B',grade:'茶农之家预报价',low:26000,high:38000,comp:'C',note:'体系 B；人民网代表记录'});
+
+const fmt=n=>n==null?'—':Number(n).toLocaleString('zh-CN');
+const svgEl=(tag,attrs={},text='')=>{const e=document.createElementNS('http://www.w3.org/2000/svg',tag);Object.entries(attrs).forEach(([k,v])=>e.setAttribute(k,v));if(text)e.textContent=text;return e};
+const makeSvg=(w=800,h=320)=>{const s=svgEl('svg',{viewBox:`0 0 ${w} ${h}`,preserveAspectRatio:'xMidYMid meet'});return s};
+const tip=document.getElementById('tooltip');
+function bindTip(el,html){el.addEventListener('pointermove',e=>{tip.innerHTML=html;tip.classList.add('show');tip.style.left=Math.min(e.clientX+14,innerWidth-300)+'px';tip.style.top=Math.max(8,e.clientY-20)+'px'});el.addEventListener('pointerleave',()=>tip.classList.remove('show'));}
+
+function renderCoverage(){const root=document.getElementById('coverageChart'),w=560,h=250,m={l:36,r:10,t:12,b:38},svg=makeSvg(w,h),max=120;[0,50,100].forEach(v=>{const y=m.t+(h-m.t-m.b)*(1-v/max);svg.append(svgEl('line',{x1:m.l,x2:w-m.r,y1:y,y2:y,class:'gridline'}),svgEl('text',{x:m.l-7,y:y+4,'text-anchor':'end',class:'tick'},v))});coverage.forEach((v,i)=>{const bw=(w-m.l-m.r)/coverage.length*.62,x=m.l+(i+.19)*(w-m.l-m.r)/coverage.length,y=m.t+(h-m.t-m.b)*(1-v/max),bar=svgEl('rect',{x,y,width:bw,height:h-m.b-y,rx:5,fill:i===9?'#a55a2a':'#2f8b6b'});bindTip(bar,`<b>${years[i]}</b><br>${v} 个公开山头${years[i]===2023?'（另报道125个村寨）':''}`);svg.append(bar,svgEl('text',{x:x+bw/2,y:h-16,'text-anchor':'middle',class:'tick'},String(years[i]).slice(2)),svgEl('text',{x:x+bw/2,y:y-5,'text-anchor':'middle',class:'tick'},v))});root.replaceChildren(svg)}
+
+function renderRange(){const name=document.getElementById('rangeSelect').value||'老班章',root=document.getElementById('rangeChart'),d=series[name].data,w=760,h=330,m={l:58,r:16,t:20,b:48},svg=makeSvg(w,h),min=100,max=100000,log=v=>Math.log10(v),Y=v=>m.t+(h-m.t-m.b)*(1-(log(v)-log(min))/(log(max)-log(min)));[100,1000,10000,100000].forEach(v=>{const y=Y(v);svg.append(svgEl('line',{x1:m.l,x2:w-m.r,y1:y,y2:y,class:'gridline'}),svgEl('text',{x:m.l-8,y:y+4,'text-anchor':'end',class:'tick'},v>=10000?(v/10000)+'万':fmt(v)))});d.forEach((p,i)=>{const x=m.l+(i+.5)*(w-m.l-m.r)/10;svg.append(svgEl('text',{x,y:h-18,'text-anchor':'middle',class:'tick'},years[i]));if(!p){svg.append(svgEl('text',{x,y:h-m.b-5,'text-anchor':'middle',fill:'#aaa','font-size':16},'×'));return}const y1=Y(p[0]),y2=Y(p[1]),c=COLORS[p[2]],line=svgEl('line',{x1:x,x2:x,y1:y1,y2:y2,stroke:c,'stroke-width':8,'stroke-linecap':'round',opacity:.78}),mid=Math.sqrt(p[0]*p[1]),pt=svgEl('circle',{cx:x,cy:Y(mid),r:6,fill:c,stroke:'#fff','stroke-width':2});bindTip(line,`<b>${name}｜${years[i]}</b><br>${fmt(p[0])}${p[1]!==p[0]?'—'+fmt(p[1]):''} 元/公斤<br>${p[3]}<br>可比性：${p[2]}`);bindTip(pt,`<b>${name}｜${years[i]}</b><br>区间中点仅作定位：${fmt(Math.round(mid))}<br>${p[3]}`);svg.append(line,pt)});root.replaceChildren(svg)}
+
+function renderRank(){const yr=+document.getElementById('rankYear').value,rows=rankings[yr],root=document.getElementById('rankChart'),w=520,h=330,m={l:90,r:52,t:10,b:28},svg=makeSvg(w,h),max=80000;rows.forEach((r,i)=>{const y=m.t+i*(h-m.t-m.b)/rows.length+4,bh=(h-m.t-m.b)/rows.length-8,bw=(w-m.l-m.r)*r[1]/max,rect=svgEl('rect',{x:m.l,y,width:bw,height:bh,rx:5,fill:i<3?'#a55a2a':'#2f8b6b',opacity:.88});bindTip(rect,`<b>${yr}｜${r[0]}</b><br>${fmt(r[1])} 元/公斤<br>榜单高等级快照`);svg.append(svgEl('text',{x:m.l-8,y:y+bh/2+4,'text-anchor':'end',class:'tick'},r[0]),rect,svgEl('text',{x:m.l+bw+5,y:y+bh/2+4,class:'tick'},fmt(r[1])))});root.replaceChildren(svg)}
+
+function renderDual(){const yr=+document.getElementById('dualYear').value,names=Object.keys(prequotes[yr]),root=document.getElementById('dualChart'),w=900,h=290,m={l:110,r:60,t:28,b:38},svg=makeSvg(w,h),max=100000,X=v=>m.l+(w-m.l-m.r)*v/max;[0,25000,50000,75000,100000].forEach(v=>{const x=X(v);svg.append(svgEl('line',{x1:x,x2:x,y1:m.t,y2:h-m.b,class:'gridline'}),svgEl('text',{x,y:h-14,'text-anchor':'middle',class:'tick'},v===0?'0':(v/10000)+'万'))});names.forEach((name,i)=>{const y=m.t+35+i*70,pr=prequotes[yr][name],pv=purchase[yr][name],line=svgEl('line',{x1:X(pr[0]),x2:X(pr[1]),y1:y,y2:y,stroke:'#c99a3d','stroke-width':12,'stroke-linecap':'round',opacity:.62}),pt=svgEl('circle',{cx:X(pv),cy:y,r:9,fill:'#11634d',stroke:'#fff','stroke-width':3});bindTip(line,`<b>${name}｜体系 B</b><br>${fmt(pr[0])}—${fmt(pr[1])} 元/公斤<br>村寨预报价`);bindTip(pt,`<b>${name}｜体系 A</b><br>${fmt(pv)} 元/公斤<br>春茶周采购价`);svg.append(svgEl('text',{x:m.l-12,y:y+4,'text-anchor':'end',class:'tick'},name),line,pt)});svg.append(svgEl('text',{x:m.l,y:16,class:'tick'},'绿色圆点：体系 A　　金色区间：体系 B'));root.replaceChildren(svg)}
+
+function renderGrade(){const root=document.getElementById('gradeChart'),w=760,h=320,m={l:58,r:20,t:20,b:44},svg=makeSvg(w,h),max=27000,Y=v=>m.t+(h-m.t-m.b)*(1-v/max),sets=[{name:'老班章高等级',c:'#11634d',vals:[null,null,12000,12000,12000,11500,12000,12000,9000,8500]},{name:'老班章混采/大树',c:'#75a58e',vals:[null,null,7000,7000,7500,7750,null,7000,5000,3500]},{name:'薄荷塘一类',c:'#a55a2a',vals:[19000,21500,20000,null,null,22000,22000,24000,24000,25000]},{name:'薄荷塘二类',c:'#d99b71',vals:[null,13500,10000,null,null,12000,null,12000,12000,9000]}];[0,10000,20000].forEach(v=>{const y=Y(v);svg.append(svgEl('line',{x1:m.l,x2:w-m.r,y1:y,y2:y,class:'gridline'}),svgEl('text',{x:m.l-8,y:y+4,'text-anchor':'end',class:'tick'},v===0?'0':v/10000+'万'))});sets.forEach(s=>{let path='';let active=false;s.vals.forEach((v,i)=>{const x=m.l+(i+.5)*(w-m.l-m.r)/10;if(v==null){active=false;return}path+=(active?'L':'M')+x+','+Y(v)+' ';active=true});svg.append(svgEl('path',{d:path,fill:'none',stroke:s.c,'stroke-width':3}));s.vals.forEach((v,i)=>{if(v==null)return;const x=m.l+(i+.5)*(w-m.l-m.r)/10,pt=svgEl('circle',{cx:x,cy:Y(v),r:5,fill:s.c,stroke:'#fff','stroke-width':2});bindTip(pt,`<b>${s.name}｜${years[i]}</b><br>${fmt(v)} 元/公斤`);svg.append(pt)})});years.forEach((y,i)=>svg.append(svgEl('text',{x:m.l+(i+.5)*(w-m.l-m.r)/10,y:h-16,'text-anchor':'middle',class:'tick'},String(y).slice(2))));sets.forEach((s,i)=>svg.append(svgEl('text',{x:m.l+8+(i%2)*190,y:14+Math.floor(i/2)*16,fill:s.c,'font-size':11},'● '+s.name)));root.replaceChildren(svg)}
+
+function renderRegions(){const tabs=document.getElementById('regionTabs'),content=document.getElementById('regionContent');tabs.replaceChildren();Object.keys(regionCopy).forEach((k,i)=>{const b=document.createElement('button');b.className='tab'+(i===0?' active':'');b.textContent=regionCopy[k].title;b.onclick=()=>{[...tabs.children].forEach(x=>x.classList.remove('active'));b.classList.add('active');content.innerHTML=`<div class="regionPane active"><h3>${regionCopy[k].title}</h3><p class="verdict">${regionCopy[k].verdict}</p><p>${regionCopy[k].text}</p></div>`};tabs.append(b)});tabs.firstChild.click()}
+
+function renderHeat(){const filter=document.getElementById('heatFilter').value,items=Object.entries(series).filter(([,s])=>filter==='all'||s.region===filter),root=document.getElementById('heatmap'),w=980,h=Math.max(300,items.length*30+60),m={l:128,r:18,t:32,b:28},svg=makeSvg(w,h),cw=(w-m.l-m.r)/10,ch=(h-m.t-m.b)/items.length;years.forEach((y,i)=>svg.append(svgEl('text',{x:m.l+(i+.5)*cw,y:18,'text-anchor':'middle',class:'tick'},y)));items.forEach(([name,s],ri)=>{svg.append(svgEl('text',{x:m.l-8,y:m.t+(ri+.55)*ch,'text-anchor':'end',class:'tick'},name));s.data.forEach((d,ci)=>{const g=d?d[2]:'X',rect=svgEl('rect',{x:m.l+ci*cw+2,y:m.t+ri*ch+2,width:cw-4,height:ch-4,rx:4,fill:COLORS[g],opacity:g==='X'?.45:.85});bindTip(rect,`<b>${name}｜${years[ci]}</b><br>${d?fmt(d[0])+(d[1]!==d[0]?'—'+fmt(d[1]):'')+' 元/公斤<br>'+d[3]:'缺失值'}<br>可比性：${g}`);svg.append(rect)})});root.replaceChildren(svg)}
+
+const REGION_COLORS={'班章/勐海':'#a74335','易武/象明':'#c99a3d','冰岛/临沧':'#456f8d','冰岛/勐库':'#456f8d','临沧其他':'#6a5b8d','普洱市':'#2f8b6b'};
+const tierOf=r=>{const mid=(r.low+r.high)/2;return mid>=10000?'top':mid>=4000?'high':mid>=1500?'mid':'daily'};
+const tierLabel={top:'顶级核心',high:'高价微区',mid:'成熟中价',daily:'日常长尾'};
+
+function renderXsbna(){
+ const scope=document.getElementById('xsbnaScope').value,town=document.getElementById('xsbnaTown').value,grade=document.getElementById('xsbnaGrade').value,root=document.getElementById('xsbnaChart');
+ const rows=xsbna72.filter(r=>(scope==='all'||xsbnaKey.has(r.name))&&(town==='all'||r.town===town));document.getElementById('xsbnaCount').textContent=rows.length+' 个山头/村寨';
+ const w=1040,h=Math.max(360,rows.length*27+70),m={l:205,r:70,t:24,b:44},svg=makeSvg(w,h),min=20,max=50000,log=v=>Math.log10(v),X=v=>m.l+(w-m.l-m.r)*(log(v)-log(min))/(log(max)-log(min));svg.style.height=h+'px';
+ [25,100,300,1000,3000,10000,30000,50000].forEach(v=>{const x=X(v);svg.append(svgEl('line',{x1:x,x2:x,y1:m.t,y2:h-m.b,class:'gridline'}),svgEl('text',{x,y:h-15,'text-anchor':'middle',class:'tick'},fmt(v)))});
+ const grades=[{key:'ancient',label:'古树',color:'#a74335',off:-6},{key:'big',label:'大树',color:'#c99a3d',off:0},{key:'small',label:'小树',color:'#2f8b6b',off:6}].filter(g=>grade==='all'||g.key===grade);
+ rows.forEach((r,i)=>{const y=m.t+12+i*(h-m.t-m.b)/Math.max(rows.length,1);svg.append(svgEl('text',{x:m.l-10,y:y+4,'text-anchor':'end',class:'tick'},r.name+' · '+r.town));grades.forEach(g=>{const v=r[g.key];if(!v)return;const lo=v[0]/2,hi=v[1]/2,yy=y+(grade==='all'?g.off:0),line=svgEl('line',{x1:X(lo),x2:X(hi),y1:yy,y2:yy,stroke:g.color,'stroke-width':6,'stroke-linecap':'round',opacity:.72}),mid=(lo+hi)/2,pt=svgEl('circle',{cx:X(mid),cy:yy,r:3.5,fill:g.color,stroke:'#fff','stroke-width':1.2});bindTip(line,`<b>${r.name}｜${g.label}</b><br>${r.county} · ${r.town}<br>${fmt(lo)}—${fmt(hi)} 元/500g<br>原图：${fmt(v[0])}—${fmt(v[1])} 元/kg<br>用户提供截图；年份待原发布页确认${xsbnaNotes[r.name]?'<br><b>异常提示：</b>'+xsbnaNotes[r.name]:''}`);svg.append(line,pt)})});root.replaceChildren(svg);
+}
+
+function renderTF2026(){
+ const region=document.getElementById('tfRegion').value,rows=tf2026.filter(r=>region==='all'||r.region===region).sort((a,b)=>(b.low+b.high)-(a.low+a.high)),root=document.getElementById('tf2026Chart');
+ document.getElementById('tfCount').textContent=rows.length+' 个明确区间';
+ const w=1040,h=Math.max(430,rows.length*29+72),m={l:145,r:80,t:24,b:44},svg=makeSvg(w,h),min=200,max=50000,log=v=>Math.log10(v),X=v=>m.l+(w-m.l-m.r)*(log(v)-log(min))/(log(max)-log(min));svg.style.height=h+'px';
+ [200,500,1000,3000,10000,30000,50000].forEach(v=>{const x=X(v);svg.append(svgEl('line',{x1:x,x2:x,y1:m.t,y2:h-m.b,class:'gridline'}),svgEl('text',{x,y:h-15,'text-anchor':'middle',class:'tick'},fmt(v)))});
+ rows.forEach((r,i)=>{const y=m.t+12+i*(h-m.t-m.b)/rows.length,lo=r.low/2,hi=r.high/2,mid=(lo+hi)/2,c=REGION_COLORS[r.region],line=svgEl('line',{x1:X(lo),x2:X(hi),y1:y,y2:y,stroke:c,'stroke-width':10,'stroke-linecap':'round',opacity:.72}),pt=svgEl('circle',{cx:X(mid),cy:y,r:5,fill:c,stroke:'#fff','stroke-width':2});bindTip(line,`<b>${r.name}</b><br>${r.region}<br>${fmt(lo)}—${fmt(hi)} 元/500g<br>原始预报价：${fmt(r.low)}—${fmt(r.high)} 元/kg`);bindTip(pt,`<b>${r.name}</b><br>区间算术中点约 ${fmt(Math.round(mid))} 元/500g<br>中点只用于定位，不是成交均价`);svg.append(svgEl('text',{x:m.l-10,y:y+4,'text-anchor':'end',class:'tick'},r.name),line,pt)});root.replaceChildren(svg);
+}
+
+function renderTFTrend(){
+ const root=document.getElementById('tfTrendChart'),cols=3,cellW=340,cellH=175,w=1040,h=Math.ceil(tfCore.length/cols)*cellH+30,svg=makeSvg(w,h),min=500,max=100000,log=v=>Math.log10(v);svg.style.height=h+'px';
+ tfCore.forEach((r,idx)=>{const col=idx%cols,row=Math.floor(idx/cols),x0=col*cellW+8,y0=row*cellH+8,p={l:x0+58,r:x0+cellW-18,t:y0+34,b:y0+cellH-30},X=i=>p.l+i*(p.r-p.l)/2,Y=v=>p.t+(p.b-p.t)*(1-(log(v)-log(min))/(log(max)-log(min))),c=REGION_COLORS[r.region];svg.append(svgEl('rect',{x:x0,y:y0,width:cellW-10,height:cellH-10,rx:13,fill:'#faf7ef',stroke:'#e1dacb'}),svgEl('text',{x:x0+13,y:y0+23,fill:'#27372f','font-size':14,'font-weight':800},r.name),svgEl('text',{x:x0+cellW-22,y:y0+23,'text-anchor':'end',fill:c,'font-size':10},r.region));let path='';r.vals.forEach((v,i)=>{const x=X(i),y1=Y(v[0]),y2=Y(v[1]),mid=Math.sqrt(v[0]*v[1]),range=svgEl('line',{x1:x,x2:x,y1:y1,y2:y2,stroke:c,'stroke-width':8,'stroke-linecap':'round',opacity:.58}),pt=svgEl('circle',{cx:x,cy:Y(mid),r:5,fill:c,stroke:'#fff','stroke-width':2});path+=(i?'L':'M')+x+','+Y(mid)+' ';bindTip(range,`<b>${r.name}｜${2023+i}</b><br>${fmt(v[0])}—${fmt(v[1])} 元/kg<br>茶农之家官方附表`);svg.append(range,pt,svgEl('text',{x,y:p.b+17,'text-anchor':'middle',class:'tick'},2023+i))});svg.append(svgEl('path',{d:path,fill:'none',stroke:c,'stroke-width':2.5,'stroke-linecap':'round','stroke-linejoin':'round'}))});root.replaceChildren(svg);
+}
+
+function renderPremium(){
+ const region=document.getElementById('premiumRegion').value,tier=document.getElementById('premiumTier').value,root=document.getElementById('premiumChart');
+ const rows=price2025.filter(r=>(region==='all'||r.region===region)&&(tier==='all'||tierOf(r)===tier)).sort((a,b)=>(b.low+b.high)-(a.low+a.high));
+ document.getElementById('premiumCount').textContent=rows.length+' 个价格层级';
+ const w=1040,h=Math.max(500,rows.length*27+70),m={l:166,r:80,t:25,b:42},svg=makeSvg(w,h),min=100,max=50000,log=v=>Math.log10(v),X=v=>m.l+(w-m.l-m.r)*(log(v)-log(min))/(log(max)-log(min));svg.style.height=h+'px';
+ [100,300,1000,3000,10000,30000].forEach(v=>{const x=X(v);svg.append(svgEl('line',{x1:x,x2:x,y1:m.t,y2:h-m.b,class:'gridline'}),svgEl('text',{x,y:h-15,'text-anchor':'middle',class:'tick'},fmt(v)))});
+ rows.forEach((r,i)=>{const y=m.t+10+i*(h-m.t-m.b)/rows.length,lo=r.low/2,hi=r.high/2,mid=(lo+hi)/2,c=REGION_COLORS[r.region],line=svgEl('line',{x1:X(lo),x2:X(hi),y1:y,y2:y,stroke:c,'stroke-width':9,'stroke-linecap':'round',opacity:.72}),pt=svgEl('circle',{cx:X(mid),cy:y,r:5,fill:c,stroke:'#fff','stroke-width':2});bindTip(line,`<b>${r.name}</b><br>${r.region}｜${r.grade}<br>${fmt(lo)}—${fmt(hi)} 元/500g<br>原始：${fmt(r.low)}—${fmt(r.high)} 元/kg<br>${tierLabel[tierOf(r)]}`);bindTip(pt,`<b>${r.name}</b><br>区间中点约 ${fmt(Math.round(mid))} 元/500g`);svg.append(svgEl('text',{x:m.l-10,y:y+4,'text-anchor':'end',class:'tick'},r.name),line,pt)});root.replaceChildren(svg);
+}
+
+function renderMicro(){
+ const region=document.getElementById('microRegion').value,tier=document.getElementById('microTier').value;
+ const rows=microData.filter(r=>(region==='all'||r.region===region)&&(tier==='all'||tierOf(r)===tier)).sort((a,b)=>(b.low+b.high)-(a.low+a.high));document.getElementById('microCount').textContent=rows.length+' 个微区/地块';
+ document.getElementById('microGrid').innerHTML=rows.map(r=>`<article class="microTile"><small>${r.region}｜${r.grade}</small><b>${r.name}</b><div class="mp">${fmt(Math.round(r.low/2))}—${fmt(Math.round(r.high/2))}<small>元/500g</small></div><span class="pill ${tierOf(r)==='top'?'c':tierOf(r)==='high'?'b':tierOf(r)==='mid'?'a':'x'}">${tierLabel[tierOf(r)]}</span>${r.note?`<small style="margin-top:6px">${r.note}</small>`:''}</article>`).join('');
+}
+
+function renderAtlas(){
+ const region=document.getElementById('atlasRegion').value,labels=document.getElementById('atlasLabel').checked,items=Object.entries(series).filter(([,s])=>region==='all'||s.region===region),root=document.getElementById('atlasChart');document.getElementById('atlasCount').textContent=items.length+' 条山头轨迹';
+ const cols=2,cellW=500,cellH=150,w=1040,h=Math.ceil(items.length/cols)*cellH+34,svg=makeSvg(w,h),min=100,max=100000,log=v=>Math.log10(v);svg.style.height=h+'px';
+ items.forEach(([name,s],idx)=>{const col=idx%cols,row=Math.floor(idx/cols),x0=col*cellW+16,y0=row*cellH+14,p={l:x0+112,r:x0+cellW-20,t:y0+30,b:y0+cellH-22},X=i=>p.l+i*(p.r-p.l)/9,Y=v=>p.t+(p.b-p.t)*(1-(log(v)-log(min))/(log(max)-log(min))),c=REGION_COLORS[s.region]||'#c99a3d';svg.append(svgEl('rect',{x:x0,y:y0,width:cellW-12,height:cellH-8,rx:14,fill:'rgba(255,255,255,.055)',stroke:'rgba(255,255,255,.12)'}),svgEl('text',{x:x0+14,y:y0+24,fill:'#fff','font-size':14,'font-weight':800},name),svgEl('text',{x:x0+14,y:y0+43,fill:'#a8c1b6','font-size':10},s.region));[1000,10000].forEach(v=>svg.append(svgEl('line',{x1:p.l,x2:p.r,y1:Y(v),y2:Y(v),stroke:'rgba(255,255,255,.12)','stroke-width':1})));let path='',active=false,last=null;s.data.forEach((d,i)=>{if(!d){active=false;return}const mid=Math.sqrt(d[0]*d[1]);path+=(active?'L':'M')+X(i)+','+Y(mid)+' ';active=true;last={i,mid,d};const pt=svgEl('circle',{cx:X(i),cy:Y(mid),r:4,fill:c,stroke:'#fff','stroke-width':1.5});bindTip(pt,`<b>${name}｜${years[i]}</b><br>${fmt(d[0])}${d[1]!==d[0]?'—'+fmt(d[1]):''} 元/kg<br>${d[3]}`);svg.append(pt)});const curve=svgEl('path',{d:path,fill:'none',stroke:c,'stroke-width':3,'stroke-linecap':'round','stroke-linejoin':'round'});bindTip(curve,`<b>${name}</b><br>${s.region}<br>空缺年份不连线`);svg.append(curve);[0,3,6,9].forEach(i=>svg.append(svgEl('text',{x:X(i),y:p.b+15,'text-anchor':'middle',fill:'#9fb6ad','font-size':9},String(years[i]).slice(2))));if(labels&&last)svg.append(svgEl('text',{x:x0+14,y:y0+66,fill:c,'font-size':12,'font-weight':800},'末值 '+fmt(Math.round(last.mid))+'/kg'))});root.replaceChildren(svg);
+}
+
+function renderTable(){const q=document.getElementById('dataSearch').value.trim().toLowerCase(),sys=document.getElementById('systemFilter').value,rows=rawRows.filter(r=>(sys==='all'||r.system===sys)&&Object.values(r).join(' ').toLowerCase().includes(q)).sort((a,b)=>a.year-b.year||a.name.localeCompare(b.name,'zh'));document.getElementById('rowCount').textContent=rows.length+' 条';document.getElementById('dataBody').innerHTML=rows.map(r=>`<tr><td class="nowrap">${r.year}</td><td><b>${r.name}</b></td><td>${r.region}</td><td><span class="pill ${r.system==='A'?'a':'b'}">${r.system}</span></td><td>${r.grade}</td><td class="num">${fmt(r.low)}</td><td class="num">${fmt(r.high)}</td><td><span class="pill ${r.comp.toLowerCase()}">${r.comp}</span></td><td>${r.note}</td></tr>`).join('')}
+
+document.addEventListener('DOMContentLoaded',()=>{
+  const rs=document.getElementById('rangeSelect');Object.keys(series).forEach(n=>rs.add(new Option(n,n)));rs.value='老班章';rs.onchange=renderRange;
+  document.getElementById('rankYear').onchange=renderRank;document.getElementById('dualYear').onchange=renderDual;document.getElementById('heatFilter').onchange=renderHeat;
+  document.getElementById('premiumRegion').onchange=renderPremium;document.getElementById('premiumTier').onchange=renderPremium;
+  document.getElementById('microRegion').onchange=renderMicro;document.getElementById('microTier').onchange=renderMicro;
+  document.getElementById('xsbnaScope').onchange=renderXsbna;document.getElementById('xsbnaTown').onchange=renderXsbna;document.getElementById('xsbnaGrade').onchange=renderXsbna;
+  document.getElementById('tfRegion').onchange=renderTF2026;
+  document.getElementById('atlasRegion').onchange=renderAtlas;document.getElementById('atlasLabel').onchange=renderAtlas;
+  renderRange();renderRank();renderDual();renderGrade();renderRegions();renderHeat();renderPremium();renderMicro();renderXsbna();renderTF2026();renderTFTrend();renderAtlas();
+});
+</script>
+</body>
+</html>
