@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-labelledby="title desc">
+<title id="title">云南普洱茶产区</title>
+<desc id="desc">山形与茶叶组成的地图图标</desc>
+<rect width="64" height="64" rx="15" fill="#e8f0e8"/>
+<path d="M8 45 22 29l9 9 10-14 15 21H8Z" fill="#356b47"/>
+<path d="M10 49h44" stroke="#b78835" stroke-width="3" stroke-linecap="round"/>
+<path d="M31 17c-8 2-12 9-10 16 8 1 14-4 15-12-1-2-3-3-5-4Z" fill="#d6a64c"/>
+<path d="M31 18c1 7 0 12-5 17" fill="none" stroke="#fff6db" stroke-width="2" stroke-linecap="round"/>
+<circle cx="48" cy="16" r="4" fill="#376b70"/>
+</svg>
