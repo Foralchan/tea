@@ -1,0 +1,271 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link rel="icon" type="image/svg+xml" href="../puer-origin-icon.svg">
+  <title>云南普洱茶产区地理图解｜大区、县域、山系与微产区</title>
+  <style>
+    :root{
+      --paper:#f4efe3;--cream:#fffaf0;--ink:#17231d;--muted:#617068;--line:#d5c9b4;
+      --banna:#356b47;--lincang:#376b70;--puer:#91752e;--baoshan:#715266;
+      --gold:#d6a64c;--shadow:0 24px 70px rgba(29,35,28,.14)
+    }
+    *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:#e9e1d2;color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;line-height:1.65}a{color:inherit}.site{max-width:1600px;margin:auto;background:var(--paper);box-shadow:0 0 80px rgba(30,35,28,.11)}
+    .topbar{display:flex;align-items:center;gap:22px;padding:17px clamp(18px,4.5vw,72px);border-bottom:1px solid var(--line);background:rgba(250,246,237,.96);position:sticky;top:0;z-index:20;backdrop-filter:blur(14px)}
+    .topbar b{font:700 18px Georgia,"Songti SC",serif}.topbar .eyebrow{color:#39705a}.topbar a{margin-left:auto;text-decoration:none;color:#225a42;font-size:13px;font-weight:850}
+    .eyebrow{font-size:11px;letter-spacing:.17em;font-weight:850;text-transform:uppercase;color:#39705a}
+    .intro{display:grid;grid-template-columns:1.05fr .95fr;gap:54px;align-items:end;padding:clamp(46px,6vw,92px) clamp(20px,4.5vw,72px) 34px}
+    .intro h1{font:700 clamp(50px,6.8vw,102px)/.94 Georgia,"Songti SC",serif;margin:13px 0 22px;letter-spacing:-.055em}.intro p{font-size:18px;color:#536159;margin:0;max-width:700px}
+    .memory{display:grid;grid-template-columns:repeat(2,1fr);gap:9px}.memory div{padding:15px 17px;border-top:5px solid var(--tone);background:var(--cream)}.memory b,.memory span{display:block}.memory b{font-size:15px}.memory span{font-size:12px;color:var(--muted)}
+
+    .map-section{padding:0 clamp(12px,3vw,46px) clamp(68px,8vw,112px)}
+    .map-frame{position:relative;aspect-ratio:3/2;overflow:hidden;background:#e7decb;border:1px solid #bfae91;box-shadow:var(--shadow)}
+    .map-frame>img{width:100%;height:100%;display:block;object-fit:cover}
+    .north{position:absolute;right:4.5%;top:4%;width:34px;text-align:center;font:800 11px Georgia,serif;color:#544a38}.north:after{content:"";display:block;margin:5px auto;border-left:8px solid transparent;border-right:8px solid transparent;border-bottom:24px solid #66583e;width:0}
+    .region-name{position:absolute;z-index:4;transform:translate(-50%,-50%);color:#fff9e9;text-align:center;text-shadow:0 2px 4px rgba(20,24,19,.65),0 0 18px rgba(14,22,17,.45);pointer-events:none}
+    .region-name b{display:block;font:700 clamp(23px,2.5vw,43px)/1 Georgia,"Songti SC",serif;letter-spacing:.08em}
+    .region-name:after{content:"";display:block;width:34px;height:1px;background:rgba(255,250,230,.78);margin:9px auto 0}
+    .region-name.baoshan{left:28%;top:19%}.region-name.lincang{left:41%;top:24%}.region-name.puer{left:57%;top:22%}.region-name.banna{left:47%;top:66%}
+    .county{position:absolute;z-index:5;left:var(--x);top:var(--y);transform:translate(-50%,-50%);color:#fffaf0;font-size:clamp(9px,.78vw,13px);font-weight:850;letter-spacing:.08em;text-shadow:0 1px 4px #1c2820,0 0 8px rgba(18,26,20,.5);white-space:nowrap}
+    .county:before{content:"";display:inline-block;width:5px;height:5px;border-radius:50%;background:var(--gold);box-shadow:0 0 0 2px rgba(255,249,232,.7);margin:0 7px 2px 0}
+    .mountain{position:absolute;z-index:6;left:var(--x);top:var(--y);transform:translate(-50%,-50%) rotate(var(--r,0deg));display:flex;align-items:center;gap:5px;color:#fff0bd;font:700 clamp(9px,.76vw,13px) Georgia,"Songti SC",serif;letter-spacing:.06em;text-shadow:0 1px 3px #253126;white-space:nowrap}
+    .mountain:before{content:"";width:0;height:0;border-left:6px solid transparent;border-right:6px solid transparent;border-bottom:11px solid #f0cf7a;filter:drop-shadow(0 1px 1px rgba(20,28,22,.6))}
+    .village{position:absolute;z-index:7;left:var(--x);top:var(--y);transform:translate(var(--tx,-5px),var(--ty,-50%));color:#fffaf0;font-size:clamp(8px,.62vw,11px);font-weight:780;line-height:1;letter-spacing:.02em;text-shadow:0 1px 3px #17231d,0 0 6px rgba(15,24,18,.72);white-space:nowrap}
+    .village:before{content:"";display:inline-block;width:4px;height:4px;border-radius:50%;background:#f4e2ad;box-shadow:0 0 0 2px rgba(31,47,37,.45);margin:0 5px 2px 0}.village.core{color:#ffe293;font-size:clamp(9px,.7vw,12px);font-weight:900}.village.core:before{width:6px;height:6px;background:#e8b34b;box-shadow:0 0 0 2px rgba(255,248,224,.7)}
+    .river-label{position:absolute;z-index:6;left:var(--x);top:var(--y);transform:translate(-50%,-50%) rotate(var(--r,0deg));color:#d7f0ed;font:800 clamp(10px,.84vw,14px) Georgia,"Songti SC",serif;letter-spacing:.18em;text-shadow:0 1px 3px #1d3d3c;white-space:nowrap}.river-label:before{content:"≈";margin-right:5px;font-size:16px;color:#a9d9d5}
+    .locator-title{position:absolute;z-index:5;right:4.2%;bottom:5%;text-align:right;color:#5f5747}.locator-title b{display:block;font:700 clamp(13px,1vw,17px) Georgia,"Songti SC",serif}
+    .map-key{display:grid;grid-template-columns:repeat(4,1fr);margin-top:12px;border:1px solid var(--line);background:#fbf7ee}.map-key div{padding:11px 14px;border-right:1px solid var(--line);font-size:12px;color:var(--muted)}.map-key div:last-child{border-right:0}.map-key b{display:block;color:var(--ink);font-size:13px}.map-key i{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:7px;background:var(--tone)}
+    .symbol-key{display:flex;justify-content:flex-end;gap:20px;padding:10px 3px 0;color:#5e6a63;font-size:11px;font-weight:760}.symbol-key i{display:inline-block;margin-right:6px;vertical-align:middle}.symbol-key .county-dot{width:7px;height:7px;border-radius:50%;background:var(--gold);box-shadow:0 0 0 2px #f6edd9}.symbol-key .village-dot{width:5px;height:5px;border-radius:50%;background:#476052}.symbol-key .mountain-dot{width:0;height:0;border-left:5px solid transparent;border-right:5px solid transparent;border-bottom:9px solid #b78835}.symbol-key .river-dot{color:#4b8586;font:900 15px Georgia,serif}
+
+    .scale-section{padding:clamp(64px,8vw,112px) clamp(20px,4.5vw,72px);background:#172f26;color:#eaf0eb}
+    .section-head{display:grid;grid-template-columns:.86fr 1.14fr;gap:44px;align-items:end;margin-bottom:36px}.section-head h2{font:700 clamp(39px,5.2vw,74px)/1.02 Georgia,"Songti SC",serif;margin:9px 0 0;letter-spacing:-.045em}.section-head p{margin:0;color:#c3d1c8;font-size:17px}
+    .scale-track{display:grid;grid-template-columns:repeat(5,1fr);border-top:1px solid #648073;border-bottom:1px solid #648073}.scale-step{position:relative;padding:26px 24px 28px;border-right:1px solid #648073}.scale-step:last-child{border-right:0}.scale-step small{display:block;color:#8fb7a2;font:800 10px Georgia,serif;letter-spacing:.14em}.scale-step b{display:block;font:700 24px Georgia,"Songti SC",serif;margin:5px 0 8px}.scale-step span{color:#b8c9bf;font-size:12px}.scale-step:not(:last-child):after{content:"";position:absolute;right:-7px;top:50%;width:12px;height:12px;background:#172f26;border-top:1px solid #648073;border-right:1px solid #648073;transform:rotate(45deg);z-index:2}
+
+    .zoom-section{padding:clamp(68px,8vw,118px) clamp(20px,4.5vw,72px);background:#eee6d7}
+    .zoom-section .section-head p{color:#536159}.zoom-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
+    .zoom-card{--tone:#555;background:var(--cream);border-top:8px solid var(--tone);box-shadow:0 10px 30px rgba(45,43,34,.07)}
+    .zoom-card.banna{--tone:var(--banna)}.zoom-card.lincang{--tone:var(--lincang)}.zoom-card.puer{--tone:var(--puer)}.zoom-card.baoshan{--tone:var(--baoshan)}
+    .zoom-title{display:flex;justify-content:space-between;gap:20px;padding:24px 25px 18px;border-bottom:1px solid var(--line)}.zoom-title h3{font:700 32px/1 Georgia,"Songti SC",serif;margin:0}.zoom-title span{text-align:right;color:var(--tone);font-size:11px;font-weight:850;letter-spacing:.1em}
+    .route{padding:4px 25px 18px}.route-row{display:grid;grid-template-columns:116px 1fr;gap:18px;position:relative;padding:18px 0 17px;border-bottom:1px solid #e4dac9}.route-row:last-child{border-bottom:0}.route-row:before{content:"";position:absolute;left:121px;top:0;bottom:0;width:1px;background:#d8cdbb}.route-row:after{content:"";position:absolute;left:117px;top:27px;width:9px;height:9px;border-radius:50%;background:var(--tone);box-shadow:0 0 0 4px var(--cream)}
+    .route-place b{display:block;color:var(--tone);font-size:14px}.route-place small{display:block;color:var(--muted);font-size:11px;margin-top:2px}.route-content{padding-left:12px}.route-content strong{display:block;font-size:14px}.route-content p{margin:4px 0 8px;color:#5b665f;font-size:12px}.micro-list{display:flex;flex-wrap:wrap;gap:5px 12px}.micro-list span{font-size:12px;font-weight:780}.micro-list span:before{content:"·";color:var(--tone);margin-right:4px}.micro-list .core{color:var(--tone)}
+    .market-note{margin:0 25px 25px;padding:13px 15px;background:#eee7d9;border-left:4px solid var(--tone);font-size:12px;color:#4f5d54}.market-note b{color:var(--tone)}
+
+    .flavor-section{padding:clamp(68px,8vw,118px) clamp(20px,4.5vw,72px);background:#f7f2e8}.flavor-section .section-head p{color:#536159}.flavor-grid{display:grid;grid-template-columns:repeat(3,1fr);border:1px solid var(--line);background:var(--cream)}
+    .flavor-card{padding:25px 24px;border-right:1px solid var(--line);border-bottom:1px solid var(--line)}.flavor-card:nth-child(3n){border-right:0}.flavor-card:nth-last-child(-n+3){border-bottom:0}.flavor-card small{font-size:10px;letter-spacing:.13em;color:#7a837d}.flavor-card h3{font:700 24px Georgia,"Songti SC",serif;margin:5px 0 9px}.flavor-card p{margin:0;color:#5a665f;font-size:13px}.flavor-card b{color:#2f674b}
+    .tasting-route{display:grid;grid-template-columns:repeat(4,1fr);margin-top:24px;background:#1c382d;color:#e8efe9}.tasting-route div{padding:23px 21px;border-right:1px solid #557064}.tasting-route div:last-child{border-right:0}.tasting-route small{color:#87ad99;font-weight:850}.tasting-route b{display:block;font:700 18px Georgia,"Songti SC",serif;margin:5px 0}.tasting-route span{font-size:12px;color:#bed0c5}
+
+    .sources{padding:24px clamp(20px,4.5vw,72px);background:#11241b;color:#cbd7cf;font-size:12px}.sources summary{cursor:pointer;font-weight:850}.sources a{color:#fff}
+    @media(max-width:1050px){.intro,.section-head{grid-template-columns:1fr}.zoom-grid{grid-template-columns:1fr}.region-name b{font-size:27px}.county{font-size:9px}.scale-track{grid-template-columns:1fr}.scale-step{border-right:0;border-bottom:1px solid #648073}.scale-step:last-child{border-bottom:0}.scale-step:not(:last-child):after{display:none}}
+    @media(max-width:760px){.topbar{padding:14px 16px}.topbar .eyebrow{display:none}.intro{padding:42px 16px 24px}.intro h1{font-size:49px}.memory{grid-template-columns:1fr 1fr}.scale-section,.zoom-section,.flavor-section{padding:62px 15px}.scale-section h2,.zoom-section h2,.flavor-section h2{font-size:42px}.zoom-title{padding:21px 18px}.zoom-title h3{font-size:27px}.route{padding:4px 18px 15px}.route-row{grid-template-columns:88px 1fr;gap:13px}.route-row:before{left:93px}.route-row:after{left:89px}.market-note{margin:0 18px 20px}.flavor-grid{grid-template-columns:1fr}.flavor-card,.flavor-card:nth-child(3n),.flavor-card:nth-last-child(-n+3){border-right:0;border-bottom:1px solid var(--line)}.flavor-card:last-child{border-bottom:0}.tasting-route{grid-template-columns:1fr}.tasting-route div{border-right:0;border-bottom:1px solid #557064}.tasting-route div:last-child{border-bottom:0}}
+
+    /* Exact-geometry atlas layout */
+    .atlas-hero{display:grid;grid-template-columns:minmax(0,1.45fr) minmax(290px,.55fr);gap:18px;align-items:stretch}
+    .atlas-panel,.atlas-side{background:#f9f4e9;border:1px solid #cdbfa7;box-shadow:var(--shadow)}
+    .atlas-panel{margin:0;display:flex;align-items:center;justify-content:center;min-height:680px;overflow:hidden}
+    .atlas-panel img{display:block;width:100%;height:auto;max-height:890px;object-fit:contain}
+    .atlas-side{padding:22px;display:flex;flex-direction:column;gap:20px}
+    .locator{margin:0;background:#efe7d8;border:1px solid #d2c6b2}.locator figcaption{padding:11px 13px 0;font:700 16px Georgia,"Songti SC",serif}.locator img{display:block;width:100%;height:auto}
+    .atlas-note h3{font:700 26px Georgia,"Songti SC",serif;margin:0 0 10px}.atlas-note p{margin:0;color:#59675f;font-size:13px}
+    .region-index{display:grid;gap:8px}.region-index div{border-left:5px solid var(--tone);padding:9px 11px;background:#fffaf0}.region-index b{display:block;font-size:14px}.region-index span{font-size:11px;color:#657069}
+    .map-legend{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding-top:4px}.legend-item{display:flex;align-items:center;gap:8px;font-size:11px;color:#59675f}.legend-item.admin-level{grid-column:1/-1}.legend-symbol{flex:0 0 auto;display:inline-block}.legend-symbol.admin{width:16px;height:16px;border:2px solid #29463a;border-radius:50%;background:#fff3cf;position:relative}.legend-symbol.admin:after{content:"";position:absolute;width:5px;height:5px;border-radius:50%;background:#29463a;left:3.5px;top:3.5px}.legend-symbol.core{width:10px;height:10px;border-radius:50%;background:#e8ad3e;border:2px solid #fff5d8;box-shadow:0 0 0 1px #294036}.legend-symbol.cluster{width:16px;height:16px;border-radius:50%;border:2px dashed #d4a846;background:#ead68c44}.legend-symbol.peak{width:0;height:0;border-left:7px solid transparent;border-right:7px solid transparent;border-bottom:13px solid #d6a94b}.legend-symbol.river{width:24px;height:4px;border-radius:6px;background:#91d0d4}
+    .scale-bridge{margin-top:16px;padding:14px 16px;background:#fffaf0;border:1px solid var(--line);font-size:13px;color:#56645c}.scale-bridge b{color:#214936}
+    .quick-memory{margin-top:18px;background:#173328;color:#edf2ee;padding:24px}.quick-memory-head{display:flex;align-items:baseline;justify-content:space-between;gap:18px;margin-bottom:16px}.quick-memory-head h2{font:700 26px Georgia,"Songti SC",serif;margin:0}.quick-memory-head span{font-size:11px;letter-spacing:.15em;color:#9fc2ae;font-weight:850}.quick-memory-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1px;background:#527064}.quick-memory-item{background:#173328;padding:16px 18px;border-top:5px solid var(--tone)}.quick-memory-item b{display:block;font:700 20px Georgia,"Songti SC",serif;margin-bottom:4px}.quick-memory-item p{margin:0;color:#cfddd4;font-size:13px}.quick-memory-item strong{color:#fff3c8}
+    .overview-atlas{margin:0 0 34px}.overview-title{display:flex;align-items:end;justify-content:space-between;gap:24px;padding:0 0 15px;border-bottom:1px solid #cbbda5}.overview-title h3{font:700 30px Georgia,"Songti SC",serif;margin:0}.overview-title p{margin:0;color:#68736c;font-size:12px}.overview-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin-top:16px;align-items:start}.overview-card{--tone:#496753;background:#fbf7ee;border-top:7px solid var(--tone);padding:20px 22px;align-self:start}.overview-card.banna{--tone:var(--banna)}.overview-card.lincang{--tone:var(--lincang)}.overview-card.puer{--tone:var(--puer)}.overview-card.baoshan{--tone:var(--baoshan)}.overview-card-head{display:grid;grid-template-columns:auto 1fr;gap:12px;align-items:start;margin-bottom:16px}.overview-no{width:36px;height:36px;border-radius:50%;display:grid;place-items:center;background:var(--tone);color:#fff;font:700 16px Georgia,serif}.overview-card h4{font:700 22px/1.2 Georgia,"Songti SC",serif;margin:0 0 4px}.overview-card-head p{margin:0;color:#667169;font-size:12px}.branch-tree{position:relative;margin-left:17px;padding-left:20px;border-left:1px solid #d7cbb7}.branch{position:relative;padding:0 0 15px}.branch:last-child{padding-bottom:0}.branch:before{content:"";position:absolute;left:-25px;top:8px;width:9px;height:9px;border-radius:50%;background:var(--tone);box-shadow:0 0 0 4px #fbf7ee}.branch b{display:block;color:var(--tone);font-size:14px}.branch span{display:block;color:#28372f;font-size:12px;font-weight:750;margin-top:2px}.branch em{display:block;color:#647068;font-size:12px;font-style:normal;margin-top:4px}.branch-summary{margin:15px 0 0;padding:12px 14px;background:#eee7d9;color:#4f5d54;font-size:12px;border-left:4px solid var(--tone)}
+    .zoom-grid{grid-template-columns:1fr;gap:30px}.zoom-card{overflow:hidden}.region-body{display:grid;grid-template-columns:minmax(430px,1.1fr) minmax(380px,.9fr);align-items:start}.region-figure{margin:0;padding:18px;background:#e9e0d0;border-right:1px solid var(--line);position:sticky;top:74px}.zoom-card>.region-figure{position:static;border-right:0;border-bottom:1px solid var(--line)}.region-figure img{display:block;width:100%;height:auto;border:1px solid #cdbfa7;background:#efe7d8}.region-figure figcaption{display:flex;justify-content:space-between;gap:14px;margin-top:10px;font-size:11px;color:#66726b}.region-figure figcaption b{color:var(--tone)}.region-copy{min-width:0}.region-copy .route{padding-top:0}.region-copy .market-note{margin-top:4px}
+    .source-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:4px 24px}.source-grid li{margin:4px 0}
+    @media(max-width:1050px){.atlas-hero{grid-template-columns:1fr}.atlas-panel{min-height:0}.atlas-side{display:grid;grid-template-columns:minmax(220px,.7fr) 1.3fr;align-items:start}.quick-memory-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.region-body{grid-template-columns:1fr}.region-figure{position:static;border-right:0;border-bottom:1px solid var(--line)}}
+    @media(max-width:760px){.map-section{padding:0 10px 58px}.atlas-side{display:flex;padding:14px}.atlas-panel img{max-height:none}.map-legend{grid-template-columns:1fr 1fr}.quick-memory{padding:18px 14px}.quick-memory-head{display:block}.quick-memory-head span{display:block;margin-top:3px}.quick-memory-grid{grid-template-columns:1fr}.overview-title{display:block}.overview-title p{margin-top:5px}.overview-grid{grid-template-columns:1fr}.overview-card{padding:18px 16px}.region-figure{padding:10px}.region-figure figcaption{display:block}.source-grid{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+<div class="site">
+  <header class="topbar">
+    <b>云南普洱茶产区地理图解</b><span class="eyebrow">ORIGIN ATLAS</span>
+  </header>
+
+  <section class="intro">
+    <div><span class="eyebrow">YUNNAN · PU'ER ORIGIN</span><h1>先找到地方，<br>再谈山头风味</h1><p>先用云南定位图确认西南茶带，再把西双版纳、临沧、普洱市与保山逐级拆到县域、山系、乡镇、村寨和微产区。</p></div>
+    <div class="memory">
+      <div style="--tone:var(--banna)"><b>西双版纳</b><span>勐腊柔甜 · 勐海浓强</span></div>
+      <div style="--tone:var(--lincang)"><b>临沧</b><span>高香鲜甜 · 涩感清楚</span></div>
+      <div style="--tone:var(--puer)"><b>普洱市</b><span>森林草木 · 县域差异</span></div>
+      <div style="--tone:var(--baoshan)"><b>保山</b><span>传统原料区 · 朴实直接</span></div>
+    </div>
+  </section>
+
+  <section class="map-section" id="map">
+    <div class="atlas-hero">
+      <figure class="atlas-panel">
+        <img src="assets/exact-main-map.svg" alt="保山、临沧、普洱市与西双版纳四大茶区的真实行政轮廓、县域、澜沧江和代表产地">
+      </figure>
+      <aside class="atlas-side">
+        <figure class="locator">
+          <figcaption>四大茶区在云南的位置</figcaption>
+          <img src="assets/exact-yunnan-locator.svg" alt="云南全省州市轮廓中高亮四大普洱茶区">
+        </figure>
+        <div class="atlas-note">
+          <h3>先读骨架，再找山头</h3>
+          <p>四大茶区都沿云南西南山地展开。主图只保留关键坐标；县域、村寨和微产区在后面的四张区域图中展开。</p>
+        </div>
+        <div class="region-index">
+          <div style="--tone:var(--baoshan)"><b>保山</b><span>昌宁、腾冲、隆阳 · 高黎贡山</span></div>
+          <div style="--tone:var(--lincang)"><b>临沧</b><span>双江、临翔、永德 · 勐库大雪山</span></div>
+          <div style="--tone:var(--puer)"><b>普洱市</b><span>澜沧、宁洱、镇沅、景东、景谷、墨江</span></div>
+          <div style="--tone:var(--banna)"><b>西双版纳</b><span>勐海、勐腊、景洪 · 江内／江外</span></div>
+        </div>
+        <div class="map-legend" aria-label="地图图例">
+          <span class="legend-item admin-level"><i class="legend-symbol admin"></i>县／县级市中心点</span>
+          <span class="legend-item"><i class="legend-symbol core"></i>代表村寨／核心点</span>
+          <span class="legend-item"><i class="legend-symbol cluster"></i>微产区簇</span>
+          <span class="legend-item"><i class="legend-symbol peak"></i>山系／茶山</span>
+          <span class="legend-item"><i class="legend-symbol river"></i>澜沧江</span>
+        </div>
+      </aside>
+    </div>
+    <section class="quick-memory" aria-labelledby="quick-memory-title">
+      <header class="quick-memory-head"><h2 id="quick-memory-title">最短记忆法</h2><span>四句话建立第一层坐标</span></header>
+      <div class="quick-memory-grid">
+        <article class="quick-memory-item" style="--tone:var(--banna)"><b>西双版纳</b><p><strong>勐腊柔甜，勐海浓强。</strong></p></article>
+        <article class="quick-memory-item" style="--tone:var(--lincang)"><b>临沧</b><p><strong>高香鲜甜</strong>，常伴明显涩感。</p></article>
+        <article class="quick-memory-item" style="--tone:var(--puer)"><b>普洱市</b><p><strong>森林感与县域差异突出</strong>，整体更内敛。</p></article>
+        <article class="quick-memory-item" style="--tone:var(--baoshan)"><b>保山</b><p>传统原料区，风格朴实，<strong>山头品牌较弱。</strong></p></article>
+      </div>
+    </section>
+    <div class="scale-bridge"><b>读图顺序：</b>大区 → 县域 → 山系／小区 → 乡镇／村寨 → 微产区。实心点是可定位的代表坐标；虚线圈表示只落到正确县域内的微产区簇。</div>
+  </section>
+
+  <section class="scale-section" id="scale">
+    <header class="section-head"><div><span class="eyebrow">READING SCALE</span><h2>同一个茶名，<br>可能差五层地理</h2></div><p>从大区往右，范围越来越小。同一个茶名只写到“易武”或写到“百花潭”，原料边界和风味含义并不相同。</p></header>
+    <div class="scale-track">
+      <div class="scale-step"><small>01 REGION</small><b>大区</b><span>西双版纳、临沧、普洱市、保山</span></div>
+      <div class="scale-step"><small>02 COUNTY</small><b>县域</b><span>勐腊、勐海、双江、澜沧、昌宁</span></div>
+      <div class="scale-step"><small>03 SYSTEM</small><b>山系／小区</b><span>易武、布朗山、勐库、景迈山</span></div>
+      <div class="scale-step"><small>04 VILLAGE</small><b>乡镇／村寨</b><span>易武镇、瑶区乡、冰岛村、老班章</span></div>
+      <div class="scale-step"><small>05 MICRO-ORIGIN</small><b>微产区</b><span>天门山、百花潭、薄荷塘、磨烈</span></div>
+    </div>
+  </section>
+
+  <section class="zoom-section" id="regional-zoom">
+    <header class="section-head"><div><span class="eyebrow">REGIONAL ZOOM</span><h2>四张放大图，<br>读到微产区</h2></div><p>县域是骨架，山系和乡镇是路径，最右端才是日常在商品名上见到的村寨与微产区。</p></header>
+    <section class="overview-atlas" aria-labelledby="overview-title">
+      <header class="overview-title"><h3 id="overview-title">云南精品普洱茶主地图</h3><p>先记大区性格，再进入县域、山系与村寨</p></header>
+      <div class="overview-grid">
+        <article class="overview-card banna">
+          <header class="overview-card-head"><span class="overview-no">1</span><div><h4>西双版纳</h4><p>山头体系最成熟，版纳内部差异最大</p></div></header>
+          <div class="branch-tree">
+            <div class="branch"><b>勐腊</b><span>大易武、倚邦及古六山主体</span><em>典型：香扬或幽、汤柔、水甜、苦涩较低、尾韵长</em></div>
+            <div class="branch"><b>勐海</b><span>布朗班章、老曼峨、勐宋、南糯、贺开、帕沙、巴达</span><em>典型：浓、厚、苦涩更清楚、回甘强、结构感强</em></div>
+            <div class="branch"><b>景洪</b><span>攸乐、小勐宋、大渡岗</span><em>典型：香气与力度居中，常呈花香、甜感和适度苦涩</em></div>
+          </div>
+        </article>
+
+        <article class="overview-card lincang">
+          <header class="overview-card-head"><span class="overview-no">2</span><div><h4>临沧</h4><p>高香、鲜爽、甜感与涩感并存</p></div></header>
+          <div class="branch-tree">
+            <div class="branch"><b>双江勐库</b><span>冰岛体系、东西半山、大雪山</span><em>典型：花蜜香、清甜、鲜爽、生津快，涩往往比苦更显</em></div>
+            <div class="branch"><b>临翔邦东</b><span>昔归、忙麓、娜罕、曼岗</span><em>典型：香高、汤有冲击力，矿物或岩韵感明显，回甘深</em></div>
+            <div class="branch"><b>永德</b><span>忙肺、大雪山、梅子箐</span><em>典型：香甜、厚实、略粗犷，苦涩适中，性价比较常见</em></div>
+            <div class="branch"><b>第二层产区</b><span>云县、凤庆、镇康、耿马、沧源</span><em>白莺山、滇红与边境古茶资源各有主线</em></div>
+          </div>
+        </article>
+
+        <article class="overview-card puer">
+          <header class="overview-card-head"><span class="overview-no">3</span><div><h4>普洱市</h4><p>县域分散，整体比版纳更内敛，森林与山系差异突出</p></div></header>
+          <div class="branch-tree">
+            <div class="branch"><b>澜沧</b><span>景迈、邦崴</span><em>典型：兰花／蜜香、森林草木感、甜润、苦涩中低</em></div>
+            <div class="branch"><b>宁洱</b><span>困鹿山、竹山</span><em>典型：细、雅、香甜协调，力度通常不以猛烈见长</em></div>
+            <div class="branch"><b>镇沅</b><span>千家寨、老乌山、马邓</span><em>典型：山野、木质或矿物感，汤质较扎实，甜涩并存</em></div>
+            <div class="branch"><b>景东</b><span>无量山、哀牢山</span><em>典型：清香、清甜、干净，结构较克制，山系差异大</em></div>
+            <div class="branch"><b>景谷</b><span>苦竹山、景谷大白茶体系</span><em>典型：甜香、清柔，品种香明显，多茶类属性强</em></div>
+            <div class="branch"><b>墨江</b><span>凤凰窝、迷帝</span><em>典型：香甜、细腻、回甘清楚；核心园与大产区差距极大</em></div>
+            <div class="branch"><b>南部与边境县域</b><span>江城、孟连、西盟、思茅区</span><em>以具体村寨、庄园或企业基地判断，不宜只凭县名预设风格</em></div>
+          </div>
+        </article>
+
+        <article class="overview-card baoshan">
+          <header class="overview-card-head"><span class="overview-no">4</span><div><h4>保山</h4><p>传统第四产区，现代山头市场较弱</p></div></header>
+          <div class="branch-tree">
+            <div class="branch"><b>昌宁</b><span>传统核心茶县</span></div>
+            <div class="branch"><b>腾冲／高黎贡山</b><span>西北高海拔山地支线</span></div>
+            <div class="branch"><b>隆阳</b><span>古茶资源与传统原料区</span></div>
+            <div class="branch"><b>龙陵、施甸</b><span>市场山头声量较弱，需按具体产品判断</span></div>
+          </div>
+          <p class="branch-summary"><b>典型：</b>滋味直接、苦涩较清楚、汤质朴实；红茶和多茶类属性突出。</p>
+        </article>
+      </div>
+    </section>
+    <div class="zoom-grid">
+      <article class="zoom-card banna">
+        <header class="zoom-title"><h3>西双版纳</h3><span>勐腊 · 勐海 · 景洪<br>江内／江外</span></header>
+        <figure class="region-figure"><img src="assets/exact-xishuangbanna-map.svg" alt="西双版纳真实县域轮廓、澜沧江、茶山、村寨与微产区簇"><figcaption><b>三县市骨架</b><span>勐海在西，景洪居中，勐腊向东南展开</span></figcaption></figure>
+        <div class="route">
+          <div class="route-row"><div class="route-place"><b>易武镇</b><small>勐腊 · 江内</small></div><div class="route-content"><strong>大易武／曼撒茶山</strong><p>柔、甜、花蜜、喉韵；同一镇内仍有村寨与森林茶园之分。</p><div class="micro-list"><span class="core">易武</span><span>麻黑</span><span>落水洞</span><span>刮风寨</span><span>弯弓</span><span>薄荷塘</span><span class="core">天门山</span></div></div></div>
+          <div class="route-row"><div class="route-place"><b>瑶区乡</b><small>勐腊东部河谷</small></div><div class="route-content"><strong>广义易武国有林体系</strong><p>河谷深、进入成本高，市场常归入“易武”，行政上并不属于易武镇。</p><div class="micro-list"><span class="core">同庆河／铜箐河</span><span class="core">百花潭</span><span>芭依箐</span></div></div></div>
+          <div class="route-row"><div class="route-place"><b>勐伴镇</b><small>勐腊东南</small></div><div class="route-content"><strong>金厂河山林节点</strong><p>市场边界继续细分，商品名逐步从河谷走向更小地块。</p><div class="micro-list"><span class="core">金厂河</span><span>桃子山</span><span>龙潭箐</span><span>回落桃子箐</span></div></div></div>
+          <div class="route-row"><div class="route-place"><b>象明乡</b><small>古六山北线</small></div><div class="route-content"><strong>倚邦与古六大茶山</strong><p>细香、清甜、轻巧而有韵。</p><div class="micro-list"><span class="core">倚邦</span><span class="core">曼松</span><span>蛮砖</span><span>革登</span><span>莽枝</span></div></div></div>
+          <div class="route-row"><div class="route-place"><b>勐海县</b><small>江外</small></div><div class="route-content"><strong>布朗山—勐宋—南糯—贺开—帕沙—巴达</strong><p>从浓强苦底到香甜平衡，是版纳最完整的结构坐标。</p><div class="micro-list"><span class="core">老班章</span><span>新班章</span><span class="core">老曼峨</span><span>班盆</span><span class="core">那卡</span><span>滑竹梁子</span><span>章朗</span></div></div></div>
+          <div class="route-row"><div class="route-place"><b>景洪市</b><small>版纳第三支</small></div><div class="route-content"><strong>攸乐／小勐宋／大渡岗</strong><p>花香、甜感与适度苦涩；景洪小勐宋不要与勐海勐宋混淆。</p><div class="micro-list"><span class="core">攸乐／基诺山</span><span>景洪小勐宋</span><span>大渡岗</span></div></div></div>
+        </div>
+        <p class="market-note"><b>两套边界：</b>天门山属于易武镇曼乃村委会马叭寨一带；同庆河／铜箐河、百花潭属于瑶区乡；金厂河属于勐伴镇。市场通常把后三者也纳入广义易武。</p>
+      </article>
+
+      <article class="zoom-card lincang">
+        <header class="zoom-title"><h3>临沧</h3><span>双江 · 临翔 · 永德<br>高香鲜甜</span></header>
+        <figure class="region-figure"><img src="assets/exact-lincang-map.svg" alt="临沧真实县域轮廓、澜沧江、勐库大雪山、冰岛五寨与代表产地"><figcaption><b>双江是核心学习入口</b><span>冰岛五寨、东西半山与邦东—昔归分开阅读</span></figcaption></figure>
+        <div class="route">
+          <div class="route-row"><div class="route-place"><b>双江</b><small>勐库镇</small></div><div class="route-content"><strong>冰岛五寨</strong><p>清甜、清凉、鲜爽、生津快；老寨只是冰岛行政村中的一个核心坐标。</p><div class="micro-list"><span class="core">冰岛老寨</span><span>南迫</span><span>地界</span><span>坝歪</span><span>糯伍</span></div></div></div>
+          <div class="route-row"><div class="route-place"><b>双江</b><small>东／西半山</small></div><div class="route-content"><strong>勐库大雪山体系</strong><p>西半山偏甜厚，东半山偏高香；整体常见花蜜、鲜甜与清楚涩感。</p><div class="micro-list"><span>坝糯</span><span>那蕉</span><span>正气塘</span><span>懂过</span><span class="core">磨烈</span><span>大户赛</span><span>小户赛</span><span>公弄</span></div></div></div>
+          <div class="route-row"><div class="route-place"><b>临翔</b><small>邦东乡</small></div><div class="route-content"><strong>邦东—昔归体系</strong><p>高香、冲击力、矿物与岩韵，山地和澜沧江谷共同塑造风格。</p><div class="micro-list"><span class="core">昔归</span><span>忙麓山</span><span>娜罕</span><span>曼岗</span></div></div></div>
+          <div class="route-row"><div class="route-place"><b>永德</b><small>西部支线</small></div><div class="route-content"><strong>忙肺／永德大雪山</strong><p>香甜厚实，苦涩较清楚，常比勐库显得粗犷。</p><div class="micro-list"><span class="core">忙肺</span><span>永德大雪山</span><span>梅子箐</span></div></div></div>
+          <div class="route-row"><div class="route-place"><b>其他县域</b><small>第二层产区</small></div><div class="route-content"><strong>云县／凤庆／边境县域</strong><p>需要回到具体村寨和茶种判断。</p><div class="micro-list"><span class="core">白莺山</span><span>凤庆</span><span>镇康</span><span>耿马</span><span>沧源</span></div></div></div>
+        </div>
+      </article>
+
+      <article class="zoom-card puer">
+        <header class="zoom-title"><h3>普洱市</h3><span>多县域 · 多山系<br>不可一味概括</span></header>
+        <figure class="region-figure"><img src="assets/exact-puer-map.svg" alt="普洱市真实县域轮廓、澜沧江、主要山系与代表茶区"><figcaption><b>按县域和山系学习</b><span>景迈、困鹿山、千家寨、无量山、凤凰窝并非同一风味带</span></figcaption></figure>
+        <div class="route">
+          <div class="route-row"><div class="route-place"><b>澜沧</b><small>西南</small></div><div class="route-content"><strong>景迈山／邦崴</strong><p>兰花、蜜香、森林草木与甜润。</p><div class="micro-list"><span class="core">景迈</span><span>芒景</span><span>翁基</span><span>糯岗</span><span>邦崴</span></div></div></div>
+          <div class="route-row"><div class="route-place"><b>宁洱</b><small>中部</small></div><div class="route-content"><strong>困鹿山／竹山</strong><p>细、雅、香甜协调。</p><div class="micro-list"><span class="core">困鹿山</span><span>宽宏村</span><span>竹山</span></div></div></div>
+          <div class="route-row"><div class="route-place"><b>镇沅</b><small>哀牢山南段</small></div><div class="route-content"><strong>千家寨／老乌山</strong><p>山野、木质、矿物，甜涩并存。</p><div class="micro-list"><span class="core">千家寨</span><span>九甲</span><span>老乌山</span><span>马邓</span></div></div></div>
+          <div class="route-row"><div class="route-place"><b>景东</b><small>北部山系</small></div><div class="route-content"><strong>无量山／哀牢山</strong><p>清香、清甜、结构克制，山系内部差异很大。</p><div class="micro-list"><span class="core">无量山</span><span class="core">哀牢山</span></div></div></div>
+          <div class="route-row"><div class="route-place"><b>景谷／墨江</b><small>东部</small></div><div class="route-content"><strong>苦竹山／凤凰窝</strong><p>甜香、清柔或细腻回甘；景谷大白茶体系与墨江小微产区并存。</p><div class="micro-list"><span>苦竹山</span><span>景谷大白茶</span><span class="core">凤凰窝</span><span>迷帝</span></div></div></div>
+          <div class="route-row"><div class="route-place"><b>南部县域</b><small>边境支线</small></div><div class="route-content"><strong>江城／孟连／西盟／思茅</strong><p>更适合按村寨、庄园与企业基地学习。</p><div class="micro-list"><span>江城</span><span>孟连</span><span>西盟</span><span>思茅区</span></div></div></div>
+        </div>
+      </article>
+
+      <article class="zoom-card baoshan">
+        <header class="zoom-title"><h3>保山</h3><span>昌宁 · 腾冲 · 隆阳<br>传统第四茶区</span></header>
+        <figure class="region-figure"><img src="assets/exact-baoshan-map.svg" alt="保山真实县域轮廓、高黎贡山、昌宁与代表茶区"><figcaption><b>传统第四茶区</b><span>先看昌宁，再看高黎贡山与其他县域资源</span></figcaption></figure>
+        <div class="route">
+          <div class="route-row"><div class="route-place"><b>昌宁</b><small>核心茶县</small></div><div class="route-content"><strong>昌宁古茶山群</strong><p>直接、朴实、苦涩清楚，生普与红茶并行。</p><div class="micro-list"><span class="core">昌宁</span><span>漭水</span><span>温泉</span><span>苟街</span></div></div></div>
+          <div class="route-row"><div class="route-place"><b>腾冲</b><small>西北</small></div><div class="route-content"><strong>高黎贡山支线</strong><p>高海拔、立体气候与边缘山地资源。</p><div class="micro-list"><span class="core">高黎贡山</span><span>腾冲</span></div></div></div>
+          <div class="route-row"><div class="route-place"><b>其他县域</b><small>传统原料区</small></div><div class="route-content"><strong>隆阳／龙陵／施甸</strong><p>市场山头声量较弱，更适合按具体产品和生产者判断。</p><div class="micro-list"><span>隆阳</span><span>龙陵</span><span>施甸</span></div></div></div>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <section class="flavor-section" id="flavor">
+    <header class="section-head"><div><span class="eyebrow">FLAVOR ROUTES</span><h2>用风味反查产区</h2></div><p>先找到最明显的味觉方向，再回到相邻产区横向比较，比孤立背诵山头名称更容易形成坐标。</p></header>
+    <div class="flavor-grid">
+      <article class="flavor-card"><small>SOFT &amp; SWEET</small><h3>柔甜细腻</h3><p><b>易武、景迈、困鹿山</b><br>比较花蜜、兰香、汤感细度与喉韵。</p></article>
+      <article class="flavor-card"><small>STRONG &amp; BITTER</small><h3>浓强苦底</h3><p><b>布朗山、老班章、老曼峨</b><br>比较苦感强度、厚度与回甘速度。</p></article>
+      <article class="flavor-card"><small>FRESH &amp; COOL</small><h3>鲜甜清凉</h3><p><b>冰岛五寨、勐库东西半山</b><br>比较鲜爽、清凉感、甜度与涩感位置。</p></article>
+      <article class="flavor-card"><small>AROMA &amp; MINERAL</small><h3>高香岩韵</h3><p><b>昔归、邦东</b><br>比较香气冲击、矿物感和江谷茶的力度。</p></article>
+      <article class="flavor-card"><small>WILD &amp; WOODY</small><h3>山野木质</h3><p><b>千家寨、镇沅、无量山</b><br>比较草木、木质、矿物与甜涩平衡。</p></article>
+      <article class="flavor-card"><small>DIRECT &amp; RUSTIC</small><h3>朴实直接</h3><p><b>昌宁、保山传统原料区</b><br>比较香气直接度、苦涩清晰度与耐泡性。</p></article>
+    </div>
+    <div class="tasting-route">
+      <div><small>01</small><b>先喝大区差异</b><span>易武 × 布朗山 × 勐库 × 景迈</span></div>
+      <div><small>02</small><b>再拆县域与山系</b><span>勐腊／勐海、东西半山、普洱各县</span></div>
+      <div><small>03</small><b>进入代表村寨</b><span>麻黑、老曼峨、冰岛、昔归、困鹿山</span></div>
+      <div><small>04</small><b>最后比较微产区</b><span>天门山、百花潭、薄荷塘、磨烈</span></div>
+    </div>
+  </section>
+
+  <footer class="sources"><details><summary>内容与地图说明</summary><p>本页只整理云南普洱茶的地理层级与典型风味语境，不依赖远程资源，也不包含外部链接。</p></details></footer>
+</div>
+</body>
+</html>
