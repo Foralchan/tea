@@ -1,0 +1,630 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" type="image/svg+xml" href="../puer-flavor-universe-icon.svg">
+<title>云南生普风味宇宙 V8｜微产区概念评分地图</title>
+<style>
+:root{
+  --night:#101b1a;--night2:#162623;--paper:#f2e8d7;--paper2:#fbf4e8;--ink:#1e2b28;--muted:#7c8178;
+  --rust:#ed805a;--gold:#e0b35e;--teal:#73b7a3;--violet:#a58bd1;--cream:#f8f1e5;--line:rgba(255,255,255,.16);
+  --sans:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+  --serif:Georgia,"Songti SC","STSong",serif;--mono:"SFMono-Regular",Consolas,"Liberation Mono",monospace
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--night);color:var(--cream);font-family:var(--sans);line-height:1.5}
+body:before{content:"";position:fixed;inset:0;pointer-events:none;opacity:.2;background-image:radial-gradient(rgba(255,255,255,.14) .6px,transparent .7px);background-size:5px 5px;mix-blend-mode:soft-light}
+button,input,select{font:inherit}
+button{cursor:pointer}
+a{color:#d58b66;text-decoration:none}a:hover{text-decoration:underline}
+.atlas{max-width:1540px;margin:auto;padding:28px 30px 54px;position:relative}
+.mast{display:grid;grid-template-columns:minmax(0,1.38fr) minmax(260px,.62fr);gap:34px;align-items:end;padding:30px 18px 28px}
+.kicker{font:700 11px/1 var(--mono);letter-spacing:.15em;color:var(--gold);text-transform:uppercase}
+h1{font:700 clamp(38px,6vw,78px)/.98 var(--serif);letter-spacing:-.055em;margin:18px 0 18px;color:var(--cream)}
+.heroLead{max-width:800px;color:#c4cfc4;font-size:15px;line-height:1.8;margin:0}
+.heroLead strong{color:var(--cream)}
+.mastRail{border-left:1px solid rgba(224,179,94,.55);padding:0 0 2px 22px;color:#d4ddd3}
+.mastRail .big{font:700 68px/.88 var(--serif);color:var(--rust);letter-spacing:-.06em}
+.mastRail .label{font-size:11px;letter-spacing:.1em;color:#aab7ad;text-transform:uppercase;margin-top:8px}
+.mastRail p{font-size:12px;line-height:1.7;margin:17px 0 0;color:#b9c6bc}
+.signalStrip{display:flex;flex-wrap:wrap;gap:8px;margin-top:23px}
+.signal{display:flex;align-items:center;gap:8px;color:#d7ded5;font-size:11px;border-top:1px solid rgba(255,255,255,.15);padding-top:8px;margin-right:16px}
+.signal b{font:700 20px/1 var(--mono);color:var(--cream)}
+.signal i{display:block;width:7px;height:7px;border-radius:50%;background:var(--rust)}.signal:nth-child(2) i{background:var(--teal)}.signal:nth-child(3) i{background:var(--gold)}.signal:nth-child(4) i{background:var(--violet)}
+.mapShell{background:var(--paper);color:var(--ink);border-radius:26px;overflow:hidden;box-shadow:0 30px 90px rgba(0,0,0,.28);border:1px solid rgba(255,255,255,.08)}
+.mapHead{padding:18px 22px 15px;display:flex;align-items:center;justify-content:space-between;gap:16px;border-bottom:1px solid #d7c9b5;background:var(--paper2)}
+.mapHeadTitle{display:flex;align-items:baseline;gap:12px}.mapHeadTitle h2{font:700 25px/1 var(--serif);margin:0;color:var(--ink)}.mapHeadTitle span{font:11px var(--mono);color:#8b7966}
+.mapTabs{display:flex;gap:12px;flex-wrap:wrap;justify-content:flex-end}
+.mapTab{border:0;background:transparent;border-bottom:2px solid transparent;color:#897968;padding:5px 0;font-size:11px}.mapTab[aria-selected=true]{color:var(--ink);border-color:var(--rust);font-weight:700}
+.mapControls{display:flex;flex-wrap:wrap;align-items:center;gap:8px;padding:11px 22px;background:#ede1cf;border-bottom:1px solid #d7c9b5}
+.mapControls input[type=search],.mapControls select{border:1px solid #cdbda5;background:#faf3e7;color:var(--ink);border-radius:4px;padding:7px 9px;font-size:11px}.mapControls input[type=search]{width:210px}.mapControls label{display:flex;gap:6px;align-items:center;color:#756b5d;font-size:11px;margin-left:5px}.mapControls button{border:1px solid #cdbda5;background:transparent;border-radius:4px;color:#6b6051;padding:7px 9px;font-size:11px}
+.mapBody{display:grid;grid-template-columns:minmax(0,1fr) 330px;min-height:640px}
+.plotWrap{padding:18px 18px 16px;position:relative;background:linear-gradient(145deg,#f8f0e4,#ecdfcd)}
+#atlasMap{display:block;width:100%;height:clamp(500px,54vw,690px);min-height:500px}
+.mapCaption{display:flex;justify-content:space-between;gap:15px;align-items:start;border-top:1px solid rgba(31,43,40,.16);padding:11px 5px 0;color:#746c60;font-size:11px}.mapCaption strong{color:var(--ink);font-weight:700}
+.detailDock{background:var(--night2);color:var(--cream);padding:20px 18px 18px;display:flex;flex-direction:column;gap:17px}
+.dockKicker{font:700 10px var(--mono);letter-spacing:.14em;color:var(--gold);text-transform:uppercase}.dockTitle{font:700 28px/1.08 var(--serif);margin:7px 0 4px}.dockMeta{font-size:11px;color:#afbeb1;line-height:1.6}.dockText{font-size:12px;color:#d1d9cf;line-height:1.7;margin:10px 0 0}.dockRule{height:1px;background:var(--line);margin:0}
+.dockBand{display:grid;grid-template-columns:1fr 1fr;gap:8px}.bandCell{border-left:2px solid var(--rust);padding:5px 0 5px 9px}.bandCell:nth-child(2){border-color:var(--teal)}.bandCell span{display:block;color:#9faea1;font:10px var(--mono);text-transform:uppercase}.bandCell b{display:block;font:700 14px var(--mono);color:var(--cream);margin-top:3px}
+.dockTags{display:flex;flex-wrap:wrap;gap:5px}.dockTags span{font-size:10px;color:#d8c39f;border-bottom:1px solid rgba(224,179,94,.5);padding-bottom:2px}
+.dockLinks{font-size:10px;line-height:1.7}.dockLinks a{display:block;color:#dc9975}
+.readField{display:grid;grid-template-columns:1.08fr .92fr;gap:18px;margin-top:18px}
+.essay{background:var(--paper);color:var(--ink);border-radius:18px;padding:21px 23px}.essay h2,.constellation h2,.candidateBoard h2{font:700 25px/1.1 var(--serif);margin:0 0 8px;color:var(--ink)}.essay p{font-size:13px;line-height:1.75;color:#625b51;margin:0}.essay p strong{color:var(--ink)}.axisStory{display:grid;grid-template-columns:1fr 1fr;gap:0;margin-top:19px;border-top:1px solid #d8cab5;border-bottom:1px solid #d8cab5}.axisStory div{padding:14px 13px 13px 0}.axisStory div+div{padding-left:13px;border-left:1px solid #d8cab5}.axisStory span{font:700 10px var(--mono);color:#9a5b41}.axisStory b{display:block;font:700 18px/1.2 var(--serif);margin:4px 0;color:var(--ink)}.axisStory small{font-size:11px;color:#776e62;line-height:1.5}
+.quadrants{background:var(--night2);border-radius:18px;color:var(--cream);padding:21px 22px;position:relative;overflow:hidden}.quadrants:after{content:"";position:absolute;inset:0;background:radial-gradient(circle at 75% 25%,rgba(224,179,94,.18),transparent 38%),radial-gradient(circle at 20% 78%,rgba(115,183,163,.13),transparent 36%);pointer-events:none}.quadrants h3{font:700 12px var(--mono);letter-spacing:.12em;color:var(--gold);margin:0 0 14px;text-transform:uppercase}.quadGrid{display:grid;grid-template-columns:1fr 1fr;position:relative;z-index:1;border:1px solid var(--line)}.quad{min-height:86px;padding:12px;border-bottom:1px solid var(--line);color:#c6d0c6}.quad:nth-child(odd){border-right:1px solid var(--line)}.quad:nth-child(3),.quad:nth-child(4){border-bottom:0}.quad strong{display:block;font:700 18px/1 var(--serif);color:var(--cream)}.quad span{display:block;font-size:10px;color:#a6b5a8;line-height:1.45;margin-top:6px}.quad:nth-child(1) strong{color:var(--gold)}.quad:nth-child(2) strong{color:var(--rust)}.quad:nth-child(3) strong{color:var(--teal)}.quad:nth-child(4) strong{color:#aeb1c9}
+.storyGrid{display:grid;grid-template-columns:.86fr 1.14fr;gap:18px;margin-top:18px}
+.regionRail{background:var(--paper);color:var(--ink);border-radius:18px;padding:20px 21px}.regionRail h2{font:700 25px/1.1 var(--serif);margin:0 0 3px}.regionRail>p{font-size:11px;color:#756d60;margin:0 0 13px}
+.regionRows{display:grid;gap:2px}.regionRow{border:0;border-top:1px solid #d8cab5;background:transparent;padding:11px 0;display:grid;grid-template-columns:10px 1fr auto;gap:10px;text-align:left;color:var(--ink);align-items:center}.regionRow:last-child{border-bottom:1px solid #d8cab5}.regionRow .dot{width:8px;height:8px;border-radius:50%;background:var(--rust)}.regionRow h3{font:700 14px/1 var(--serif);margin:0}.regionRow p{font-size:10px;color:#81766a;margin:5px 0 0;line-height:1.4}.regionRow .count{font:700 12px var(--mono);color:#8f614a}.regionRow:hover{background:#f4eadd}
+.constellation{background:var(--night2);color:var(--cream);border-radius:18px;padding:20px 21px;min-width:0}.constellation h2{color:var(--cream)}.constellation>p{font-size:11px;color:#aebcaf;margin:0 0 13px}.constellationGroups{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px 18px}.constellationGroup{border-top:1px solid var(--line);padding-top:9px}.constellationGroup h3{font:700 11px var(--mono);color:var(--gold);margin:0 0 7px}.nameCloud{display:flex;flex-wrap:wrap;gap:4px}.nameCloud button{border:0;background:rgba(255,255,255,.07);color:#d1dbd0;border-radius:3px;padding:5px 7px;font-size:10px}.nameCloud button:hover,.nameCloud button[aria-pressed=true]{background:var(--rust);color:#fff}
+.candidateBoard{background:var(--paper);color:var(--ink);border-radius:18px;padding:21px 22px;margin-top:18px}.candidateBoard h2{display:flex;justify-content:space-between;gap:12px;align-items:baseline}.candidateBoard h2 span{font:10px var(--mono);color:#9b6b50}.candidateLead{font-size:12px;color:#756d60;margin:0 0 13px;max-width:880px;line-height:1.65}.candidateTools{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:13px}.candidateTools input,.candidateTools select{border:1px solid #cdbda5;background:#fbf2e4;border-radius:4px;padding:7px 9px;font-size:11px;color:var(--ink)}.candidateTools input{width:220px}.candidateGrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;max-height:430px;overflow:auto;padding-right:4px}.candidateItem{border:1px solid #ddcfba;background:#fbf2e4;border-radius:5px;padding:9px 10px;text-align:left;color:var(--ink);min-height:88px}.candidateItem:hover{border-color:var(--rust);background:#f6e8d5}.candidateItem h4{font:700 13px/1.2 var(--serif);margin:0 0 3px}.candidateItem .line{font:10px var(--mono);color:#9a6e55}.candidateItem p{font-size:10px;color:#736a5d;margin:5px 0 0;line-height:1.45}.priority{float:right;color:var(--rust);font:700 10px var(--mono)}
+.footer{padding:19px 4px 0;color:#89988d;font-size:10px;line-height:1.7}.footer a{color:#d59470}
+.tooltip{position:fixed;z-index:20;display:none;max-width:270px;background:#0d1514;color:#f8f1e5;border:1px solid rgba(224,179,94,.5);padding:9px 11px;border-radius:4px;pointer-events:none;font-size:11px;line-height:1.55;box-shadow:0 12px 28px rgba(0,0,0,.3)}
+code{font-family:var(--mono);font-size:.9em;color:#8f5e47}
+@media(max-width:1150px){.mapHead{display:block}.mapTabs{justify-content:flex-start;margin-top:12px}.mapBody{grid-template-columns:1fr}.detailDock{display:grid;grid-template-columns:1fr 1fr;gap:15px}.detailDock .dockRule{display:none}.readField,.storyGrid{grid-template-columns:1fr}.candidateGrid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:700px){.atlas{padding:14px 12px 35px}.mast{display:block;padding:22px 8px}.mastRail{border-left:0;border-top:1px solid rgba(224,179,94,.55);padding:17px 0 0;margin-top:23px}.mastRail .big{font-size:52px}.mapHead{padding:16px}.mapHeadTitle h2{font-size:22px}.mapControls{padding:10px 16px}.mapControls input[type=search]{width:100%}.plotWrap{padding:10px 9px}.mapCaption{display:block}.mapCaption span{display:block;margin-top:5px}.detailDock{display:block;padding:16px}.dockRule{display:block!important;margin:15px 0}.essay,.quadrants,.regionRail,.constellation,.candidateBoard{padding:17px}.constellationGroups{grid-template-columns:1fr}.candidateGrid{grid-template-columns:1fr;max-height:520px}.axisStory{grid-template-columns:1fr}.axisStory div+div{padding-left:0;border-left:0;border-top:1px solid #d8cab5}.axisStory div{padding:12px 0}.signal{margin-right:9px}.quad{min-height:77px;padding:10px}.quad strong{font-size:16px}}
+/* V8 clean editorial layer: score first, decoration second. */
+body{background:#f4f5f1;color:#20332d}
+body:before{display:none}
+.atlas{max-width:1560px;padding:28px 30px 54px}
+.mast{padding:26px 18px 30px;align-items:center}
+.kicker{color:#8a6841}
+h1{color:#20332d}
+.heroLead{color:#596861}
+.heroLead strong{color:#20332d}
+.mastRail{border-left-color:#b6c5bd;color:#40524a}
+.mastRail .big{color:#b45e43}
+.mastRail .label,.mastRail p{color:#6d7b73}
+.signal{color:#65746c;border-top-color:#d6ded8}
+.signal b{color:#20332d}
+.mapShell{border:1px solid #d9dfda;box-shadow:0 18px 50px rgba(35,52,45,.09);border-radius:18px}
+.mapHead{background:#fff;border-bottom-color:#dbe2dc}
+.mapHeadTitle h2{color:#20332d}
+.mapHeadTitle span{color:#7a887f}
+.mapTab{color:#7a887f}.mapTab[aria-selected=true]{color:#20332d;border-color:#b45e43}
+.mapControls{background:#edf1ed;border-bottom-color:#dbe2dc}
+.mapControls input[type=search],.mapControls select{background:#fff;border-color:#cbd7cf;color:#20332d}
+.mapControls label{color:#65746c}
+.mapControls button{border-color:#cbd7cf;color:#506057}
+.mapBody{min-height:650px}
+.plotWrap{background:#fbfcfa;padding:18px 18px 16px}
+#atlasMap{height:clamp(520px,56vw,720px);min-height:520px}
+.mapCaption{border-top-color:#dbe2dc;color:#728079}
+.mapCaption strong{color:#20332d}
+.detailDock{background:#fff;color:#20332d;border-left:1px solid #dbe2dc}
+.dockKicker{color:#9a7044}.dockTitle{color:#20332d}.dockMeta{color:#67766e}.dockText{color:#52645b}
+.dockRule{background:#dbe2dc}.dockBand{gap:14px}.bandCell{border-left-color:#b45e43}.bandCell:nth-child(2){border-color:#5c8b7a}.bandCell span{color:#809087}.bandCell b{color:#20332d}
+.dockTags span{color:#8a6841;border-bottom-color:#c9b58e}.dockLinks a{color:#a95f46}
+.readField,.storyGrid{gap:16px}.essay,.regionRail,.candidateBoard{background:#fff;border:1px solid #d9dfda}.essay h2,.regionRail h2,.candidateBoard h2{color:#20332d}.essay p,.regionRail>p,.candidateLead{color:#5c6b63}
+.axisStory{border-color:#dbe2dc}.axisStory div+div{border-left-color:#dbe2dc}.axisStory span{color:#9a6045}.axisStory b{color:#20332d}.axisStory small{color:#65746c}
+.quadrants,.constellation{background:#f7f9f6;color:#20332d;border:1px solid #d9dfda}.quadrants:after{display:none}.quadrants h3,.constellationGroup h3{color:#8a6841}.quadGrid{border-color:#dbe2dc}.quad{border-color:#dbe2dc;color:#5c6b63}.quad:nth-child(odd){border-right-color:#dbe2dc}.quad strong{color:#20332d!important}.quad span{color:#65746c}
+.regionRow{border-top-color:#dbe2dc}.regionRow:last-child{border-bottom-color:#dbe2dc}.regionRow h3{color:#20332d}.regionRow p{color:#718078}.regionRow:hover{background:#f2f6f2}
+.constellationGroups{gap:9px 18px}.constellationGroup{border-top-color:#dbe2dc}.nameCloud button{background:#fff;border:1px solid #d9dfda;color:#506057;border-radius:3px}.nameCloud button:hover,.nameCloud button[aria-pressed=true]{background:#20332d;color:#fff}
+.candidateItem{background:#fbfcfa;border-color:#d9dfda}.candidateItem:hover{border-color:#b45e43;background:#f6faf6}.candidateItem p{color:#65746c}
+.footer{color:#74827a}.footer a{color:#a95f46}
+.tooltip{background:#20332d;color:#fff;border-color:#b7c7be;box-shadow:0 10px 26px rgba(32,51,45,.18)}
+</style>
+</head>
+<body>
+<div class="atlas">
+  <header class="mast">
+    <div>
+      <div class="kicker">FIELD ATLAS / YUNNAN SHENG PU'ER / 2026</div>
+      <h1>云南生普<br><em>风味宇宙</em></h1>
+      <p class="heroLead">一张把 <strong>产区、材料、加工与风味结构</strong>放在同一个视野里的概念地图。它不模拟经纬度，而是把“柔甜、强甜、苦后转甘、材料限定”这些研究判断，编排成一片可以游走的风味场。</p>
+      <div class="signalStrip"><span class="signal"><i></i><b id="heroPointCount">—</b> 个研究节点</span><span class="signal"><i></i><b id="heroProvisional">—</b> 个条件点</span><span class="signal"><i></i><b id="heroInterval">—</b> 个区间点</span><span class="signal"><i></i><b>51</b> 条候选线索</span></div>
+    </div>
+    <aside class="mastRail"><div class="big">X × Y</div><div class="label">two axes / one field</div><p><strong>X</strong> 口腔结构张力：柔、松、细 → 紧、有骨架、冲击。<br><strong>Y</strong> 汤中直接甜感：第一口茶汤本身的甜，不把回甘偷渡进来。</p></aside>
+  </header>
+
+  <section class="mapShell" aria-labelledby="atlasTitle">
+    <div class="mapHead">
+      <div class="mapHeadTitle"><h2 id="atlasTitle">风味场 / Flavor Field</h2><span id="mapMode">ALL REGIONS · CONCEPTUAL VIEW</span></div>
+      <nav class="mapTabs" aria-label="产区子图">
+        <button class="mapTab" data-region="all" aria-selected="true">全省</button>
+        <button class="mapTab" data-region="易武" aria-selected="false">易武</button>
+        <button class="mapTab" data-region="勐海" aria-selected="false">勐海</button>
+        <button class="mapTab" data-region="景迈" aria-selected="false">景迈</button>
+        <button class="mapTab" data-region="勐库" aria-selected="false">勐库</button>
+        <button class="mapTab" data-region="邦东" aria-selected="false">邦东</button>
+        <button class="mapTab" data-region="永德" aria-selected="false">永德</button>
+        <button class="mapTab" data-region="普洱" aria-selected="false">普洱</button>
+        <button class="mapTab" data-region="边缘" aria-selected="false">边缘</button>
+      </nav>
+    </div>
+    <div class="mapControls">
+      <input id="search" type="search" placeholder="搜索点位、材料或风味标签" aria-label="搜索点位、材料或风味标签">
+      <select id="statusFilter" aria-label="筛选状态"><option value="all">全部状态</option><option value="READY">READY</option><option value="PROVISIONAL">PROVISIONAL</option><option value="INTERVAL">INTERVAL</option></select>
+      <label><input id="showLabels" type="checkbox">全量点名</label>
+      <select id="displayMode" aria-label="坐标显示模式"><option value="score">概念分（默认）</option><option value="separate">轻微分离</option></select>
+      <label><input id="fullScale" type="checkbox">全量 0–100</label>
+      <button id="reset">重置</button>
+    </div>
+    <div class="mapBody">
+      <div class="plotWrap">
+        <svg id="atlasMap" viewBox="0 0 1000 690" role="img" aria-label="云南生普概念评分地图" aria-describedby="atlasMapDesc"></svg>
+        <div class="mapCaption"><span><strong id="mapTitle">云南全省 · 概念总图</strong>　<span id="mapNote">概念分中心 · 总图重点点名 / 分区全量点名</span></span><span>圆点统一表示节点　·　透明度提示 M / C / R / I 层级</span></div>
+      </div>
+      <aside class="detailDock" id="detailDock" aria-live="polite">
+        <div><div class="dockKicker">selected specimen</div><div id="detail"><div class="dockTitle">点一颗茶</div><div class="dockMeta">点击地图中的节点，或下方“风味星簇”里的名字。</div></div></div>
+        <div class="dockRule"></div>
+        <div><div class="dockKicker">current field</div><div id="fieldBrief" class="dockText">全省 149 个研究节点。位置只表达结构 × 直接甜的概念关系。</div></div>
+        <div class="dockRule"></div>
+        <div><div class="dockKicker">reading key</div><div class="dockText">圆点统一表示节点；透明度与外圈提示证据层级。0–100 是概念中心，不是实测分数。</div></div>
+      </aside>
+    </div>
+  </section>
+
+  <section class="readField">
+    <article class="essay">
+      <div class="kicker" style="color:#a45a3f">THE CONCEPT / 01</div>
+      <h2>地图不是答案，地图是比较方式</h2>
+      <p>这张图真正想保留的，不是“薄荷塘到底 82 分，老班章到底 91 分”，而是它们在同一套问题下怎么分开：<strong>甜可以很高，但甜由什么结构承载？</strong>柔甜、强甜、苦后转甘和材料特定，应该同时存在，而不是被压成一根“好茶—差茶”的线。</p>
+      <div class="axisStory"><div><span>AXIS X / STRUCTURE</span><b>口腔结构张力</b><small>柔、松、细、舒展 → 紧、硬、有骨架、冲击明显</small></div><div><span>AXIS Y / DIRECT SWEETNESS</span><b>汤中直接甜感</b><small>第一口茶汤本身的甜；回甘、生津、苦后甜另行记录</small></div></div>
+    </article>
+    <aside class="quadrants">
+      <h3>four flavor territories</h3>
+      <div class="quadGrid">
+        <div class="quad"><strong>柔甜</strong><span>薄荷塘 / 冰岛老寨 / 冷水河<br>柔、细、甜，但不等于无体感</span></div>
+        <div class="quad"><strong>强甜</strong><span>老班章 / 哆依树 / 磨烈<br>结构强，汤中仍然直接甜</span></div>
+        <div class="quad"><strong>柔 × 留白</strong><span>左下暂不强填<br>避免把工艺弱、萃取少误写成 terroir</span></div>
+        <div class="quad"><strong>强 × 后甜</strong><span>章家三队 / 曼新龙候选<br>入口不甜，苦后转甘更重要</span></div>
+      </div>
+    </aside>
+  </section>
+
+  <section class="storyGrid">
+    <section class="regionRail">
+      <div class="kicker" style="color:#a45a3f">REGION RAIL / 02</div>
+      <h2>六条风味脉络</h2>
+      <p>点击一条脉络，主图会切换到对应的研究子图。颜色只是阅读索引，不代表行政边界。</p>
+      <div id="regionRows" class="regionRows"></div>
+    </section>
+    <section class="constellation">
+      <div class="kicker">CONSTELLATION / 03</div>
+      <h2>风味星簇</h2>
+      <p>把 149 个已进入主图的名字全部摊开。状态、材料限定与概念层级仍保留在点位详情里。</p>
+      <div id="constellationGroups" class="constellationGroups"></div>
+    </section>
+  </section>
+
+  <section class="candidateBoard">
+    <div class="kicker" style="color:#a45a3f">UNRESOLVED FIELD / 04</div>
+    <h2>候选、HOLD 与层级缺口 <span id="candidateCount">—</span></h2>
+    <p class="candidateLead">这里不再假装“没有坐标 = 没有内容”。云南全省第一轮已经留下大量有研究价值的名字：有些需要材料消歧，有些需要同工艺样品，有些只是行政或茶区父节点。完整 880 行底表仍以 <a href="./origin_microregion_master.csv">origin_microregion_master.csv</a> 为准。</p>
+    <div class="candidateTools"><input id="candidateSearch" type="search" placeholder="筛选候选名称、状态或理由" aria-label="筛选候选名称、状态或理由"><select id="candidateStatus" aria-label="候选状态"><option value="all">全部候选</option><option value="P0">P0 / 高优先</option><option value="HOLD">HOLD</option><option value="HIERARCHY_ONLY">仅层级</option><option value="MATERIAL_HOLD">材料 / 工艺</option></select></div>
+    <div id="candidateGrid" class="candidateGrid"></div>
+  </section>
+
+  <footer class="footer">云南生普风味宇宙 V8 · 2026-08-18。概念分用于比较微产区的结构 × 直接甜，不替代实测或 provenance 核验。原始 band、证据状态和候选边界仍保留。研究源：<a href="./生普微产区研究_全部总档_v5_2026-08-17.md">V5 全部总档</a> · <a href="./生普微产区研究_人类可读总结_v5_2026-08-17.md">V5 人类可读总结</a>。</footer>
+</div>
+<div id="tooltip" class="tooltip" role="tooltip"></div>
+<script>
+const MASTER = './生普微产区研究_全部总档_v5_2026-08-17.md';
+const SUMMARY = './生普微产区研究_人类可读总结_v5_2026-08-17.md';
+const bands = {
+  very_low:[5,16], low:[15,28], low_mid:[27,42], mid:[41,59], mid_high:[58,73], high:[71,86], very_high:[84,97],
+  low_to_low_mid:[15,42], low_mid_to_mid:[27,59], mid_to_mid_high:[41,73], mid_high_to_high:[58,86], high_to_very_high:[71,97],
+  low_to_mid:[15,59], mid_to_high:[41,86], mid_to_low_mid:[27,59]
+};
+const regionColors = { '易武':'#b45e43', '勐海':'#cf8b43', '景迈':'#7b8e63', '勐库':'#4f8b78', '邦东':'#5d879a', '永德':'#91815e', '普洱':'#8876a7', '边缘':'#8b938d' };
+const regionText = {
+  all:{title:'全省总图',desc:'主图使用全省可见的概念点位；证据层级与边缘区保持可见。'},
+  易武:{title:'易武内部梯度',desc:'柔甜极细端 → 柔甜均衡端 → 更密更有骨架 → 强甜端。'},
+  勐海:{title:'勐海 / 布朗 / 班章',desc:'强结构与直接甜可以同时存在；材料类型与样品条件决定是否继续拆分。'},
+  勐库:{title:'勐库 / 冰岛',desc:'五寨、东半山与核心村寨同图，区间点不被压成单一平均值。'},
+  邦东:{title:'邦东 / 昔归七山',desc:'茶区分组与行政树分开；绿水塘不因右上假说而提前画实心点。'},
+  景迈:{title:'景迈九村与古茶林',desc:'村寨、古茶林与景迈山父级分开显示。'},
+  普洱:{title:'普洱中部与南部候选',desc:'材料限定与加工限定优先显示；区域样不冒充严格微区。'},
+  永德:{title:'永德与临沧西部',desc:'强甜、硬结构和区域参考点并列，不把县域平均值当作微产区。'},
+  边缘:{title:'边缘产区',desc:'保山、大理、德宏、文山、红河、玉溪等候选保持开放，不用空白制造确定性。'}
+};
+function point(id,name,region,sub,geo,status,confidence,xBand,yBand,material,processing,note,tags,sourceLine,scope){
+  return {id,name,region,sub,geo,status,confidence,xBand,yBand,material,processing,note,tags,sourceLine,scope:scope||''};
+}
+const points = [
+  point('YW-lengshuihe','冷水河','易武','刮风寨核心茶地','microregion','READY','B+','low_mid','high','未限定','晒青生普语境','跨样品方向稳定：直接甜高、苦涩低、水路细、汤柔顺、清凉与回甘持续；V5 明确写作 ready/provisional。',['柔','细','净','甜'],'V5 §8.2'),
+  point('YW-baishahe','白沙河','易武','刮风寨核心茶地','microregion','PROVISIONAL','B','low_mid_to_mid','high','未限定','晒青生普语境','多个 2023 样品指向醇甜、微苦薄涩、化得快；比冷水河更容易出现密度和紧致。',['柔中带张力','醇甜'],'V5 §8.3'),
+  point('YW-heishuiliangzi','黑水梁子','易武','刮风寨核心茶地','microregion','PROVISIONAL','B','high','mid_high','未限定','晒青生普语境','稳定核心不是重苦，而是硬朗、甘冽、有骨架；苦涩强度跨样品方差大。',['硬朗','甘冽','有骨架'],'V5 §8.4'),
+  point('YW-chawangshu','茶王树','易武','刮风寨核心茶地','microregion','PROVISIONAL','B+','mid_to_mid_high','high','未限定','晒青生普语境','入口甜、初始苦涩低，后段汤质逐渐饱满紧致；甜、细但不是纯柔。',['甜','细','后段有力'],'V5 §8.5'),
+  point('YW-wangong','弯弓','易武','丁家寨 / 弯弓古茶园','microregion','PROVISIONAL','B+','low_to_mid','high','未限定','晒青生普语境','多样品指向甜、细、花蜜香、低苦涩；结构从柔滑到中等张力有方差。',['柔甜','花蜜','低苦涩'],'V5 §11.2'),
+  point('YW-baichayuan','白茶园 / 百茶园','易武','丁家寨体系','microregion','PROVISIONAL','B','mid_to_mid_high','high','未限定','晒青生普语境','canonical 为白茶园，百茶园作 alias；汤越来越绵密紧致，柔中带刚。',['甜','细','更密','柔中带刚'],'V5 §11.1/§11.3'),
+  point('YW-duoyishu','哆依树','易武','曼腊村 / 普伞河头','microregion','PROVISIONAL','B+','high','very_high','未限定','晒青生普语境','黏牙式甘甜、微苦薄涩、汤越来越浓；绵柔中有张力，属于易武强甜端。',['强甜','绵柔有张力','山野'],'V5 §11.4'),
+  point('YW-bohetang','薄荷塘','易武','曼撒 / 国有林','microregion','PROVISIONAL','B+','low_to_mid','high','未限定','晒青生普语境','清甜、微苦极薄涩、苦涩秒化、水路极细；汤绵柔但仍有饱满度与体感。',['清甜','极细水路','清凉'],'V5 §11.5'),
+  point('YW-tongqinghe','铜箐河 / 同庆河','易武','瑶区乡中山上 / 下寨茶地体系','microregion','PROVISIONAL','B','mid_to_mid_high','high','未限定','晒青生普语境','从头到尾甜、汤纯净饱满细腻；体感强不等于口腔结构一定硬，X 仍保留问号。',['鲜甜','纯净','强体感'],'V5 §10'),
+
+  point('MH-pasha','帕沙','勐海','格朗和乡 / 帕沙村','microregion','PROVISIONAL','B+','mid','high','未限定','晒青生普语境','甜醇、嫩香花香突出，非简单布朗苦烈；有穿透力并伴随回甘生津。',['甜醇','花香','刚柔并济'],'V5 §13.1'),
+  point('MH-banpen','班盆','勐海','勐混镇 / 贺开村委会 / 班盆村小组','microregion','PROVISIONAL','B+','mid_to_mid_high','high','未限定','晒青生普语境','直接甜、微苦微涩、转化快、汤质绵密；比老班章更清秀沉稳。',['花蜜','绵密','清秀沉稳'],'V5 §13.2'),
+  point('MH-laobanzhang','老班章','勐海','布朗山体系 / 班章村委会','microregion','PROVISIONAL','B+','very_high','high','未限定','晒青生普语境','苦涩冲击、极快转化、高甜、强回甘、骨架与气感都高；不是单纯“很苦”。',['强甜','高饱和','强回甘'],'V5 §13.3'),
+  point('MH-bannakannuan','坝卡囡','勐海','布朗山体系','microregion','PROVISIONAL','B+','mid_high','high','未限定','晒青生普语境','直接甜高、苦涩轻、汤厚、结构有力，属于甜先行 + 厚 + 有力。',['甜先行','汤厚','有力'],'V5 §13.6'),
+  point('MH-bakalong','坝卡竜','勐海','布朗山体系','microregion','PROVISIONAL','B-','mid_high','high','未限定','晒青生普语境','直接甜明确，苦比坝卡囡更清楚，薄涩化快，饱和度高；证据低于班盆与坝卡囡。',['甜苦并存','高饱和'],'V5 §13.7'),
+  point('MH-zhangjiasandui','章家三队','勐海','布朗山体系','reference','PROVISIONAL','B-','mid_high_to_high','low_to_low_mid','较年轻栽培 / 台地样','晒青生普语境','目前最接近“结构强、入口甜弱”的右下参考；样品有树龄 / 栽培混杂，不能当作纯 terroir 因果。',['右下参考','苦先行','样品混杂'],'V5 §14.1','reference_not_clean_terroir'),
+
+  point('MK-bingdao','冰岛老寨','勐库','冰岛村 / 五寨','microregion','PROVISIONAL','B+','low_mid','very_high','未限定','晒青生普语境','入口直接甜高、苦涩低、水路细、汤柔协调，体感并不弱。',['细甜','协调','柔'],'V5 §22'),
+  point('MK-nanpo','南迫','勐库','冰岛村 / 五寨','microregion','PROVISIONAL','B','low_mid','very_high','未限定','晒青生普语境','甜高、香高、花果甜香、柔顺水细；与冰岛老寨方向接近但证据略低。',['香甜','柔'],'V5 §22'),
+  point('MK-dijie','地界','勐库','冰岛村 / 五寨','microregion','PROVISIONAL','B+','mid_high','high','未限定','晒青生普语境','入口甜同时有微苦薄涩，滋味更重、甘冽、气足；属于有重量的甜。',['有重量的甜','甘冽'],'V5 §22'),
+  point('MK-bawai','坝歪','勐库','冰岛村 / 五寨','microregion','PROVISIONAL','B','mid','high','未限定','晒青生普语境','汤可以柔滑，但体感直接、穿透明显；再次证明汤柔不等于气弱。',['柔汤','强体感'],'V5 §22'),
+  point('MK-nuowu','糯伍 / 糯武','勐库','冰岛村 / 五寨','microregion','PROVISIONAL','B-/C+','low_mid','high','未限定','晒青生普语境','独立样本不足；品牌横向资料指向软糯、顺滑、鲜甜与快速转化，区间应保持宽。',['软糯','鲜甜','待复现'],'V5 §22'),
+  point('MK-xiaohusai','小户赛','勐库','公弄村体系','microregion','PROVISIONAL','B+','low_mid','high','未限定','晒青生普语境','同日对照中高香、细甜、偏柔，水路细、初段几乎无苦。',['高香','细甜','偏柔'],'V5 §23'),
+  point('MK-dahusai','大户赛','勐库','大户赛村体系','microregion','PROVISIONAL','B','mid','high','未限定','晒青生普语境','入口甜、微苦微涩、汤质绵密、茶味更厚，结构更扎实。',['绵密','厚甜','扎实'],'V5 §23'),
+  point('MK-dongguo','懂过','勐库','懂过村 / 磨烈体系','microregion','PROVISIONAL','B-','mid_high','mid','未限定','晒青生普语境','花香浓、汤饱满、爽朗浓醇；入口甘甜不是第一识别特征，苦后转甘更重要。',['爽朗','浓醇','苦后转甘'],'V5 §24'),
+  point('MK-molie','磨烈','勐库','懂过村 / 上下磨烈','microregion','PROVISIONAL','B+','high','high','未限定','晒青生普语境','直接甜、蜜甜、汤逐渐厚重，甘冽有骨架；属于有重量和硬度的强甜。',['甘冽','有骨架','强甜'],'V5 §25'),
+  point('MK-banuo','坝糯','勐库','坝糯村 / 坝糯自然村','microregion','INTERVAL','B-','mid_to_high','high','藤条 / 非藤条需分层','晒青生普语境','直接甜高倾向，但结构与苦涩方差大；藤条先作为控制变量，不能直接推出风味因果。',['区间','管理变量','高方差'],'V5 §26'),
+  point('MK-zhengqitang','正气塘','勐库','那赛体系 / 正气塘自然村','microregion','PROVISIONAL','B+','mid','very_high','未限定','晒青生普语境','两个制作者样品共同指向入口甘甜、苦涩轻、转化快；东半山高甜点。',['甜先行','东半山','甘冽'],'V5 §27'),
+  point('MK-xiaohuangtian','小荒田','勐库','梁子村 / 小荒田组','microregion','PROVISIONAL','B','high','high','未限定','晒青生普语境','入口甘甜、茶汤偏硬、顺但不柔，水路开阔、冲击明显；硬、开阔、外放的强甜。',['硬朗','开阔','强甜'],'V5 §28'),
+  point('MK-dazhongshan','大忠山','勐库','大户赛村 / 河边寨 / 大忠山','microregion','PROVISIONAL','B+','mid_high','very_high','森林地 / 烂石地需分层','晒青生普语境','同山两地块都高甜，但烂石地更锐、更硬、更甘冽；微生态差异重要。',['高甜','锐爽','微生态'],'V5 §29'),
+  point('MK-mangbo','忙波','勐库','护东村 / 忙波自然村','microregion','PROVISIONAL','B-/B','low_mid','high','未限定','晒青生普语境','微苦迅速化、清凉、水路细滑，中段变厚，尾段甘蔗甜；甜逐渐主导。',['细滑','清凉','甘蔗甜'],'V5 §30'),
+
+  point('BD-xiaoguangshan','晓光山','邦东','临翔 / 凤翔昔本产业口径','tea_area','PROVISIONAL','B-','low_mid_to_mid','high','未限定','晒青生普语境','高香、鲜甜、汤体中高、偏柔到中；不强行并入昔归七山梯度。',['高香','鲜甜','偏柔'],'V5 §7.2'),
+  point('BD-manglushang','忙麓山','邦东','昔归七山','microregion','PROVISIONAL','B','mid_high_to_high','high','未限定','晒青生普语境','直接甜高、岩骨与汤质并存，刚柔并济；不是“临沧版老班章”。',['岩骨','甜润','刚柔并济'],'V5 §7.5'),
+  point('BD-nahan','那罕','邦东','曼岗村 / 那罕组','microregion','PROVISIONAL','B-','mid','high','未限定','晒青生普语境','入口可直接甜，结构比曼岗明显但弱于忙麓山；甜苦并行、绵柔浓醇。',['兰香','甜苦并行','浓醇'],'V5 §7.5'),
+  point('BD-mangang','曼岗','邦东','昔归七山 / 曼岗茶区','microregion','PROVISIONAL','B','low_mid_to_mid','high_to_very_high','未限定','晒青生普语境','岩韵强但汤柔、甜、温润；岩矿感不等于 structure_tension。',['岩韵','汤柔','温润'],'V5 §7.5'),
+  point('BD-caozidi','草籽地','邦东','昔归七山','microregion','PROVISIONAL','B','mid_to_mid_high','very_high','未限定','晒青生普语境','完整逐泡支持直接甜很高、汤密、野与气强；野与强气不等于汤硬。',['甜','密','野','强气'],'V5 §7.5'),
+  point('BD-yakou','丫口','邦东','和平村 / 丫口寨','microregion','PROVISIONAL','B','low_mid_to_mid','very_high','未限定','晒青生普语境','清甜鲜爽、柔汤、强气；低中到中结构与很高直接甜并存。',['清甜鲜爽','柔汤','强气'],'V5 §7.5'),
+  point('BD-laojiezi','昔归老街子','邦东','昔归七山','microregion','PROVISIONAL','B','low_mid_to_mid','very_high','未限定','晒青生普语境','与丫口同网络样接近，入口即甜、鲜爽、苦低；允许两个点高度重叠。',['入口即甜','鲜爽','柔'],'V5 §7.5'),
+
+  point('PE-chashanqing','镇沅茶山箐核心','普洱','镇沅核心微区','microregion','PROVISIONAL','C','mid','high','未限定','晒青生普语境','只挂核心，不把镇沅产业父区整体继承为一个风味点。',['核心限定','待复现'],'V5 §58.1'),
+  point('PE-fenghuangwo','墨江凤凰窝核心','普洱','墨江凤凰山 / 凤凰窝核心','microregion','PROVISIONAL','C+','low_to_low_mid','high_to_very_high','材料未统一','晒青生普语境','柔细、直接甜高到很高；不继承整个凤凰山，材料与样品条件需继续限定。',['柔细','高甜','材料限定'],'V5 §58.1'),
+  point('PE-kunlushan','宁洱困鹿山细叶古树','普洱','困鹿山 / 细叶古树','material_specific','PROVISIONAL','C+','low_mid_to_mid','high','细叶古树','晒青生普语境','入口柔细且有甘甜；材料特定，不能代表困鹿山全部。',['柔细','材料特定'],'V5 §58.1'),
+  point('PE-baiweiqing','宁洱摆尾箐古树','普洱','摆尾箐','microregion','PROVISIONAL','C','mid','high','古树样','晒青生普语境','当前独立性一般，保留为中结构、高直接甜的准坐标。',['准坐标','独立性一般'],'V5 §58.1'),
+  point('PE-yangta','景谷秧塔大白茶古树·晒青','普洱','秧塔','material_specific','PROVISIONAL','C+','low_mid_to_mid','high_to_very_high','大白茶古树','晒青（明确）','只使用晒青数据，不把白茶加工的甜香直接移植到生普坐标。',['大白茶材料','晒青限定','高甜'],'V5 §58.1'),
+  point('PE-dingpashan','景谷钉耙山小叶猫耳朵','普洱','钉耙山','material_specific','PROVISIONAL','C+','mid_to_mid_high','high','小叶猫耳朵','晒青生普语境','材料特定的中到中高结构、高直接甜点。',['小叶猫耳朵','材料特定'],'V5 §58.1'),
+  point('PE-huangcaoba','景谷黄草坝大尖山栽培古茶','普洱','大尖山 / 黄草坝','material_specific','PROVISIONAL','C','low_mid_to_mid','high','栽培古茶','晒青生普语境','不包含野生群落；先把栽培古茶与野生材料严格拆开。',['栽培古茶','排除野生'],'V5 §58.1'),
+  point('PE-bangwai','邦崴市场样','普洱','澜沧 / 富东乡 / 邦崴村','regional_centroid','PROVISIONAL','C','mid_to_mid_high','high','市场样 / 材料未统一','晒青生普语境','Level 1 只说明市场样方向；严格村料与微区仍 HOLD，不能把区域样当作精确 terroir。',['Level 1','区域样','严格微区 HOLD'],'V5 §58.2'),
+  point('PE-laoanzhai','老安寨古茶园','普洱','思茅区 / 老安寨','microregion','INTERVAL','C+','mid_to_mid_high','high','未统一','晒青生普语境','Y 较稳高，X 仍是区间；需要真实样品继续压缩 band。',['区间','待复现'],'V5 §58.2'),
+  point('PE-kanpenqing','砍盆箐核心','普洱','普洱市核心候选','microregion','INTERVAL','C+','mid_to_mid_high','high','未统一','晒青生普语境','结构与苦涩方差较大，先用区间表达，不把样品方差当作地点平均值。',['区间','高方差'],'V5 §58.2')
+];
+
+/* V8 conceptual score book. Existing V5 bands remain in xBand / yBand;
+   these centers are a transparent, editable comparison layer, not lab data. */
+const conceptualScores={
+  'YW-lengshuihe':{x:32,y:86,layer:'M'},'YW-baishahe':{x:45,y:84,layer:'M'},'YW-heishuiliangzi':{x:82,y:67,layer:'M'},
+  'YW-chawangshu':{x:59,y:85,layer:'M'},'YW-wangong':{x:34,y:88,layer:'M'},'YW-baichayuan':{x:60,y:86,layer:'M'},
+  'YW-duoyishu':{x:75,y:95,layer:'M'},'YW-bohetang':{x:27,y:93,layer:'M'},'YW-tongqinghe':{x:58,y:96,layer:'M'},
+  'MH-pasha':{x:52,y:80,layer:'M'},'MH-banpen':{x:60,y:85,layer:'M'},'MH-laobanzhang':{x:92,y:91,layer:'M'},
+  'MH-bannakannuan':{x:72,y:87,layer:'M'},'MH-bakalong':{x:76,y:80,layer:'M'},'MH-zhangjiasandui':{x:82,y:34,layer:'R'},
+  'MK-bingdao':{x:28,y:98,layer:'M'},'MK-nanpo':{x:31,y:94,layer:'M'},'MK-dijie':{x:68,y:85,layer:'M'},
+  'MK-bawai':{x:52,y:82,layer:'M'},'MK-nuowu':{x:34,y:80,layer:'M'},'MK-xiaohusai':{x:34,y:89,layer:'M'},
+  'MK-dahusai':{x:55,y:83,layer:'M'},'MK-dongguo':{x:70,y:55,layer:'M'},'MK-molie':{x:82,y:88,layer:'M'},
+  'MK-banuo':{x:67,y:83,yRange:[75,90],xRange:[55,78],layer:'I'},'MK-zhengqitang':{x:53,y:95,layer:'M'},
+  'MK-xiaohuangtian':{x:80,y:88,layer:'M'},'MK-dazhongshan':{x:70,y:96,layer:'M'},'MK-mangbo':{x:38,y:80,layer:'M'},
+  'BD-xiaoguangshan':{x:40,y:78,layer:'C'},'BD-manglushang':{x:73,y:84,layer:'M'},'BD-nahan':{x:59,y:77,layer:'M'},
+  'BD-mangang':{x:43,y:81,layer:'M'},'BD-caozidi':{x:58,y:95,layer:'M'},'BD-yakou':{x:35,y:93,layer:'M'},
+  'BD-laojiezi':{x:34,y:92,layer:'M'},'PE-chashanqing':{x:52,y:72,layer:'C'},'PE-fenghuangwo':{x:31,y:89,layer:'M'},
+  'PE-kunlushan':{x:38,y:82,layer:'C'},'PE-baiweiqing':{x:52,y:77,layer:'M'},'PE-yangta':{x:40,y:89,layer:'C'},
+  'PE-dingpashan':{x:65,y:83,layer:'C'},'PE-huangcaoba':{x:44,y:77,layer:'C'},'PE-bangwai':{x:62,y:76,layer:'R'},
+  'PE-laoanzhai':{x:64,y:82,yRange:[78,86],xRange:[56,72],layer:'I'},'PE-kanpenqing':{x:68,y:78,yRange:[72,84],xRange:[60,76],layer:'I'}
+};
+function addConceptNode(n){
+  const layer=n.layer||'C';
+  points.push(point(n.id,n.name,n.region,n.sub||'概念微产区',n.geo||(layer==='R'?'reference':'microregion'),n.status||(layer==='I'?'INTERVAL':'PROVISIONAL'),n.confidence||'C',n.xBand||'概念估计',n.yBand||'概念估计',n.material||'未统一',n.processing||'晒青生普语境',n.note||'0–100 概念中心：用于比较方向，严格同年同工艺样品待补。',n.tags||['概念评分'],n.source||'V5 总档 · 概念评分',layer==='R'?'reference_not_clean_terroir':''));
+  conceptualScores[n.id]={x:n.x,y:n.y,layer:layer,xRange:n.xRange,yRange:n.yRange};
+}
+const conceptualNodes=[
+  {id:'YW-chaping',name:'茶坪',region:'易武',x:42,y:82,layer:'C',sub:'易武微产区候选',tags:['柔甜候选','待样品']},
+  {id:'YW-jinchanghe',name:'金厂河',region:'易武',x:54,y:75,layer:'R',geo:'parent_region',sub:'易武父级茶区',tags:['父级参考']},
+  {id:'YW-taozishan',name:'桃子山',region:'易武',x:46,y:82,layer:'C',sub:'金厂河 / 桃子山',tags:['花香','柔甜候选']},
+  {id:'YW-tianmenshan',name:'天门山',region:'易武',x:45,y:88,layer:'C',sub:'易武高价值候选',tags:['高甜候选','待样品']},
+  {id:'YW-luoshuidong',name:'落水洞',region:'易武',x:32,y:82,layer:'C',sub:'易武村寨候选',tags:['柔甜候选','待样品']},
+  {id:'MH-xinbanzhang',name:'新班章',region:'勐海',x:85,y:82,layer:'C',sub:'班章村委会体系',tags:['高结构','甜苦并存']},
+  {id:'MH-laomaner',name:'老曼峨',region:'勐海',x:78,y:72,layer:'C',sub:'布朗山材料混合区',material:'甜茶 / 苦茶需拆分',tags:['材料混合','苦甜并存']},
+  {id:'MH-manxinlong',name:'曼新龙',region:'勐海',x:86,y:42,layer:'C',sub:'曼新龙上下寨',tags:['苦后转甘','新样待补']},
+  {id:'MH-banpolaozhai',name:'半坡老寨',region:'勐海',x:54,y:63,layer:'C',sub:'勐海勐宋候选',tags:['香','左下搜索']},
+  {id:'MH-naka',name:'那卡',region:'勐海',x:58,y:76,layer:'C',sub:'勐海勐宋候选',tags:['高香','待复现']},
+  {id:'MH-zhanglang',name:'章朗',region:'勐海',x:62,y:63,layer:'C',sub:'布朗山村寨',tags:['香涩','直接甜待补']},
+  {id:'MH-mannuo',name:'曼糯',region:'勐海',x:58,y:65,layer:'C',sub:'曼糯大寨 / 中寨 / 上寨',tags:['村寨拆分','待样品']},
+  {id:'MH-jinghongmengsong',name:'景洪勐宋',region:'勐海',x:55,y:70,layer:'R',geo:'parent_region',sub:'勐宋区域参考',tags:['父级参考','强制消歧']},
+  {id:'MH-banglong',name:'蚌龙',region:'勐海',x:58,y:68,layer:'C',sub:'蚌龙村寨',tags:['甜苦并行','待样品']},
+  {id:'MH-bada',name:'巴达',region:'勐海',x:58,y:66,layer:'R',geo:'parent_region',sub:'巴达历史区域',tags:['区域参考','下钻微区']},
+  {id:'MH-xiding',name:'西定',region:'勐海',x:50,y:62,layer:'R',geo:'parent_region',sub:'西定行政乡',tags:['行政参考']},
+  {id:'JM-jingmaidazhai',name:'景迈大寨',region:'景迈',x:46,y:82,layer:'M',sub:'景迈传统村落',tags:['兰香候选','村寨级']},
+  {id:'JM-mangjingshangzhai',name:'芒景上寨',region:'景迈',x:43,y:80,layer:'M',sub:'景迈传统村落',tags:['柔甜','村寨级']},
+  {id:'JM-mangjingxiazhai',name:'芒景下寨',region:'景迈',x:44,y:78,layer:'M',sub:'景迈传统村落',tags:['柔甜','村寨级']},
+  {id:'JM-nuogang',name:'糯岗',region:'景迈',x:40,y:83,layer:'M',sub:'景迈传统村落',tags:['细甜','村寨级']},
+  {id:'JM-wengji',name:'翁基',region:'景迈',x:42,y:80,layer:'M',sub:'景迈传统村落',tags:['柔甜','村寨级']},
+  {id:'JM-wengwa',name:'翁洼',region:'景迈',x:45,y:78,layer:'M',sub:'景迈传统村落',tags:['柔甜','村寨级']},
+  {id:'JM-manghong',name:'芒洪',region:'景迈',x:48,y:78,layer:'M',sub:'景迈传统村落',tags:['柔甜','村寨级']},
+  {id:'JM-dapingzhang',name:'大平掌',region:'景迈',x:55,y:82,layer:'C',sub:'景迈古茶林',tags:['古茶林','材料待分']},
+  {id:'JM-jingmaishan',name:'景迈山',region:'景迈',x:50,y:82,layer:'R',geo:'parent_region',sub:'景迈山区域参考',tags:['区域参考','不继承平均风味']},
+  {id:'MK-huangcaolin',name:'黄草林',region:'勐库',x:58,y:70,layer:'C',sub:'临沧微区候选',tags:['中甜','待复现']},
+  {id:'MK-chaqing',name:'岔箐',region:'勐库',x:65,y:62,layer:'C',sub:'临沧微区候选',tags:['结构偏强','待复现']},
+  {id:'MK-yingpan',name:'营盘',region:'勐库',x:55,y:66,layer:'C',sub:'临沧微区候选',tags:['甜苦并行','待复现']},
+  {id:'BD-xiguilvshuitang',name:'昔归绿水塘',region:'邦东',x:65,y:80,layer:'C',sub:'昔归七山候选',tags:['高甜候选','边界待锁']},
+  {id:'BD-pojiao',name:'坡脚',region:'邦东',x:48,y:72,layer:'C',sub:'临翔四区候选',tags:['中甜','待样品']},
+  {id:'BD-manhao',name:'曼毫',region:'邦东',x:53,y:70,layer:'C',sub:'临翔四区候选',tags:['中甜','待样品']},
+  {id:'BD-bingsai',name:'冰赛',region:'邦东',x:52,y:72,layer:'R',geo:'parent_region',sub:'临翔区域参考',tags:['区域参考']},
+  {id:'YD-mangfei',name:'忙肺',region:'永德',x:82,y:78,layer:'M',sub:'永德高知名度微区',tags:['强结构','甜厚']},
+  {id:'YD-guoditang',name:'锅底塘',region:'永德',x:38,y:94,layer:'M',sub:'永德高知名度微区',tags:['柔甜','高甜']},
+  {id:'YD-meiziqing',name:'梅子箐',region:'永德',x:58,y:86,layer:'R',geo:'parent_region',sub:'永德区域参考',tags:['区域参考','高甜候选']},
+  {id:'YD-manlai',name:'曼来',region:'永德',x:68,y:70,layer:'C',sub:'永德村寨候选',tags:['中甜','待样品']},
+  {id:'YD-bankafangniuchang',name:'班卡放牛场',region:'永德',x:61,y:74,layer:'C',sub:'永德村寨候选',tags:['中甜','待样品']},
+  {id:'YD-wumulong',name:'乌木龙',region:'永德',x:65,y:74,layer:'R',geo:'parent_region',sub:'永德区域参考',tags:['区域参考']},
+  {id:'YD-mingfengshan',name:'鸣凤山',region:'永德',x:65,y:78,layer:'C',sub:'永德村寨候选',tags:['高香','待复现']},
+  {id:'YD-dapingzhangbanwei',name:'大平掌班尾 / 帮尾',region:'永德',x:60,y:75,layer:'C',sub:'永德村寨候选',tags:['村寨消歧','待样品']},
+  {id:'YD-wujiazhai',name:'武家寨',region:'永德',x:62,y:72,layer:'C',sub:'永德村寨候选',tags:['中甜','待样品']},
+  {id:'YD-xiaobanggui',name:'小邦贵',region:'永德',x:58,y:72,layer:'C',sub:'永德村寨候选',tags:['中甜','待样品']},
+  {id:'YD-yalantengzicha',name:'亚练藤子茶',region:'永德',x:60,y:70,layer:'C',sub:'永德管理类型候选',material:'藤子茶需分层',tags:['管理变量','待样品']},
+  {id:'EDGE-baiying-shan',name:'白莺山',region:'边缘',x:58,y:70,layer:'R',geo:'parent_region',sub:'云县区域参考',tags:['区域参考']},
+  {id:'EDGE-xiangzhuqing',name:'香竹箐',region:'边缘',x:52,y:68,layer:'C',sub:'临沧边缘候选',tags:['中甜','待样品']},
+  {id:'EDGE-mangbingmaanshan',name:'忙丙马鞍山村',region:'边缘',x:65,y:70,layer:'C',sub:'临沧边缘候选',tags:['中甜','待样品']},
+  {id:'EDGE-xiangzhulin',name:'香竹林',region:'边缘',x:58,y:72,layer:'C',sub:'临沧边缘候选',tags:['中甜','待样品']},
+  {id:'PE-qianjiazhai',name:'千家寨',region:'普洱',x:70,y:70,layer:'C',sub:'镇沅九甲区域候选',tags:['区域锚点','需拆微区']},
+  {id:'PE-laowushan',name:'老乌山',region:'普洱',x:62,y:72,layer:'C',sub:'镇沅跨村茶区',tags:['区域锚点','需下钻']},
+  {id:'PE-madeng',name:'马邓',region:'普洱',x:55,y:75,layer:'C',sub:'镇沅候选',tags:['中甜','待样品']},
+  {id:'PE-laihaitang',name:'老海塘',region:'普洱',x:65,y:78,layer:'C',sub:'镇沅候选',tags:['高甜候选','待样品']},
+  {id:'PE-dasunshan',name:'打笋山',region:'普洱',x:63,y:76,layer:'C',sub:'镇沅高优先微区',tags:['高优先','待复现']},
+  {id:'PE-wuyi',name:'五一',region:'普洱',x:48,y:70,layer:'C',sub:'镇沅候选',tags:['中甜','待样品']},
+  {id:'PE-midiumidi',name:'迷帝米地',region:'普洱',x:55,y:83,layer:'C',sub:'墨江 / 宁洱候选',tags:['柔甜','待复现']},
+  {id:'PE-xuligongcha',name:'须立贡茶',region:'普洱',x:52,y:78,layer:'C',sub:'墨江候选',tags:['柔甜','待样品']},
+  {id:'PE-tongguan',name:'通关',region:'普洱',x:50,y:72,layer:'C',sub:'墨江候选',tags:['中甜','待样品']},
+  {id:'PE-baliu',name:'坝溜',region:'普洱',x:57,y:72,layer:'C',sub:'墨江候选',tags:['中甜','待样品']},
+  {id:'PE-tuantian',name:'团田',region:'普洱',x:52,y:70,layer:'C',sub:'墨江候选',tags:['中甜','待样品']},
+  {id:'PE-longba',name:'龙坝',region:'普洱',x:48,y:73,layer:'C',sub:'墨江候选',tags:['中甜','待样品']},
+  {id:'PE-kunlushan-daye',name:'困鹿山栽培大叶',region:'普洱',x:52,y:75,layer:'C',sub:'困鹿山材料分层',material:'栽培大叶',tags:['材料特定','待复现']},
+  {id:'PE-zhaluoshan',name:'扎罗山 / 新寨山',region:'普洱',x:50,y:72,layer:'C',sub:'宁洱候选',tags:['中甜','待样品']},
+  {id:'PE-banshan',name:'板山',region:'普洱',x:56,y:74,layer:'C',sub:'宁洱候选',tags:['中甜','待样品']},
+  {id:'PE-zhushan',name:'竹山',region:'普洱',x:52,y:70,layer:'C',sub:'宁洱候选',tags:['中甜','待样品']},
+  {id:'PE-erlongshan',name:'贰龙山 / 龙潭坝',region:'普洱',x:55,y:72,layer:'C',sub:'宁洱候选',tags:['中甜','待样品']},
+  {id:'PE-guoqing-tianfang',name:'国庆 / 田房',region:'普洱',x:55,y:75,layer:'C',sub:'宁洱候选',tags:['中甜','待样品']},
+  {id:'PE-qushui',name:'曲水',region:'普洱',x:50,y:70,layer:'C',sub:'宁洱候选',tags:['中甜','待样品']},
+  {id:'PE-shenxiangshan',name:'神象山',region:'普洱',x:58,y:76,layer:'C',sub:'宁洱候选',tags:['中甜','待样品']},
+  {id:'PE-manlaojie',name:'曼老街',region:'普洱',x:52,y:73,layer:'C',sub:'宁洱候选',tags:['中甜','待样品']},
+  {id:'PE-shangniujuan',name:'上牛圈',region:'普洱',x:58,y:78,layer:'C',sub:'宁洱候选',tags:['中甜','待样品']},
+  {id:'PE-lianhelongtang',name:'联合龙塘 / 酸枣树',region:'普洱',x:56,y:75,layer:'C',sub:'景谷候选',tags:['中甜','待样品']},
+  {id:'PE-mengzhudashan',name:'勐主大山',region:'普洱',x:58,y:76,layer:'C',sub:'景谷候选',tags:['中甜','待样品']},
+  {id:'PE-wendongpasai',name:'文东帕赛',region:'普洱',x:58,y:78,layer:'C',sub:'景谷候选',tags:['中甜','待样品']},
+  {id:'PE-xiaobanaodong',name:'小坝 / 那东',region:'普洱',x:52,y:74,layer:'C',sub:'景谷候选',tags:['中甜','待样品']},
+  {id:'PE-donghe',name:'东河',region:'普洱',x:50,y:70,layer:'C',sub:'景谷候选',tags:['中甜','待样品']},
+  {id:'PE-xixiang',name:'西线',region:'普洱',x:45,y:72,layer:'C',sub:'景谷候选',tags:['柔甜','待样品']},
+  {id:'PE-lafu',name:'腊福',region:'普洱',x:50,y:70,layer:'C',sub:'孟连候选',tags:['材料待分','待样品']},
+  {id:'PE-mangzhong',name:'芒中',region:'普洱',x:52,y:68,layer:'C',sub:'孟连候选',tags:['材料待分','待样品']},
+  {id:'PE-tudi',name:'图地',region:'普洱',x:55,y:70,layer:'C',sub:'西盟候选',tags:['材料待分','待样品']},
+  {id:'PE-foudianshan',name:'佛殿山',region:'普洱',x:60,y:72,layer:'C',sub:'普洱边缘候选',tags:['中甜','待样品']},
+  {id:'EDGE-huangjiazhai',name:'昌宁黄家寨',region:'边缘',x:50,y:68,layer:'C',sub:'昌宁漭水候选',tags:['材料待分','待样品']},
+  {id:'EDGE-heweilaozhaizi',name:'河尾老寨子',region:'边缘',x:45,y:75,layer:'C',sub:'昌宁保山候选',tags:['柔甜候选','待样品']},
+  {id:'EDGE-chashanhe',name:'茶山河',region:'边缘',x:55,y:65,layer:'C',sub:'昌宁保山候选',tags:['中甜','待样品']},
+  {id:'EDGE-sanchahe',name:'三岔河',region:'边缘',x:50,y:70,layer:'C',sub:'昌宁保山候选',tags:['中甜','待样品']},
+  {id:'EDGE-longlingraolang',name:'龙陵绕廊麦子地',region:'边缘',x:65,y:70,layer:'C',sub:'龙陵保山候选',tags:['结构偏强','待样品']},
+  {id:'EDGE-longyangfengxi',name:'隆阳凤溪茶山',region:'边缘',x:55,y:65,layer:'C',sub:'隆阳保山候选',tags:['中甜','待样品']},
+  {id:'EDGE-longyangaguan',name:'隆阳阿贯山',region:'边缘',x:55,y:64,layer:'C',sub:'隆阳保山候选',tags:['中甜','待样品']},
+  {id:'EDGE-malipochapingshan',name:'麻栗坡茶坪山',region:'边缘',x:55,y:70,layer:'C',sub:'文山候选',tags:['中甜','待样品']},
+  {id:'EDGE-xinnanping',name:'新南坪大山',region:'边缘',x:58,y:72,layer:'C',sub:'文山候选',tags:['中甜','待样品']},
+  {id:'EDGE-longzhushan',name:'龙竹山 / 鸯鸡蓬',region:'边缘',x:54,y:68,layer:'C',sub:'文山候选',tags:['材料待分','待样品']},
+  {id:'EDGE-tianbaogudiping',name:'天保谷地坪',region:'边缘',x:50,y:68,layer:'C',sub:'文山候选',tags:['材料待分','待样品']},
+  {id:'EDGE-nanjianhuilongshan',name:'南涧回龙山',region:'边缘',x:50,y:75,layer:'C',sub:'大理候选',tags:['柔甜候选','待样品']},
+  {id:'EDGE-nanjianshanhua',name:'南涧山花',region:'边缘',x:52,y:72,layer:'C',sub:'大理候选',tags:['中甜','待样品']},
+  {id:'EDGE-nanjianhuangcaoba',name:'南涧黄草坝',region:'边缘',x:48,y:70,layer:'C',sub:'大理候选',tags:['材料消歧','待样品']},
+  {id:'EDGE-yongpingdahegou',name:'永平大河沟',region:'边缘',x:55,y:70,layer:'C',sub:'大理候选',tags:['中甜','待样品']},
+  {id:'EDGE-liangheqinglongshan',name:'梁河青龙山',region:'边缘',x:58,y:72,layer:'C',sub:'德宏候选',tags:['中甜','待样品']},
+  {id:'EDGE-lianghehengliangzi',name:'梁河横梁子',region:'边缘',x:55,y:70,layer:'C',sub:'德宏候选',tags:['中甜','待样品']},
+  {id:'EDGE-ruili-dengga',name:'瑞丽等嘎',region:'边缘',x:48,y:72,layer:'C',sub:'德宏候选',tags:['材料待分','待样品']},
+  {id:'EDGE-longchuanwangzishu',name:'陇川王子树',region:'边缘',x:52,y:68,layer:'C',sub:'德宏候选',tags:['材料待分','待样品']},
+  {id:'EDGE-chuxiongrudadi',name:'楚雄如达地',region:'边缘',x:50,y:70,layer:'C',sub:'楚雄地方茶类型候选',tags:['材料待分','待鉴定']},
+  {id:'EDGE-jinpingdixi',name:'金平地西北',region:'边缘',x:52,y:68,layer:'C',sub:'红河候选',tags:['材料待分','待样品']},
+  {id:'EDGE-yuanyangxinlusa',name:'元阳新鲁沙',region:'边缘',x:48,y:70,layer:'C',sub:'红河候选',tags:['材料待分','待样品']},
+  {id:'EDGE-yuanjiangzhujie',name:'元江猪街',region:'边缘',x:50,y:74,layer:'C',sub:'玉溪候选',tags:['地方材料','待鉴定']},
+  {id:'EDGE-xinpingemao',name:'新平峨毛',region:'边缘',x:54,y:72,layer:'C',sub:'玉溪候选',tags:['地方材料','待鉴定']}
+];
+conceptualNodes.forEach(addConceptNode);
+points.forEach(function(d){
+  const s=conceptualScores[d.id]||{};
+  d.xScore=Number.isFinite(s.x)?s.x:centre(bandRange(d.xBand));
+  d.yScore=Number.isFinite(s.y)?s.y:centre(bandRange(d.yBand));
+  d.layer=s.layer||'C';
+  d.xRange=s.xRange;
+  d.yRange=s.yRange;
+});
+
+const candidatePool = [
+  {n:'茶坪',r:'易武',g:'微产区',s:'HOLD',p:'地点稳定，但缺年份、季节和完整逐泡记录；暂不画点。',q:'P0'},
+  {n:'金厂河',r:'易武',g:'父级茶区 / 行政村',s:'HIERARCHY_ONLY',p:'不能把父级茶区直接当作微产区风味点；桃子山需另行拆开。',q:'P1'},
+  {n:'金厂河桃子山',r:'易武',g:'微产区候选',s:'CANDIDATE',p:'有花香、汤柔、甜高方向的市场线索，但微区与样品链不足。',q:'P0'},
+  {n:'清水河 / 老庙寨',r:'易武',g:'微产区候选',s:'HOLD',p:'行业资料列名，行政与风味证据都需要独立锁定。',q:'P1'},
+  {n:'猎虎山、龙家坡',r:'易武',g:'地块候选',s:'CANDIDATE',p:'较新的地块名，可能由地块主人命名；先进入名称池。',q:'P1'},
+  {n:'脱裤子塘、普茅山、饿肚山',r:'易武',g:'地块名称池',s:'HIERARCHY_ONLY',p:'V5 记录为较新地块名，尚不与核心六茶地同层。',q:'P2'},
+  {n:'臭水箐、白蛇山、白土洞',r:'易武',g:'地块名称池',s:'HIERARCHY_ONLY',p:'待补行政、样品与真实商品原料链。',q:'P2'},
+  {n:'天门山',r:'易武',g:'微产区候选',s:'HOLD',p:'保留为高价值候选，不能只凭市场名直接挂到易武坐标。',q:'P0'},
+  {n:'章朗',r:'勐海',g:'行政村级古茶区',s:'HOLD',p:'标准化样品有香与涩信息，但直接甜与结构尚不足。',q:'P0'},
+  {n:'曼糯',r:'勐海',g:'区域 / 大寨中寨上寨',s:'HOLD',p:'不能给整个曼糯一个单点；至少先钉曼糯大寨路径。',q:'P0'},
+  {n:'景洪勐宋',r:'勐海',g:'区域候选',s:'HOLD',p:'必须与勐海勐宋、那卡、保塘、蚌龙强制消歧，并继续下钻自然村。',q:'P0'},
+  {n:'蚌龙',r:'勐海',g:'行政村 / 村寨',s:'HOLD',p:'地点身份通过，但风味样品不足；邦龙 / Banglong 只作 alias。',q:'P0'},
+  {n:'新班章',r:'勐海',g:'村寨',s:'HOLD',p:'高结构苦甜方向明确，但缺完整独立逐泡。',q:'P0'},
+  {n:'老曼峨',r:'勐海',g:'材料混合区',s:'MATERIAL_HOLD',p:'甜茶、苦茶与市场混称不能合成一个点；先拆 raw_material_type。',q:'P0'},
+  {n:'曼新龙',r:'勐海',g:'村寨 / 上下寨',s:'HOLD',p:'旧样品像右下，但缺 2023–2026 标准样。',q:'P0'},
+  {n:'半坡老寨、那卡',r:'勐海',g:'村寨候选',s:'HOLD',p:'用于左下搜索的样本未能证明直接甜弱；不为填象限强画点。',q:'P1'},
+  {n:'西定',r:'勐海',g:'行政乡',s:'HIERARCHY_ONLY',p:'行政父节点，不直接进入风味坐标。',q:'P1'},
+  {n:'巴达 / 贺松大黑山',r:'勐海',g:'历史区域 / 茶山',s:'HOLD',p:'巴达是历史区域，需继续拆贺松、大黑山等真实微区。',q:'P0'},
+  {n:'芒埂、勐本、景迈大寨',r:'普洱',g:'景迈传统村落',s:'HIERARCHY_ONLY',p:'景迈九村是层级与遗产关系，不能因为“景迈”标签自动继承风味。',q:'P1'},
+  {n:'大平掌',r:'普洱',g:'景迈古茶林',s:'HIERARCHY_ONLY',p:'它是古茶林，不是传统村落，也不等于整个景迈山。',q:'P0'},
+  {n:'糯岗、芒景上寨、芒景下寨、芒洪',r:'普洱',g:'景迈传统村落',s:'HOLD',p:'需要逐村样品，不把“各寨=兰花香”当作事实。',q:'P1'},
+  {n:'翁基、翁洼',r:'普洱',g:'景迈传统村落',s:'HOLD',p:'先补村落级样品与晒青生普加工身份。',q:'P1'},
+  {n:'昔归绿水塘',r:'邦东',g:'昔归七山',s:'HOLD',p:'官方茶区单元成立，但村委会、边界与工艺独立性未锁定；禁止先画右上实心点。',q:'P0'},
+  {n:'坡脚、曼毫、冰赛',r:'邦东',g:'临翔四区',s:'HOLD',p:'行政与产业身份可记录，直接甜与结构证据不足。',q:'P0'},
+  {n:'昆赛、细博、那招、那玉',r:'邦东',g:'临翔候选',s:'HOLD',p:'存在地点或具体样品线索，但不足以进入主坐标。',q:'P1'},
+  {n:'勐库绿水塘',r:'勐库',g:'市场微产区名',s:'HOLD',p:'与昔归绿水塘强制分开；勐库商品语境中的具体定位仍 unresolved。',q:'P0'},
+  {n:'邦崴严格微区',r:'普洱',g:'Level 1 / 村料待定',s:'MATERIAL_HOLD',p:'市场样可作为区域方向，严格村料与微区仍需独立样品。',q:'P0'},
+  {n:'千家寨',r:'普洱',g:'区域锚点',s:'HOLD',p:'需与“千家寨爷号”公共品牌分开，先确认九甲区域内真实样品。',q:'P0'},
+  {n:'老乌山',r:'普洱',g:'跨村寨山体 / 茶区',s:'HOLD',p:'只能作为区域锚点，继续下钻具体村寨。',q:'P1'},
+  {n:'打笋山小组、麦地高杆',r:'普洱',g:'高优先微区',s:'HOLD',p:'V5 列入下一轮最值得购买复现的样品清单。',q:'P0'},
+  {n:'瓦桥老海塘、米地贡茶园',r:'普洱',g:'高优先微区',s:'HOLD',p:'需要地点、材料、加工与逐泡记录一起绑定。',q:'P0'},
+  {n:'苦竹山、九台坡、早荞地',r:'普洱',g:'三联样候选',s:'HOLD',p:'适合在同年同工艺下横评，不先继承区域平均风味。',q:'P0'},
+  {n:'帕赛、小坝大平掌',r:'普洱',g:'高优先微区',s:'HOLD',p:'有研究价值，但当前仍缺可审计的一致样品链。',q:'P1'},
+  {n:'拉巴芒东百年古树、安康糯波',r:'普洱',g:'高优先微区',s:'HOLD',p:'先确认材料类型与晒青生普身份，避免地方茶类型混入。',q:'P0'},
+  {n:'孟连腊福、西盟图地',r:'普洱',g:'边缘高优先',s:'HOLD',p:'资源与加工线索存在，仍需明确栽培古茶 × 晒青生普样品。',q:'P0'},
+  {n:'昌宁漭水黄家寨',r:'边缘/GI',g:'保山核心候选',s:'MATERIAL_HOLD',p:'下一主区域；先分昌宁红茶品牌层与古茶 × 晒青生普材料。',q:'P0'},
+  {n:'昌宁茶山河、河尾老寨子',r:'边缘/GI',g:'保山古茶资源',s:'HOLD',p:'资源锚点成立，生普微区与材料证据仍待。',q:'P0'},
+  {n:'温泉联席 / 芭蕉林、田园石佛山',r:'边缘/GI',g:'保山古茶资源',s:'HOLD',p:'下一轮按地点、材料与加工身份重新采样。',q:'P0'},
+  {n:'腾冲古茶资源',r:'边缘/GI',g:'保山县域候选',s:'HOLD',p:'野生资源、历史栽培与现代产业叠加，先排除野生与加工污染。',q:'P1'},
+  {n:'龙陵白裤',r:'边缘/GI',g:'地方茶类型',s:'MATERIAL_HOLD',p:'botanical identity unresolved；不得直接当普洱生茶坐标。',q:'P0'},
+  {n:'隆阳瓦渡阿贯山',r:'边缘/GI',g:'行政地点 / 古茶身份待复核',s:'HOLD',p:'地点可确认，但古茶园身份与当前生普链未重新钉牢。',q:'P1'},
+  {n:'施甸摆马、木老元',r:'边缘/GI',g:'古茶资源',s:'HOLD',p:'资源利用链成立，但缺微地块 × 材料 × 晒青生普样品。',q:'P1'},
+  {n:'南涧无量山 / 南涧黄草坝',r:'边缘/GI',g:'大理候选',s:'MATERIAL_HOLD',p:'必须与景谷黄草坝强制消歧，并防白茶 / 乌龙加工污染。',q:'P0'},
+  {n:'永平古茶资源',r:'边缘/GI',g:'大理候选',s:'HOLD',p:'有古茶与生普链线索，尚不足以拆出稳定微区点。',q:'P1'},
+  {n:'德宏六大茶山 / 九大古茶园',r:'边缘/GI',g:'德宏候选',s:'HOLD',p:'先确认栽培古茶、晒青生普与微区对应关系。',q:'P1'},
+  {n:'楚雄如达地',r:'边缘/GI',g:'地方茶类型候选',s:'MATERIAL_HOLD',p:'感官有线索但直接甜与结构不足，local_tea_type 不能未经鉴定升级。',q:'P0'},
+  {n:'元阳新鲁沙、红河三村乡',r:'边缘/GI',g:'红河候选',s:'HOLD',p:'古茶与晒青链存在，但无法证明样品就是特定微区原料。',q:'P1'},
+  {n:'元江猪街、新平峨毛',r:'边缘/GI',g:'玉溪候选',s:'MATERIAL_HOLD',p:'地方材料与传统晒青值得研究，但需先区分材料与商品生普资格。',q:'P0'},
+  {n:'麻栗坡古茶资源',r:'边缘/GI',g:'文山候选',s:'HOLD',p:'资源与地理身份可保留，生普微区样品不足。',q:'P1'},
+  {n:'马关古林箐、广南底圩',r:'边缘/GI',g:'文山候选',s:'MATERIAL_HOLD',p:'GI 地点资格不等于所有材料自动具备普洱原料资格。',q:'P0'},
+  {n:'昆明 / 玉溪 GI edge scan',r:'边缘/GI',g:'GI 边缘',s:'HIERARCHY_ONLY',p:'全云南收尾时只做漏网点扫描，不扩成主产区坐标。',q:'P2'}
+];
+
+
+const atlasPalette={易武:'#b45e43',勐海:'#cf8b43',景迈:'#7b8e63',勐库:'#4f8b78',邦东:'#5d879a',永德:'#91815e',普洱:'#8876a7',边缘:'#8b938d'};
+const atlasRegionInfo={
+  all:{title:'云南全省 · 概念总图',mode:'ALL REGIONS · CONCEPTUAL VIEW',phrase:'甜意很普遍，真正拉开的是承载甜的结构。'},
+  易武:{title:'易武 · 柔甜到强甜的内部梯度',mode:'YIWU · INTERNAL GRADIENT',phrase:'同样高甜，结构从极细到有骨架。'},
+  勐海:{title:'勐海 · 布朗 / 班章的强甜场',mode:'MENGHAI · STRUCTURE + SWEETNESS',phrase:'强结构与直接甜并不互斥。'},
+  景迈:{title:'景迈 · 九村与古茶林',mode:'JINGMAI · VILLAGES + FOREST',phrase:'村寨、古茶林与父级区域不自动继承同一风味。'},
+  勐库:{title:'勐库 · 冰岛五寨与东半山',mode:'MENGKU · FIVE VILLAGES',phrase:'细甜、厚甜、甘冽甜和强体感并列。'},
+  邦东:{title:'邦东 / 昔归 · 七山的风味分叉',mode:'BANGDONG · QISHAN',phrase:'茶区分组可以并列，行政树不能假装同级。'},
+  永德:{title:'永德 · 强甜与西部临沧',mode:'YONGDE · WESTERN LINCANG',phrase:'强甜、硬结构和区域参考点并列。'},
+  普洱:{title:'普洱 · 材料限定的坐标',mode:'PUER · MATERIAL-SPECIFIC',phrase:'同一个地方，材料与加工会改变点的身份。'},
+  边缘:{title:'边缘产区 · 开放的候选场',mode:'EDGE REGIONS · OPEN FIELD',phrase:'空白不是失败，是下一轮研究的入口。'}
+};
+const mapSvg=document.getElementById('atlasMap'), tip=document.getElementById('tooltip'), detailEl=document.getElementById('detail');
+const featuredLabelIds=new Set([
+  'MK-bingdao','MH-laobanzhang','YW-bohetang','YW-duoyishu','YW-wangong','YW-lengshuihe','YW-tongqinghe',
+  'MH-banpen','MH-bannakannuan','MH-zhangjiasandui','MH-manxinlong','MK-nanpo','MK-dijie','MK-molie','MK-dongguo',
+  'MK-zhengqitang','MK-dazhongshan','MK-xiaohuangtian','MK-xiaohusai','BD-manglushang','BD-nahan','BD-mangang',
+  'BD-caozidi','BD-yakou','BD-laojiezi','JM-jingmaidazhai','JM-jingmaishan','PE-fenghuangwo','PE-chashanqing','PE-bangwai',
+  'PE-kunlushan','PE-yangta','PE-dingpashan','YD-mangfei','YD-guoditang'
+]);
+let activeRegion='all', selectedId=null, domains={x:[0,100],y:[0,100]};
+function bandRange(raw){
+  const s=String(raw||'mid').replace(/\?/g,'').replace(/[–—]/g,'-').replace(/→/g,'_to_').replace(/～/g,'_to_').replace(/\s+/g,'').toLowerCase();
+  if(bands[s])return bands[s];
+  if(s.indexOf('_to_')>0){const a=s.split('_to_'),r1=bands[a[0]]||bands.mid,r2=bands[a[1]]||bands.mid;return [Math.min(r1[0],r2[0]),Math.max(r1[1],r2[1])]}
+  return bands[s]||bands.mid;
+}
+function centre(r){return (r[0]+r[1])/2}
+function esc6(v){return String(v==null?'':v).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
+function createSvg(tag,attrs,text){const n=document.createElementNS('http://www.w3.org/2000/svg',tag);Object.keys(attrs||{}).forEach(function(k){n.setAttribute(k,attrs[k])});if(text!=null)n.textContent=text;return n}
+function visiblePoints(){const q=document.getElementById('search').value.trim().toLowerCase(),st=document.getElementById('statusFilter').value;return points.filter(function(d){const t=[d.name,d.region,d.sub,d.material,d.processing,d.note,d.tags.join(' ')].join(' ').toLowerCase();return (activeRegion==='all'||d.region===activeRegion)&&(!q||t.indexOf(q)>=0)&&(!st||st==='all'||d.status===st)})}
+function setupDomain(list){
+  if(document.getElementById('fullScale').checked||!list.length){domains={x:[0,100],y:[0,100]};return}
+  const xs=list.map(function(d){return displayRange(d,'x')}),ys=list.map(function(d){return displayRange(d,'y')});
+  const xmin=Math.min.apply(null,xs.map(function(r){return r[0]})),xmax=Math.max.apply(null,xs.map(function(r){return r[1]})),ymin=Math.min.apply(null,ys.map(function(r){return r[0]})),ymax=Math.max.apply(null,ys.map(function(r){return r[1]}));
+  domains={x:[Math.max(0,xmin-9),Math.min(100,xmax+9)],y:[Math.max(0,ymin-9),Math.min(100,ymax+9)]};
+}
+function sx(v,x0,w){return x0+(v-domains.x[0])/(domains.x[1]-domains.x[0])*w}
+function sy(v,y0,h){return y0+h-(v-domains.y[0])/(domains.y[1]-domains.y[0])*h}
+function hashJitter(id){let n=0;for(let i=0;i<id.length;i++)n=(n*31+id.charCodeAt(i))%997;return ((n%7)-3)*1.25}
+function visualMode(){return document.getElementById('displayMode').value}
+function clampScore(v){return Math.max(0,Math.min(100,Number(v)||0))}
+function displayValue(d,axis){
+  const base=clampScore(axis==='x'?d.xScore:d.yScore);
+  return visualMode()==='separate'?clampScore(base+hashJitter(d.id)*.52):base;
+}
+function displayRange(d,axis){
+  const explicit=axis==='x'?d.xRange:d.yRange;
+  if(explicit)return explicit;
+  const v=displayValue(d,axis);
+  return [v,v];
+}
+function layerLabel(layer){return ({M:'M · 严格微产区',C:'C · 条件概念点',R:'R · 父级 / 参考',I:'I · 区间点'})[layer]||'C · 条件概念点'}
+function scoreText(d,axis){
+  const range=axis==='x'?d.xRange:d.yRange, v=axis==='x'?d.xScore:d.yScore;
+  return range?'中心 '+v+'（区间 '+range[0]+'–'+range[1]+'）':String(v);
+}
+function markerFor(d,x,y,color,selected){
+  const g=createSvg('g',{class:'pointMark','data-id':d.id});
+  const hit=createSvg('circle',{cx:x,cy:y,r:16,fill:'transparent','data-chart-hit':'point',tabindex:0,role:'button','aria-label':d.name+' '+d.status});
+  hit.addEventListener('click',function(){selectedId=d.id;showDetail(d);draw()});hit.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();selectedId=d.id;showDetail(d);draw()}});hit.addEventListener('pointerenter',function(e){showTip(e,d)});hit.addEventListener('pointermove',function(e){showTip(e,d)});hit.addEventListener('pointerleave',hideTip);g.appendChild(hit);
+  const opacity={M:.9,C:.58,R:.28,I:.46}[d.layer]||.58;
+  g.appendChild(createSvg('circle',{cx:x,cy:y,r:selected?8.5:6.5,fill:color,'fill-opacity':opacity,stroke:selected?'#20332d':color,'stroke-width':selected?2.6:1.3,'stroke-opacity':d.layer==='R'?.7:.9,'pointer-events':'none'}));
+  return g;
+}
+function draw(){
+  const list=visiblePoints();setupDomain(list);while(mapSvg.firstChild)mapSvg.removeChild(mapSvg.firstChild);
+  const W=1000,H=690,x0=78,y0=34,w=864,h=560;
+  mapSvg.setAttribute('aria-label',atlasRegionInfo[activeRegion].title+'。横轴为口腔结构张力，纵轴为汤中直接甜感。');
+  const desc=createSvg('desc',{id:'atlasMapDesc'},'概念风味坐标图。横轴为口腔结构张力，纵轴为汤中直接甜感。');mapSvg.appendChild(desc);
+  mapSvg.appendChild(createSvg('rect',{x:0,y:0,width:W,height:H,fill:'#ffffff'}));mapSvg.appendChild(createSvg('rect',{x:x0,y:y0,width:w,height:h,fill:'#fbfcfa',stroke:'#dbe2dc','stroke-width':'1','data-chart-frame':'true'}));
+  const sxv=function(v){return sx(v,x0,w)},syv=function(v){return sy(v,y0,h)};
+  const spanX=domains.x[1]-domains.x[0],spanY=domains.y[1]-domains.y[0],stepX=spanX>75?20:spanX>42?10:5,stepY=spanY>75?20:spanY>42?10:5;
+  for(let v=Math.ceil(domains.x[0]/stepX)*stepX;v<=domains.x[1];v+=stepX){mapSvg.appendChild(createSvg('line',{x1:sxv(v),y1:y0,x2:sxv(v),y2:y0+h,stroke:'#e5ebe7','stroke-width':'1'}));mapSvg.appendChild(createSvg('text',{x:sxv(v),y:y0+h+25,'text-anchor':'middle',fill:'#6e7d74','font-size':'11'},String(v)))}
+  for(let v=Math.ceil(domains.y[0]/stepY)*stepY;v<=domains.y[1];v+=stepY){mapSvg.appendChild(createSvg('line',{x1:x0,y1:syv(v),x2:x0+w,y2:syv(v),stroke:'#e5ebe7','stroke-width':'1'}));mapSvg.appendChild(createSvg('text',{x:x0-13,y:syv(v)+4,'text-anchor':'end',fill:'#6e7d74','font-size':'11'},String(v)))}
+  mapSvg.appendChild(createSvg('text',{x:x0+w/2,y:H-15,'text-anchor':'middle',fill:'#385148','font-size':'13','font-weight':'700'},'口腔结构张力  ·  柔 / 松  →  紧 / 有骨架'));
+  mapSvg.appendChild(createSvg('text',{x:21,y:y0+h/2,transform:'rotate(-90 21 '+(y0+h/2)+')','text-anchor':'middle',fill:'#385148','font-size':'13','font-weight':'700'},'汤中直接甜感  ·  低  →  高'));
+  const labels=[['柔甜',x0+18,y0+23,'#7d9b89'],['强甜',x0+w-60,y0+23,'#b45e43'],['柔 × 留白',x0+18,y0+h-17,'#7d9b89'],['强 × 后甜',x0+w-106,y0+h-17,'#8b7c73']];
+  labels.forEach(function(a){mapSvg.appendChild(createSvg('text',{x:a[1],y:a[2],fill:a[3],'font-size':'12','font-weight':'700','letter-spacing':'.06em'},a[0]))});
+  function pointCenter(d){return [sxv(displayValue(d,'x')),syv(displayValue(d,'y'))]}
+  const positioned=list.map(function(d){return {d:d,p:pointCenter(d)}});
+  positioned.forEach(function(item){const d=item.d,p=item.p,g=markerFor(d,p[0],p[1],atlasPalette[d.region]||'#8b938d',selectedId===d.id);mapSvg.appendChild(g)});
+  const showLabels=document.getElementById('showLabels').checked;
+  const labelItems=positioned.filter(function(item){return selectedId===item.d.id||(activeRegion==='all'?(showLabels||featuredLabelIds.has(item.d.id)):true)});
+  labelItems.sort(function(a,b){return (a.d.id===selectedId?-1:0)-(b.d.id===selectedId?-1:0)||(featuredLabelIds.has(a.d.id)?-1:0)-(featuredLabelIds.has(b.d.id)?-1:0)});
+  const occupied=[];
+  function overlapArea(a,b){return Math.max(0,Math.min(a.right,b.right)-Math.max(a.left,b.left))*Math.max(0,Math.min(a.bottom,b.bottom)-Math.max(a.top,b.top))}
+  labelItems.forEach(function(item){
+    const d=item.d,p=item.p,size=activeRegion==='all'?10.5:9.5,text=createSvg('text',{fill:'#385148','font-size':size,'font-weight':selectedId===d.id?'700':'600','paint-order':'stroke','stroke':'#fbfcfa','stroke-width':'3','pointer-events':'none','letter-spacing':'-.02em'},d.name);
+    mapSvg.appendChild(text);
+    const candidates=[[11,-10,'start'],[11,13,'start'],[-11,-10,'end'],[-11,13,'end'],[0,-15,'middle'],[0,18,'middle']];
+    let best=null,bestScore=Infinity;
+    candidates.forEach(function(c){
+      text.setAttribute('x',p[0]+c[0]);text.setAttribute('y',p[1]+c[1]);text.setAttribute('text-anchor',c[2]);
+      const raw=text.getBBox(),b={left:raw.x,top:raw.y,right:raw.x+raw.width,bottom:raw.y+raw.height};
+      let score=0;
+      if(b.left<x0+2||b.right>x0+w-2||b.top<y0+2||b.bottom>y0+h-2)score+=100000;
+      occupied.forEach(function(o){const area=overlapArea(b,o);if(area)score+=10000+area*20});
+      positioned.forEach(function(other){if(other===item)return;const dx=other.p[0]-p[0],dy=other.p[1]-p[1];if(Math.abs(dx)<22&&Math.abs(dy)<18&&other.p[0]>b.left-4&&other.p[0]<b.right+4&&other.p[1]>b.top-4&&other.p[1]<b.bottom+4)score+=2500});
+      if(score<bestScore){bestScore=score;best={x:p[0]+c[0],y:p[1]+c[1],anchor:c[2],box:b}}
+    });
+    if(best){text.setAttribute('x',best.x);text.setAttribute('y',best.y);text.setAttribute('text-anchor',best.anchor);occupied.push(best.box)}
+  });
+  if(!list.length){mapSvg.appendChild(createSvg('text',{x:x0+w/2,y:y0+h/2-12,'text-anchor':'middle',fill:'#385148','font-size':'18','font-weight':'700'},'这片边界暂时留白'));mapSvg.appendChild(createSvg('text',{x:x0+w/2,y:y0+h/2+17,'text-anchor':'middle',fill:'#6e7d74','font-size':'12'},'候选与 HOLD 已移到下方 · 不强行填点'))}
+  const labelMode=activeRegion==='all'?(showLabels?'全省全量点名':'总图重点点名'):'分区全量点名';
+  document.getElementById('mapTitle').textContent=atlasRegionInfo[activeRegion].title;document.getElementById('mapMode').textContent=atlasRegionInfo[activeRegion].mode;document.getElementById('mapNote').textContent=(document.getElementById('fullScale').checked?'0–100 全量坐标轴 · ':'')+labelMode+' · '+(visualMode()==='separate'?'轻微分离':'概念分中心');document.getElementById('fieldBrief').textContent=atlasRegionInfo[activeRegion].phrase+' 当前 '+list.length+' 个可见节点。'+(visualMode()==='separate'?'轻微分离只避免点位重叠，不改变概念中心。':'位置按 0–100 概念中心线性布局。');
+}
+function showTip(e,d){
+  tip.style.display='block';
+  tip.innerHTML='<strong>'+esc6(d.name)+'</strong><br>'+esc6(d.region)+' · '+esc6(layerLabel(d.layer))+'<br>概念 X '+scoreText(d,'x')+' · Y '+scoreText(d,'y')+'<br>原始 band：X '+esc6(d.xBand)+' · Y '+esc6(d.yBand);
+  const plot=document.querySelector('.plotWrap').getBoundingClientRect(),dock=document.getElementById('detailDock').getBoundingClientRect(),tw=tip.offsetWidth,th=tip.offsetHeight,gap=13,margin=8;
+  const left=Math.max(margin,plot.left+6),right=Math.min(window.innerWidth-margin,plot.right-6),top=Math.max(margin,plot.top+6),bottom=Math.min(window.innerHeight-margin,plot.bottom-6);
+  const candidates=[[e.clientX+gap,e.clientY+gap],[e.clientX-tw-gap,e.clientY+gap],[e.clientX+gap,e.clientY-th-gap],[e.clientX-tw-gap,e.clientY-th-gap]];
+  function overlapsDock(x,y){return x<dock.right&&x+tw>dock.left&&y<dock.bottom&&y+th>dock.top}
+  let chosen=null;
+  for(let i=0;i<candidates.length;i++){
+    const x=candidates[i][0],y=candidates[i][1];
+    if(x>=left&&x+tw<=right&&y>=top&&y+th<=bottom&&!overlapsDock(x,y)){chosen=[x,y];break}
+  }
+  if(!chosen){
+    let x=Math.min(Math.max(e.clientX+gap,left),Math.max(left,right-tw)),y=Math.min(Math.max(e.clientY+gap,top),Math.max(top,bottom-th));
+    if(overlapsDock(x,y)){x=Math.max(left,Math.min(e.clientX-tw-gap,right-tw));y=Math.max(top,Math.min(y,bottom-th))}
+    chosen=[x,y];
+  }
+  tip.style.left=chosen[0]+'px';tip.style.top=chosen[1]+'px';
+}
+function hideTip(){tip.style.display='none'}
+function showDetail(d){const rangeNote=(d.xRange||d.yRange)?'<br>区间点：X '+scoreText(d,'x')+' · Y '+scoreText(d,'y'):'';detailEl.innerHTML='<div class="dockTitle">'+esc6(d.name)+'</div><div class="dockMeta">'+esc6(d.region)+' · '+esc6(d.sub)+' · '+esc6(d.geo)+'<br><span style="color:#9a7044">'+esc6(layerLabel(d.layer))+'</span> · '+esc6(d.status)+' · 证据置信度 '+esc6(d.confidence)+(d.scope?' · '+esc6(d.scope):'')+'</div><div class="dockBand"><div class="bandCell"><span>概念 structure / X</span><b>'+esc6(scoreText(d,'x'))+'</b></div><div class="bandCell"><span>概念 sweetness / Y</span><b>'+esc6(scoreText(d,'y'))+'</b></div></div><div class="dockMeta" style="margin-top:8px">原始 X band：'+esc6(d.xBand)+'<br>原始 Y band：'+esc6(d.yBand)+rangeNote+'</div><p class="dockText">'+esc6(d.note)+'</p><div class="dockTags">'+d.tags.map(function(t){return '<span>'+esc6(t)+'</span>'}).join('')+'</div><div class="dockLinks"><a href="'+MASTER+'">V5 全部总档 · '+esc6(d.sourceLine)+'</a><a href="'+SUMMARY+'">V5 人类可读总结</a></div>'}
+function renderRegionRows(){const rows=document.getElementById('regionRows');const regions=Object.keys(atlasPalette);rows.innerHTML=regions.map(function(r){const count=points.filter(function(d){return d.region===r}).length;return '<button class="regionRow" data-rail="'+r+'"><i class="dot" style="background:'+atlasPalette[r]+'"></i><span><h3>'+esc6(r)+'</h3><p>'+esc6(atlasRegionInfo[r].phrase)+'</p></span><b class="count">'+count+'</b></button>'}).join('');Array.prototype.forEach.call(rows.querySelectorAll('[data-rail]'),function(b){b.addEventListener('click',function(){setRegion(b.getAttribute('data-rail'));window.scrollTo({top:0,behavior:'smooth'})})})}
+function renderConstellation(){const root=document.getElementById('constellationGroups');const regions=Object.keys(atlasPalette);root.innerHTML=regions.filter(function(r){return points.some(function(d){return d.region===r})}).map(function(r){const ps=points.filter(function(d){return d.region===r});return '<div class="constellationGroup"><h3>'+esc6(r)+' / '+ps.length+' NODES</h3><div class="nameCloud">'+ps.map(function(d){return '<button type="button" data-node="'+esc6(d.id)+'" aria-pressed="'+(selectedId===d.id?'true':'false')+'">'+esc6(d.name)+'</button>'}).join('')+'</div></div>'}).join('');Array.prototype.forEach.call(root.querySelectorAll('[data-node]'),function(b){b.addEventListener('click',function(){const d=points.find(function(x){return x.id===b.getAttribute('data-node')});if(d){selectedId=d.id;showDetail(d);draw();renderConstellation()}})})}
+function renderCandidates(){
+  const q=document.getElementById('candidateSearch').value.trim().toLowerCase();
+  const st=document.getElementById('candidateStatus').value;
+  const list=candidatePool.filter(function(c){
+    const t=[c.n,c.r,c.g,c.s,c.p,c.q].join(' ').toLowerCase();
+    return (!q||t.indexOf(q)>=0)&&(st==='all'||(st==='P0'?c.q==='P0':st==='MATERIAL_HOLD'?c.s==='MATERIAL_HOLD':c.s===st));
+  });
+  const root=document.getElementById('candidateGrid');
+  root.innerHTML=list.map(function(c,i){return '<button class="candidateItem" data-candidate="'+i+'"><span class="priority">'+esc6(c.q)+'</span><h4>'+esc6(c.n)+'</h4><div class="line">'+esc6(c.r)+' · '+esc6(c.g)+' · '+esc6(c.s)+'</div><p>'+esc6(c.p)+'</p></button>'}).join('')||'<div style="color:#7a6f61;font-size:12px">没有匹配的候选。</div>';
+  document.getElementById('candidateCount').textContent=list.length+' / '+candidatePool.length;
+  Array.prototype.forEach.call(root.querySelectorAll('[data-candidate]'),function(b){
+    b.addEventListener('click',function(){
+      const c=list[Number(b.getAttribute('data-candidate'))];
+      selectedId=null;
+      detailEl.innerHTML='<div class="dockTitle">'+esc6(c.n)+'</div><div class="dockMeta">'+esc6(c.r)+' · '+esc6(c.g)+'<br><span style="color:#e0b35e">'+esc6(c.s)+'</span> · '+esc6(c.q)+'</div><p class="dockText">'+esc6(c.p)+'</p><div class="dockLinks"><a href="./origin_microregion_master.csv">查看 880 行微产区层级主表</a></div>';
+    });
+  });
+}
+function setRegion(region){activeRegion=region;Array.prototype.forEach.call(document.querySelectorAll('.mapTab'),function(b){b.setAttribute('aria-selected',b.getAttribute('data-region')===region?'true':'false')});draw()}
+function resetAll(){document.getElementById('search').value='';document.getElementById('statusFilter').value='all';document.getElementById('showLabels').checked=false;document.getElementById('displayMode').value='score';document.getElementById('fullScale').checked=false;selectedId=null;detailEl.innerHTML='<div class="dockTitle">点一颗茶</div><div class="dockMeta">点击地图中的节点，或下方“风味星簇”里的名字。</div>';setRegion('all');renderConstellation()}
+Array.prototype.forEach.call(document.querySelectorAll('.mapTab'),function(b){b.addEventListener('click',function(){setRegion(b.getAttribute('data-region'))})});
+['search','statusFilter','showLabels','displayMode','fullScale'].forEach(function(id){document.getElementById(id).addEventListener(id==='search'?'input':'change',function(){draw();if(id==='showLabels'||id==='displayMode')renderConstellation()})});
+document.getElementById('reset').addEventListener('click',resetAll);['candidateSearch','candidateStatus'].forEach(function(id){document.getElementById(id).addEventListener(id==='candidateSearch'?'input':'change',renderCandidates)});
+document.getElementById('heroPointCount').textContent=points.length;document.getElementById('heroProvisional').textContent=points.filter(function(d){return d.status==='PROVISIONAL'}).length;document.getElementById('heroInterval').textContent=points.filter(function(d){return d.status==='INTERVAL'}).length;
+renderRegionRows();renderConstellation();renderCandidates();draw();
+if(window.ResizeObserver){new ResizeObserver(function(){draw()}).observe(document.querySelector('.plotWrap'))}
+</script>
+</body>
+</html>
